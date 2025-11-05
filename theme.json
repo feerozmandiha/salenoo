@@ -1,0 +1,398 @@
+{
+	"settings": {
+		"appearanceTools": true,
+		"color": {
+			"defaultPalette": false,
+			"palette": [
+				{
+					"color": "#00AEEF",
+					"name": "آبی برند",
+					"slug": "brand-blue"
+				},
+				{
+					"color": "#80D7F7",
+					"name": "آکسنت آبی",
+					"slug": "brand-teal"
+				},
+				{
+					"color": "#e91e63",
+					"name": "درخواست مشاوره",
+					"slug": "consult-cta"
+				},
+				{
+					"color": "#DFFFE0",
+					"name": "تایید",
+					"slug": "OK"
+				},
+				{
+					"color": "#E0F5FD",
+					"name": "آبی سایت",
+					"slug": "azure-web"
+				},
+				{
+					"color": "#000000",
+					"name": "متن اصلی",
+					"slug": "text-primary"
+				},
+				{
+					"color": "#404040",
+					"name": "متن ثانویه",
+					"slug": "text-secondary"
+				},
+				{
+					"color": "#FCFCFC",
+					"name": "پس‌زمینه اصلی",
+					"slug": "surface-bg"
+				},
+				{
+					"color": "#ffffff",
+					"name": "پس‌زمینه کارت",
+					"slug": "card-bg"
+				},
+				{
+					"color": "#80D7F7",
+					"name": "بوردر",
+					"slug": "border-light"
+				},
+				{
+					"color": "transparent",
+					"name": "شفاف",
+					"slug": "transparent"
+				}
+			]
+		},
+		"layout": {
+			"contentSize": "95%",
+			"wideSize": "100%"
+		},
+		"shadow": {
+			"defaultPresets": false,
+			"presets": [
+				{
+					"name": "سایه نرم",
+					"shadow": "0 2px 8px rgba(0,0,0,0.06)",
+					"slug": "soft"
+				},
+				{
+					"name": "بدون سایه",
+					"shadow": "none",
+					"slug": "none"
+				},
+				{
+					"name": "3D",
+					"shadow": "0 50px 100px -20px rgba(50, 50, 93, 0.25), 0 30px 60px -30px rgba(0, 0, 0, 0.3), inset 0 -2px 6px 0 #0a254059",
+					"slug": "3D"
+				},
+				{
+					"name": "cardShadow",
+					"shadow": "0px 18px 36px -18px rgba(0,0,0,0.1),0px 30px 45px -30px rgba(50,50,93,0.25)",
+					"slug": "cardShadow"
+				},
+				{
+					"name": "cardShadowXSmall",
+					"shadow": "0 2px 5px -1px rgba(50,50,93,0.25),0 1px 3px -1px rgba(0,0,0,0.3)",
+					"slug": "cardShadowXSmall"
+				},
+				{
+					"name": "cardShadowSmall",
+					"shadow": "0 6px 12px -2px rgba(50,50,93,0.25),0 3px 7px -3px rgba(0,0,0,0.3)",
+					"slug": "cardShadowSmall"
+				},
+				{
+					"name": "cardShadowMedium",
+					"shadow": "0 13px 27px -5px rgba(50,50,93,0.25),0 8px 16px -8px rgba(0,0,0,0.3)",
+					"slug": "cardShadowMedium"
+				},
+				{
+					"name": "cardShadowLarge",
+					"shadow": "0 30px 60px -12px rgba(50,50,93,0.25),0 18px 36px -18px rgba(0,0,0,0.3)",
+					"slug": "cardShadowLarge"
+				},
+				{
+					"name": "cardShadowLargeInset",
+					"shadow": "inset 0 30px 60px -12px rgba(50,50,93,0.25),inset 0 18px 36px -18px rgba(0,0,0,0.3)",
+					"slug": "cardShadowLargeInset"
+				},
+				{
+					"name": "cardShadowXLarge",
+					"shadow": "0 50px 100px -20px rgba(50,50,93,0.25),0 30px 60px -30px rgba(0,0,0,0.3)",
+					"slug": "cardShadowXLarge"
+				},
+				{
+					"name": "buttonShadow",
+					"shadow": "0 0 0 1px rgba(50,50,93,.07),0 2px 3px -1px rgba(50,50,93,.12),0 1px 3px -1px rgba(0,0,0,.12)",
+					"slug": "buttonShadow"
+				},
+				{
+					"name": "Shadow 1",
+					"shadow": "6px 6px 9px rgba(0, 0, 0, 0.2)",
+					"slug": "shadow-1"
+				}
+			]
+		},
+		"spacing": {
+			"spacingScale": {
+				"theme": {
+					"increment": 0.25,
+					"steps": 7,
+					"unit": "rem"
+				}
+			},
+			"spacingSizes": [],
+			"units": [
+				"%",
+				"px",
+				"em",
+				"rem",
+				"vh",
+				"vw"
+			]
+		},
+		"typography": {
+			"fontFamilies": [
+				{
+					"fontFace": [
+						{
+							"fontFamily": "IRANSansXFaNum",
+							"fontStyle": "normal",
+							"fontWeight": "400",
+							"src": [
+								"file:./assets/fonts/iransansxfanum/IRANSansXFaNum-Regular.woff2"
+							]
+						},
+						{
+							"fontFamily": "IRANSansXFaNum",
+							"fontStyle": "normal",
+							"fontWeight": "500",
+							"src": [
+								"file:./assets/fonts/iransansxfanum/IRANSansXFaNum-Regular.woff2"
+							]
+						},
+						{
+							"fontFamily": "IRANSansXFaNum",
+							"fontStyle": "bold",
+							"fontWeight": "700",
+							"src": [
+								"file:./assets/fonts/iransansxfanum/IRANSansXFaNum-Bold.woff2"
+							]
+						}
+					],
+					"fontFamily": "IRANSansXFaNum, sans-serif",
+					"name": "IRANSansXFaNum",
+					"slug": "iransansxfanum"
+				}
+			],
+			"fontSizes": [
+				{
+					"name": "کوچک",
+					"size": "0.875rem",
+					"slug": "small"
+				},
+				{
+					"name": "متوسط",
+					"size": "1rem",
+					"slug": "medium"
+				},
+				{
+					"name": "بزرگ",
+					"size": "1.25rem",
+					"slug": "large"
+				},
+				{
+					"name": "خیلی بزرگ",
+					"size": "1.5rem",
+					"slug": "x-large"
+				}
+			]
+		},
+		"useRootPaddingAwareAlignments": true
+	},
+	"styles": {
+		"blocks": {
+			"core/button": {
+				"border": {
+					"bottom": {
+						"color": "var(--wp--preset--color--brand-blue)",
+						"style": "solid",
+						"width": "1px"
+					},
+					"left": {
+						"color": "var(--wp--preset--color--brand-blue)",
+						"style": "solid",
+						"width": "1px"
+					},
+					"radius": {
+						"bottomLeft": "5px",
+						"bottomRight": "5px",
+						"topLeft": "5px",
+						"topRight": "5px"
+					},
+					"right": {
+						"color": "var(--wp--preset--color--brand-blue)",
+						"style": "solid",
+						"width": "1px"
+					},
+					"top": {
+						"color": "var(--wp--preset--color--brand-blue)",
+						"style": "solid",
+						"width": "1px"
+					}
+				},
+				"elements": {
+					"link": {
+						"color": {
+							"text": "inherit"
+						}
+					}
+				}
+			},
+			"core/group": {
+				"border": {
+					"radius": {
+						"bottomLeft": "5px",
+						"bottomRight": "5px",
+						"topLeft": "5px",
+						"topRight": "5px"
+					}
+				},
+				"color": {
+					"background": "var(--wp--preset--color--card-bg)"
+				},
+				"spacing": {
+					"padding": {
+						"bottom": "var(--wp--preset--spacing--20)",
+						"left": "var(--wp--preset--spacing--40)",
+						"right": "var(--wp--preset--spacing--40)",
+						"top": "var(--wp--preset--spacing--20)"
+					}
+				}
+			},
+			"core/heading": {
+				"spacing": {
+					"margin": {
+						"left": "var(--wp--preset--spacing--40)",
+						"right": "var(--wp--preset--spacing--40)"
+					},
+					"padding": {
+						"left": "0",
+						"right": "0"
+					}
+				}
+			},
+			"core/paragraph": {
+				"spacing": {
+					"margin": {
+						"left": "var(--wp--preset--spacing--40)",
+						"right": "var(--wp--preset--spacing--40)"
+					}
+				}
+			}
+		},
+		"color": {
+			"background": "var(--wp--preset--color--surface-bg)",
+			"text": "var(--wp--preset--color--text-primary)"
+		},
+		"elements": {
+			"button": {
+				":focus": {
+					"color": {
+						"background": "var(--wp--preset--color--brand-teal)",
+						"text": "var(--wp--preset--color--card-bg)"
+					}
+				},
+				":hover": {
+					"color": {
+						"background": "var(--wp--preset--color--brand-blue)",
+						"text": "var(--wp--preset--color--card-bg)"
+					}
+				},
+				"border": {
+					"color": "var(--wp--preset--color--brand-blue)",
+					"radius": "var(--wp--preset--border-radius--rounded)",
+					"width": "1px"
+				},
+				"color": {
+					"background": "var(--wp--preset--color--brand-teal)",
+					"text": "var(--wp--preset--color--text-primary)"
+				},
+				"spacing": {
+					"padding": {
+						"bottom": "0.75rem",
+						"left": "1.5rem",
+						"right": "1.5rem",
+						"top": "0.75rem"
+					}
+				},
+				"typography": {
+					"fontSize": "1rem",
+					"textTransform": "none"
+				}
+			},
+			"h1": {
+				"typography": {
+					"fontSize": "2rem",
+					"fontWeight": "700"
+				}
+			},
+			"h2": {
+				"typography": {
+					"fontSize": "1.5rem",
+					"fontWeight": "600"
+				}
+			},
+			"h3": {
+				"typography": {
+					"fontSize": "1.25rem",
+					"fontWeight": "500"
+				}
+			},
+			"heading": {
+				"typography": {
+					"fontWeight": "500"
+				}
+			},
+			"link": {
+				":hover": {
+					"color": {
+						"text": "var(--wp--preset--color--brand-teal)"
+					},
+					"typography": {
+						"textDecoration": "underline"
+					}
+				},
+				"color": {
+					"text": "var(--wp--preset--color--brand-blue)"
+				},
+				"typography": {
+					"textDecoration": "none"
+				}
+			}
+		},
+		"spacing": {
+			"blockGap": "1.5em",
+			"padding": {
+				"bottom": "0rem",
+				"left": "0rem",
+				"right": "0rem",
+				"top": "0rem"
+			}
+		},
+		"typography": {
+			"fontFamily": "var(--wp--preset--font-family--iransansxfanum)",
+			"fontSize": "1rem",
+			"lineHeight": "1.6"
+		}
+	},
+	"templateParts": [
+		{
+			"area": "header",
+			"name": "header"
+		},
+		{
+			"area": "footer",
+			"name": "footer"
+		}
+	],
+	"version": 3,
+	"$schema": "https://schemas.wp.org/trunk/theme.json"
+}
