@@ -77,8 +77,6 @@ class AssetsLoader {
             SALNAMA_THEME_VERSION
         );
 
-        // فعال‌سازی خودکار پشتیبانی RTL
-        wp_style_add_data( 'salnama-theme-main', 'rtl', 'replace' );
     }
 
     /**

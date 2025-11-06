@@ -36,13 +36,13 @@
             gsap.from( el, {
                 y: 40,
                 opacity: 0,
-                duration: defaults.duration,
+                duration: duration,
                 ease: defaults.ease,
                 delay: delay,
                 scrollTrigger: {
-                    trigger: el,
-                    start: 'top 90%',
-                    toggleActions: 'play none none none'
+                    // trigger: el,
+                    // start: 'top 90%',
+                    // toggleActions: 'play none none none'
                 }
             } );
         },
@@ -159,18 +159,22 @@
     function initAnimations() {
         const animatedElements = document.querySelectorAll( '[data-animation]' );
 
-        animatedElements.forEach( ( el, index ) => {
+        animatedElements.forEach( ( el ) => {
             const type = el.getAttribute( 'data-animation' );
             const delay = parseFloat( el.getAttribute( 'data-delay' ) ) || 0;
+            const duration = parseFloat( el.getAttribute( 'data-duration' ) ) || defaults.duration;
+            const disableMobile = el.hasAttribute( 'data-disable-mobile' );
+
+            // غیرفعال در موبایل
+            if ( disableMobile && window.innerWidth <= 768 ) {
+                return;
+            }
 
             if ( animations[ type ] ) {
-                // برای انیمیشن‌های hover، scrollTrigger اعمال نشود
                 if ( type.startsWith( 'hover-' ) ) {
-                    animations[ type ]( el );
+                    animations[ type ]( el, duration );
                 } else {
-                    // اعمال تأخیر متوالی (اختیاری)
-                    const finalDelay = delay + ( index * 0.1 );
-                    animations[ type ]( el, finalDelay );
+                    animations[ type ]( el, delay, duration );
                 }
             }
         } );

@@ -1,0 +1,41 @@
+/* assets/css/main.css */
+
+/* استایل‌های پایه برای انیمیشن‌ها */
+.salmama-hover-scale {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.salmama-hover-lift {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.salmama-hover-tilt {
+    cursor: pointer;
+    transform-style: preserve-3d;
+}
+
+.salmama-hover-glow {
+    cursor: pointer;
+    transition: box-shadow 0.3s ease;
+}
+
+.salmama-hover-shrink {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+/* جلوگیری از flickering در طول انیمیشن */
+[data-salmama-animated="true"] {
+    will-change: transform, opacity;
+}
+
+/* استایل برای حالت‌های مختلف هاور */
+.salmama-hover-scale:hover {
+    transform: scale(1.05);
+}
+
+.salmama-hover-lift:hover {
+    transform: translateY(-5px);
+}
