@@ -1,41 +1,141 @@
 /* assets/css/main.css */
 
-/* استایل‌های پایه برای انیمیشن‌ها */
+/* ریست کامل برای جلوگیری از اسکرول ناخواسته */
+html, body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    position: relative !important;
+}
+
 .salmama-hover-scale {
     cursor: pointer;
-    transition: transform 0.3s ease;
+    transform-origin: center; /* نقطه تبدیل در مرکز */
+    will-change: transform;
+    /* جلوگیری از تاثیر روی layout */
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .salmama-hover-lift {
     cursor: pointer;
-    transition: transform 0.3s ease;
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    /* محدود کردن حرکت به جهت Y */
+    transform: translateY(0);
 }
 
-.salmama-hover-tilt {
+.salmama-magnetic-button {
     cursor: pointer;
-    transform-style: preserve-3d;
+    display: inline-block;
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
-.salmama-hover-glow {
-    cursor: pointer;
-    transition: box-shadow 0.3s ease;
+/* استایل‌های مخصوص تایپ رایتر */
+.salmama-typewriter {
+    border-right: 2px solid #333;
 }
 
-.salmama-hover-shrink {
-    cursor: pointer;
-    transition: transform 0.3s ease;
+.salmama-typewriter-completed {
+    border-right: none;
 }
 
-/* جلوگیری از flickering در طول انیمیشن */
-[data-salmama-animated="true"] {
-    will-change: transform, opacity;
+/* کلاس عمومی برای تمام المان‌های انیمیشنی */
+.salmama-animated-element {
+    /* جلوگیری از تاثیر transform روی layout */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
-/* استایل برای حالت‌های مختلف هاور */
-.salmama-hover-scale:hover {
-    transform: scale(1.05);
+/* استایل برای المان‌های با هاور افکت */
+[data-hover-animation] {
+    /* محدود کردن transform به فضای خود المان */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
-.salmama-hover-lift:hover {
-    transform: translateY(-5px);
+/* جلوگیری از overflow در المان‌های والد */
+.salmama-animation-container {
+    overflow: hidden !important;
+}
+
+/* استایل برای المان‌هایی که transform دارند */
+.salmama-transform-element {
+    transform: translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+/* اضافه کردن به main.css */
+
+/* جلوگیری از اسکرول در کل صفحه هنگام هاور */
+body.salmama-hover-active {
+    overflow: hidden !important;
+}
+
+/* استایل برای المان‌های با transform */
+.salmama-transform-element {
+    /* ایجاد context جدید برای transform */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    perspective: 1000;
+    -webkit-perspective: 1000;
+    
+    /* جلوگیری از تاثیر روی dimensions */
+    box-sizing: border-box;
+    display: inline-block;
+    vertical-align: top;
+}
+
+/* استایل برای المان‌های block-level */
+.salmama-transform-block {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    display: block;
+    box-sizing: border-box;
+}
+
+/* استایل برای المان‌های inline */
+.salmama-transform-inline {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    display: inline-block;
+    box-sizing: border-box;
+}
+
+/* استایل برای container المان‌های انیمیشنی */
+.salmama-animation-wrapper {
+    overflow: hidden;
+    display: inline-block;
+    position: relative;
+}
+
+/* محدود کردن scale برای المان‌های خاص */
+.salmama-scale-limited {
+    transform: translateZ(0);
+    transform-origin: center center;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+/* استایل برای دکمه‌ها */
+.wp-block-button.salmama-hover-scale,
+.wp-block-button.salmama-hover-lift {
+    display: inline-block !important;
+    transform: translateZ(0);
+}
+
+/* استایل برای کارت‌ها و باکس‌ها */
+.wp-block-group.salmama-hover-scale,
+.wp-block-group.salmama-hover-lift {
+    display: block !important;
+    transform: translateZ(0);
 }

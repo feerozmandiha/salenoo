@@ -32,9 +32,33 @@ class AnimationAttributes {
                 'type' => 'string',
                 'default' => 'scroll'
             ],
-            'animationDirection' => [
+            'animationStagger' => [
+                'type' => 'number',
+                'default' => 0.1
+            ],
+            'animationRepeat' => [
+                'type' => 'number',
+                'default' => 0
+            ],
+            'animationYoyo' => [
+                'type' => 'boolean',
+                'default' => false
+            ],
+            'animationStaggerFrom' => [
                 'type' => 'string',
-                'default' => 'from'
+                'default' => 'start'
+            ],
+            'hoverAnimation' => [
+                'type' => 'string',
+                'default' => ''
+            ],
+            'hoverScale' => [
+                'type' => 'number',
+                'default' => 1.05
+            ],
+            'hoverLift' => [
+                'type' => 'number',
+                'default' => 0
             ],
             'animationX' => [
                 'type' => 'number',
@@ -53,18 +77,6 @@ class AnimationAttributes {
                 'default' => 1
             ],
             'animationRotation' => [
-                'type' => 'number',
-                'default' => 0
-            ],
-            'hoverAnimation' => [
-                'type' => 'string',
-                'default' => ''
-            ],
-            'hoverScale' => [
-                'type' => 'number',
-                'default' => 1.05
-            ],
-            'hoverLift' => [
                 'type' => 'number',
                 'default' => 0
             ]

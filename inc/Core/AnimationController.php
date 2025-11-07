@@ -13,6 +13,21 @@ class AnimationController {
             wp_enqueue_script('gsap', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js', [], '3.12.2', true);
             wp_enqueue_script('scroll-trigger', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js', ['gsap'], '3.12.2', true);
             
+
+                        // ابتدا AdvancedAnimations.js را لود کنید
+                        // فقط اگر قبلاً لود نشده باشد
+            if (!wp_script_is('salmama-advanced-animations', 'enqueued')) {
+
+            wp_enqueue_script(
+                'salmama-advanced-animations',
+                get_template_directory_uri() . '/assets/js/gsap/AdvancedAnimations.js',
+                ['gsap', 'scroll-trigger'],
+                filemtime(get_template_directory() . '/assets/js/gsap/AdvancedAnimations.js'),
+                true
+            );
+        }
+            
+
             // فایل اصلی انیمیشن‌ها
             wp_enqueue_script('salmama-gsap-engine', 
                 get_template_directory_uri() . '/assets/js/gsap/GSAPEngine.js',
@@ -55,6 +70,25 @@ class AnimationController {
         $data_attrs[] = 'data-animation-ease="' . esc_attr($attrs['animationEase'] ?? 'power2.out') . '"';
         $data_attrs[] = 'data-animation-trigger="' . esc_attr($attrs['animationTrigger'] ?? 'scroll') . '"';
         
+
+             // پارامترهای پیشرفته
+        if (isset($attrs['animationStagger'])) {
+            $data_attrs[] = 'data-animation-stagger="' . esc_attr($attrs['animationStagger']) . '"';
+        }
+        
+        if (isset($attrs['animationRepeat'])) {
+            $data_attrs[] = 'data-animation-repeat="' . esc_attr($attrs['animationRepeat']) . '"';
+        }
+        
+        if (isset($attrs['animationYoyo'])) {
+            $data_attrs[] = 'data-animation-yoyo="' . ($attrs['animationYoyo'] ? 'true' : 'false') . '"';
+        }
+        
+        if (isset($attrs['animationStaggerFrom'])) {
+            $data_attrs[] = 'data-animation-stagger-from="' . esc_attr($attrs['animationStaggerFrom']) . '"';
+        }
+
+
         // داده‌های سفارشی
         if ($attrs['animationType'] === 'custom') {
             $data_attrs[] = 'data-animation-x="' . esc_attr($attrs['animationX'] ?? 0) . '"';

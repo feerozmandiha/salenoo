@@ -10,40 +10,26 @@ class AnimationInspector {
         $file_path = get_template_directory() . '/assets/js/editor/animation-controls.js';
         $file_url = get_template_directory_uri() . '/assets/js/editor/animation-controls.js';
         
-        // بررسی وجود فایل
         if (!file_exists($file_path)) {
             error_log('Animation controls file missing: ' . $file_path);
             return;
         }
         
-        // وابستگی‌های به‌روز شده
-        $dependencies = [
-            'wp-blocks',
-            'wp-element', 
-            'wp-block-editor',
-            'wp-components',
-            'wp-i18n',
-            'wp-compose',
-            'jquery'
-        ];
-        
         wp_enqueue_script(
             'salmama-animation-controls',
             $file_url,
-            $dependencies,
+            ['wp-blocks', 'wp-element', 'wp-block-editor', 'wp-components', 'wp-i18n', 'wp-compose', 'jquery'],
             filemtime($file_path),
             true
         );
         
-        // Localize animation presets
         wp_localize_script('salmama-animation-controls', 'salmamaAnimationPresets', [
             'animationTypes' => $this->get_animation_types(),
             'easingFunctions' => $this->get_easing_functions(),
             'triggerTypes' => $this->get_trigger_types(),
-            'hoverEffects' => $this->get_hover_effects()
+            'hoverEffects' => $this->get_hover_effects(),
+            'staggerFrom' => $this->get_stagger_from_options()
         ]);
-        
-        error_log('Salmama animation controls script enqueued: ' . $file_url);
     }
     
     private function get_animation_types() {
@@ -60,7 +46,22 @@ class AnimationInspector {
             ['value' => 'rotateIn', 'label' => 'Rotate In'],
             ['value' => 'flipInX', 'label' => 'Flip X'],
             ['value' => 'flipInY', 'label' => 'Flip Y'],
-            ['value' => 'custom', 'label' => 'سفارشی']
+            ['value' => 'custom', 'label' => 'سفارشی'],
+            ['value' => 'typeWriter', 'label' => 'تایپ رایتر'],
+            ['value' => 'staggerGrid', 'label' => 'انیمیشن شبکه‌ای'],
+            ['value' => 'textReveal', 'label' => 'آشکارسازی متن'],
+            ['value' => 'parallaxScroll', 'label' => 'پارالاکس اسکرول'],
+            ['value' => 'magneticButton', 'label' => 'دکمه مغناطیسی']
+        ];
+    }
+    
+    private function get_stagger_from_options() {
+        return [
+            ['value' => 'start', 'label' => 'شروع'],
+            ['value' => 'center', 'label' => 'مرکز'],
+            ['value' => 'end', 'label' => 'پایان'],
+            ['value' => 'edges', 'label' => 'لبه‌ها'],
+            ['value' => 'random', 'label' => 'تصادفی']
         ];
     }
     

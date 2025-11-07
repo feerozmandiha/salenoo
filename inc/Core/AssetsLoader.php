@@ -19,7 +19,9 @@ class AssetsLoader {
     public function run(): void {
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_assets' ] );
         add_action( 'after_setup_theme', [ $this, 'setup_theme_support' ] );
+        add_action('wp_head', [ $this, 'inline_css_fouc' ] );
     }
+
 
     /**
      * فعال‌سازی پشتیبانی‌های لازم برای تم
@@ -51,6 +53,20 @@ class AssetsLoader {
             add_theme_support( 'wc-product-gallery-lightbox' );
             add_theme_support( 'wc-product-gallery-slider' );
         }
+    }
+
+
+        // در functions.php یا در header قالب اضافه کنید
+    public function inline_css_fouc() {
+        ?>
+        <style id="salmama-preload-css">
+            /* جلوگیری از FOUC و اطمینان از نمایش المان‌ها */
+            [data-salmama-animated="true"] {
+                opacity: 0;
+                visibility: visible !important;
+            }
+        </style>
+        <?php
     }
 
     /**
