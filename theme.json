@@ -132,9 +132,11 @@
 		},
 		"spacing": {
 			"spacingScale": {
+				"theme": {
 					"increment": 0.25,
 					"steps": 7,
 					"unit": "rem"
+				}
 			},
 			"spacingSizes": [],
 			"units": [

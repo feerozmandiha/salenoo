@@ -1,8 +1,13 @@
 class GSAPEngine {
     constructor() {
-        console.log('🎬 Salmama GSAP Engine Initializing...');
+        console.log('🎬 salnama GSAP Engine Initializing...');
         this.advancedAnimations = null;
         this.hasInitialized = false;
+        this.conditionalAnimations = null;
+        this.responsiveManager = null;
+        this.animationLibrary = null;
+        this.initAdvancedSystems();
+
         this.init();
     }
 
@@ -27,6 +32,48 @@ class GSAPEngine {
         console.log('✅ GSAP registered');
         this.initAnimations();
     }
+
+    initAdvancedSystems() {
+        // سیستم انیمیشن‌های شرطی
+        if (typeof ConditionalAnimations !== 'undefined') {
+            this.conditionalAnimations = new ConditionalAnimations(this);
+        }
+        
+        // سیستم ریسپانسیو
+        if (typeof ResponsiveManager !== 'undefined') {
+            this.responsiveManager = new ResponsiveManager(this);
+        }
+        
+        // کتابخانه انیمیشن
+        if (typeof AnimationLibrary !== 'undefined') {
+            this.animationLibrary = new AnimationLibrary(this);
+        }
+        
+        console.log('🚀 Advanced animation systems initialized');
+   }
+        
+        // متدهای جدید برای فاز 2
+        applyAdvancedAnimation(element, type, config = {}) {
+            if (this.advancedAnimations && this.advancedAnimations[type + 'Animation']) {
+                return this.advancedAnimations[type + 'Animation'](element, config);
+            }
+            
+            console.warn(`Advanced animation not found: ${type}`);
+            return this.applyBasicAnimation(element, 'fadeIn', 0.6, 0, 'power2.out', 'scroll', 0, false);
+        }
+        
+        registerConditionalAnimation(element, conditionConfig) {
+            if (this.conditionalAnimations) {
+                return this.conditionalAnimations.registerConditionalElement(element, conditionConfig);
+            }
+        }
+        
+        applyAnimationPreset(presetName, container) {
+            if (this.animationLibrary) {
+                return this.animationLibrary.applyPreset(presetName, container);
+            }
+        }
+    
 
     loadAdvancedAnimations() {
         if (typeof AdvancedAnimations === 'undefined') {
@@ -55,8 +102,8 @@ class GSAPEngine {
         this.hasInitialized = true;
         console.log('🔍 Looking for animated blocks...');
 
-        // استفاده از [data-salmama-animated="true"] برای شناسایی المان‌ها
-        const animatedBlocks = document.querySelectorAll('[data-salmama-animated="true"]');
+        // استفاده از [data-salnama-animated="true"] برای شناسایی المان‌ها
+        const animatedBlocks = document.querySelectorAll('[data-salnama-animated="true"]');
         console.log(`📦 Found ${animatedBlocks.length} animated blocks`);
 
         animatedBlocks.forEach((block, index) => {
@@ -69,19 +116,19 @@ class GSAPEngine {
 
     setupElementClasses(element, animationType) {
         // اضافه کردن کلاس‌های پایه
-        element.classList.add('salmama-animated-element', 'salmama-transform-element');
+        element.classList.add('salnama-animated-element', 'salnama-transform-element');
         
         // اضافه کردن کلاس بر اساس نوع المان
         const displayStyle = window.getComputedStyle(element).display;
         if (displayStyle === 'block') {
-            element.classList.add('salmama-transform-block');
+            element.classList.add('salnama-transform-block');
         } else {
-            element.classList.add('salmama-transform-inline');
+            element.classList.add('salnama-transform-inline');
         }
         
         // اضافه کردن کلاس بر اساس نوع انیمیشن
         if (animationType.includes('scale')) {
-            element.classList.add('salmama-scale-limited');
+            element.classList.add('salnama-scale-limited');
         }
     }
 
@@ -401,7 +448,7 @@ addHoverScale(element, scale) {
     console.log(`🔧 Adding scale hover to:`, element, 'Scale:', scale);
     
     // اضافه کردن کلاس برای مدیریت بهتر
-    element.classList.add('salmama-hover-scale', 'salmama-transform-element');
+    element.classList.add('salnama-hover-scale', 'salnama-transform-element');
     
     const hoverTimeline = gsap.timeline({ 
         paused: true,
@@ -434,7 +481,7 @@ addHoverLift(element, lift) {
     console.log(`🔧 Adding lift hover to:`, element, 'Lift:', lift);
     
     // اضافه کردن کلاس برای مدیریت بهتر
-    element.classList.add('salmama-hover-lift', 'salmama-transform-element');
+    element.classList.add('salnama-hover-lift', 'salnama-transform-element');
     
     const hoverTimeline = gsap.timeline({ 
         paused: true,
@@ -470,7 +517,7 @@ addHoverLift(element, lift) {
 addMagneticButtonImproved(element, magneticStrength = 0.2) {
     console.log(`🔧 Adding improved magnetic button to:`, element);
     
-    element.classList.add('salmama-magnetic-button', 'salmama-transform-element');
+    element.classList.add('salnama-magnetic-button', 'salnama-transform-element');
     
     // محدودیت حرکت
     const maxMovement = 15;
@@ -518,7 +565,7 @@ addMagneticButtonImproved(element, magneticStrength = 0.2) {
         destroy: () => {
             element.removeEventListener('mousemove', magneticMove);
             element.removeEventListener('mouseleave', magneticReset);
-            element.classList.remove('salmama-magnetic-button', 'salmama-transform-element');
+            element.classList.remove('salnama-magnetic-button', 'salnama-transform-element');
             gsap.set(element, { x: 0, y: 0 });
             element.style.transform = '';
         }
@@ -545,7 +592,7 @@ addMagneticButtonImproved(element, magneticStrength = 0.2) {
             hoverTimeline.reverse();
         });
 
-        element.classList.add('salmama-hover-tilt');
+        element.classList.add('salnama-hover-tilt');
     }
 
     addHoverGlow(element) {
@@ -566,7 +613,7 @@ addMagneticButtonImproved(element, magneticStrength = 0.2) {
             hoverTimeline.reverse();
         });
 
-        element.classList.add('salmama-hover-glow');
+        element.classList.add('salnama-hover-glow');
     }
 
     addHoverShrink(element, scale) {
@@ -587,17 +634,17 @@ addMagneticButtonImproved(element, magneticStrength = 0.2) {
             hoverTimeline.reverse();
         });
 
-        element.classList.add('salmama-hover-shrink');
+        element.classList.add('salnama-hover-shrink');
     }
 }
 
 // راه‌اندازی وقتی DOM کاملاً لود شد
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function () {
-        console.log('🚀 DOM Ready - Starting Salmama GSAP Engine');
+        console.log('🚀 DOM Ready - Starting salnama GSAP Engine');
         new GSAPEngine();
     });
 } else {
-    console.log('🚀 DOM Already Ready - Starting Salmama GSAP Engine');
+    console.log('🚀 DOM Already Ready - Starting salnama GSAP Engine');
     new GSAPEngine();
 }

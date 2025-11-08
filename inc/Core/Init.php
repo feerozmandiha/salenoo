@@ -18,10 +18,11 @@ class Init {
      * @var array<string>
      */
     private array $services = [
+        'Salnama_Theme\Inc\Core\HeaderAnimationManager',   
         'Salnama_Theme\Inc\Core\AssetsLoader',   // در مرحله بعد اضافه می‌شود
         'Salnama_Theme\Inc\Core\AnimationController', // ✅ اضافه شد
-        'Salnama_Theme\Inc\Blocks\AnimationAttributes',
-        'Salnama_Theme\Inc\Blocks\AnimationInspector',
+        'Salnama_Theme\Inc\Blocks\AdvancedAnimationAttributes',
+        'Salnama_Theme\Inc\Blocks\AdvancedAnimationInspector',
         // 'Salnama_Theme\Inc\Core\WooCommerceSetup',
         // 'Salnama_Theme\Inc\Core\GsapEngine',
     ];

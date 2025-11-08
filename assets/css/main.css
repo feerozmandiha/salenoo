@@ -7,7 +7,7 @@ html, body {
     position: relative !important;
 }
 
-.salmama-hover-scale {
+.salnama-hover-scale {
     cursor: pointer;
     transform-origin: center; /* نقطه تبدیل در مرکز */
     will-change: transform;
@@ -16,7 +16,7 @@ html, body {
     -webkit-backface-visibility: hidden;
 }
 
-.salmama-hover-lift {
+.salnama-hover-lift {
     cursor: pointer;
     will-change: transform;
     backface-visibility: hidden;
@@ -25,7 +25,7 @@ html, body {
     transform: translateY(0);
 }
 
-.salmama-magnetic-button {
+.salnama-magnetic-button {
     cursor: pointer;
     display: inline-block;
     will-change: transform;
@@ -34,16 +34,16 @@ html, body {
 }
 
 /* استایل‌های مخصوص تایپ رایتر */
-.salmama-typewriter {
+.salnama-typewriter {
     border-right: 2px solid #333;
 }
 
-.salmama-typewriter-completed {
+.salnama-typewriter-completed {
     border-right: none;
 }
 
 /* کلاس عمومی برای تمام المان‌های انیمیشنی */
-.salmama-animated-element {
+.salnama-animated-element {
     /* جلوگیری از تاثیر transform روی layout */
     transform: translateZ(0);
     backface-visibility: hidden;
@@ -59,12 +59,12 @@ html, body {
 }
 
 /* جلوگیری از overflow در المان‌های والد */
-.salmama-animation-container {
+.salnama-animation-container {
     overflow: hidden !important;
 }
 
 /* استایل برای المان‌هایی که transform دارند */
-.salmama-transform-element {
+.salnama-transform-element {
     transform: translateZ(0);
     will-change: transform;
     backface-visibility: hidden;
@@ -74,12 +74,12 @@ html, body {
 /* اضافه کردن به main.css */
 
 /* جلوگیری از اسکرول در کل صفحه هنگام هاور */
-body.salmama-hover-active {
+body.salnama-hover-active {
     overflow: hidden !important;
 }
 
 /* استایل برای المان‌های با transform */
-.salmama-transform-element {
+.salnama-transform-element {
     /* ایجاد context جدید برای transform */
     transform: translateZ(0);
     backface-visibility: hidden;
@@ -94,7 +94,7 @@ body.salmama-hover-active {
 }
 
 /* استایل برای المان‌های block-level */
-.salmama-transform-block {
+.salnama-transform-block {
     transform: translateZ(0);
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
@@ -103,7 +103,7 @@ body.salmama-hover-active {
 }
 
 /* استایل برای المان‌های inline */
-.salmama-transform-inline {
+.salnama-transform-inline {
     transform: translateZ(0);
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
@@ -112,14 +112,14 @@ body.salmama-hover-active {
 }
 
 /* استایل برای container المان‌های انیمیشنی */
-.salmama-animation-wrapper {
+.salnama-animation-wrapper {
     overflow: hidden;
     display: inline-block;
     position: relative;
 }
 
 /* محدود کردن scale برای المان‌های خاص */
-.salmama-scale-limited {
+.salnama-scale-limited {
     transform: translateZ(0);
     transform-origin: center center;
     backface-visibility: hidden;
@@ -127,15 +127,15 @@ body.salmama-hover-active {
 }
 
 /* استایل برای دکمه‌ها */
-.wp-block-button.salmama-hover-scale,
-.wp-block-button.salmama-hover-lift {
+.wp-block-button.salnama-hover-scale,
+.wp-block-button.salnama-hover-lift {
     display: inline-block !important;
     transform: translateZ(0);
 }
 
 /* استایل برای کارت‌ها و باکس‌ها */
-.wp-block-group.salmama-hover-scale,
-.wp-block-group.salmama-hover-lift {
+.wp-block-group.salnama-hover-scale,
+.wp-block-group.salnama-hover-lift {
     display: block !important;
     transform: translateZ(0);
 }

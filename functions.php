@@ -41,3 +41,4 @@ if ( ! class_exists( 'Salnama_Theme\Inc\Core\Init' ) ) {
     wp_die( 'Autoloader نتوانست کلاس Init را پیدا کند.' );
 }
 new Salnama_Theme\Inc\Core\Init();
+

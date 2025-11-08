@@ -1,0 +1,210 @@
+/* ==================================================
+   استایل‌های جهانی و کمکی برای هدر عمودی مینیمال
+   ================================================== */
+
+/* --------------------------------------------------
+   انیمیشن‌های فلش — فقط با CSS
+   -------------------------------------------------- */
+@keyframes arrow-loop-vertical {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(20px); }
+}
+
+@keyframes arrow-loop-horizontal {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(-20px); }
+}
+
+.arrow-path.animate-loop-initial {
+    animation: arrow-loop-vertical 2.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+}
+
+.arrow-path.animate-loop-hovered {
+    animation: arrow-loop-horizontal 2.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+}
+
+/* --------------------------------------------------
+   چرخش آیکون منو — با CSS transition
+   -------------------------------------------------- */
+.menu-icon {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.menu-icon.is-rotated-90 {
+    transform: rotate(90deg);
+}
+
+/* --------------------------------------------------
+   ورود اولیه هدر و استایل‌های عمومی (حالت دسکتاپ پیش‌فرض)
+   -------------------------------------------------- */
+.minimal-vertical-header {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    width: 8.33vw;
+    height: 22vh;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    box-sizing: border-box;
+
+    backdrop-filter: blur(4px);
+    background-color: rgb(0 0 0 / 9%);
+    transition: height 0.4s ease, backdrop-filter 0.4s ease, background-color 0.4s ease, transform 0.3s ease-in-out;
+
+    opacity: 0;
+    transform: translateY(-150px);
+    animation: header-fade-in 5s 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    padding: 1rem 0;
+    border-radius: 12px;
+}
+
+@keyframes header-fade-in {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.svg-menu-icon {
+    width: 4rem;
+    height: 4rem;
+}
+
+.logo-container {
+    width: 60%;
+}
+
+.cta-button-wrapper {
+    opacity: 0;
+    visibility: hidden;
+    text-align: center;
+    padding: 0;
+    margin-left: 1rem;
+}
+
+/* --------------------------------------------------
+   ناحیه آیتم‌های اکشن (اکانت، سبد، CTA)
+   -------------------------------------------------- */
+.action-buttons-container {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    background: transparent;
+    width: 100%;
+}
+
+/* --------------------------------------------------
+   حالت باز شده هدر
+   -------------------------------------------------- */
+.minimal-vertical-header.is-expanded {
+    height: calc(100vh - 2rem);
+    background-color: var(--wp--preset--color--surface);
+    color: #1a1a1a;
+}
+
+/* --------------------------------------------------
+   نمایش لوگو و CTA وقتی هدر باز است
+   -------------------------------------------------- */
+.minimal-vertical-header.is-expanded .logo-container,
+.minimal-vertical-header.is-expanded .cta-button-wrapper {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* --------------------------------------------------
+   اورلی منو
+   -------------------------------------------------- */
+.full-screen-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(52, 57, 57, 0.95);
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #ffffff;
+    transition: opacity 0.3s ease;
+}
+
+.full-screen-menu-overlay.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* --------------------------------------------------
+   ریسپانسیو (موبایل و تبلت)
+   -------------------------------------------------- */
+@media (max-width: 1024px) {
+    .minimal-vertical-header {
+        right: 1rem;
+        width: calc(100% - 2rem);
+        height: 16vh;
+        flex-direction: row !important;
+        justify-content: space-between;
+        align-items: center;
+
+        padding: 0 1.5rem !important;
+        animation: none;
+        opacity: 1;
+        transform: none;
+
+        backdrop-filter: blur(4px) !important;
+        background-color: rgb(0 0 0 / 9%) !important;
+    }
+
+    .minimal-vertical-header > .logo-container {
+        position: static !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        width: auto !important;
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        height: auto !important;
+    }
+
+    .minimal-vertical-header > .logo-container .custom-logo {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        max-height: 50px !important;
+        width: auto !important;
+        height: auto !important;
+    }
+
+    .minimal-vertical-header > .logo-container .wp-block-site-title {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        font-size: 14px !important;
+        margin-top: 5px !important;
+        text-align: center !important;
+    }
+
+    .minimal-vertical-header > .action-buttons-container {
+        margin-right: auto;
+        margin-top: 0 !important;
+        width: auto !important;
+    }
+
+    .minimal-vertical-header .action-icons {
+        flex-direction: row !important;
+        gap: 1rem;
+    }
+
+    .wp-block-site-title {
+        display: none;
+    }
+}

@@ -20,7 +20,14 @@ class AssetsLoader {
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_assets' ] );
         add_action( 'after_setup_theme', [ $this, 'setup_theme_support' ] );
         add_action('wp_head', [ $this, 'inline_css_fouc' ] );
+        add_filter('render_block',[ $this, 'css_classes_block_filter'], 10, 2);
+        add_filter( 'upload_mimes',[ $this,  'salnama_allow_svg_uploads' ] );
+        add_filter( 'wp_check_filetype_and_ext', [ $this, 'salnama_check_svg_upload_permission' ] , 10, 4 );
+
+
     }
+
+    
 
 
     /**
@@ -59,15 +66,27 @@ class AssetsLoader {
         // در functions.php یا در header قالب اضافه کنید
     public function inline_css_fouc() {
         ?>
-        <style id="salmama-preload-css">
+        <style id="salnama-preload-css">
             /* جلوگیری از FOUC و اطمینان از نمایش المان‌ها */
-            [data-salmama-animated="true"] {
+            [data-salnama-animated="true"] {
                 opacity: 0;
                 visibility: visible !important;
             }
         </style>
         <?php
     }
+
+    // در functions.php یا block filter
+    public function css_classes_block_filter($block_content, $block) {
+            if ($block['blockName'] === 'core/post-title') {
+                $block_content = str_replace(
+                    '<h1 class="wp-block-post-title"',
+                    '<h1 class="wp-block-post-title salnama-animated" data-animation-type="typeWriter"',
+                    $block_content
+                );
+            }
+            return $block_content;
+        }
 
     /**
      * بارگذاری فایل‌های CSS و JS
@@ -89,6 +108,13 @@ class AssetsLoader {
         wp_enqueue_style(
             'salnama-theme-main',
             SALNAMA_ASSETS_URI . '/css/main.css',
+            [],
+            SALNAMA_THEME_VERSION
+        );
+
+        wp_enqueue_style(
+            'salnama-theme-menu',
+            SALNAMA_ASSETS_URI . '/css/global.css',
             [],
             SALNAMA_THEME_VERSION
         );
@@ -137,4 +163,19 @@ class AssetsLoader {
             'is_rtl'   => is_rtl(),
         ] );
         }
+
+    public function salnama_allow_svg_uploads( $mimes ) {
+        $mimes['svg'] = 'image/svg+xml';
+        return $mimes;
+    }
+
+    public function salnama_check_svg_upload_permission( $file ) {
+        if ( isset( $file['type'] ) && $file['type'] === 'image/svg+xml' ) {
+            if ( ! current_user_can( 'administrator' ) ) {
+                $file['error'] = 'فقط مدیر سایت می‌تواند فایل SVG آپلود کند.';
+            }
+        }
+        return $file;
+    }
+
     }
