@@ -35,28 +35,28 @@ class AnimationController {
     private function init_animation_files() {
         $this->animation_files = [
             'advanced_animations' => [
-                'path' => get_template_directory() . '/assets/js/gsap/AdvancedAnimations.js',
-                'url' => get_template_directory_uri() . '/assets/js/gsap/AdvancedAnimations.js',
+                'path' => SALNAMA_ASSETS_PATH . '/js/gsap/AdvancedAnimations.js',
+                'url' => SALNAMA_ASSETS_URI . '/js/gsap/AdvancedAnimations.js',
                 'deps' => ['gsap', 'scroll-trigger']
             ],
             'gsap_engine' => [
-                'path' => get_template_directory() . '/assets/js/gsap/GSAPEngine.js',
-                'url' => get_template_directory_uri() . '/assets/js/gsap/GSAPEngine.js',
+                'path' => SALNAMA_ASSETS_PATH . '/js/gsap/GSAPEngine.js',
+                'url' => SALNAMA_ASSETS_URI . '/js/gsap/GSAPEngine.js',
                 'deps' => ['gsap', 'scroll-trigger', 'salnama-advanced-animations']
             ],
             'animation_library' => [
-                'path' => get_template_directory() . '/assets/js/gsap/AnimationLibrary.js',
-                'url' => get_template_directory_uri() . '/assets/js/gsap/AnimationLibrary.js',
+                'path' => SALNAMA_ASSETS_PATH . '/js/gsap/AnimationLibrary.js',
+                'url' => SALNAMA_ASSETS_URI . '/js/gsap/AnimationLibrary.js',
                 'deps' => ['gsap', 'salnama-gsap-engine']
             ],
             'conditional_animations' => [
-                'path' => get_template_directory() . '/assets/js/gsap/ConditionalAnimations.js',
-                'url' => get_template_directory_uri() . '/assets/js/gsap/ConditionalAnimations.js',
+                'path' => SALNAMA_ASSETS_PATH . '/js/gsap/ConditionalAnimations.js',
+                'url' => SALNAMA_ASSETS_URI. '/js/gsap/ConditionalAnimations.js',
                 'deps' => ['gsap', 'salnama-gsap-engine']
             ],
             'responsive_manager' => [
-                'path' => get_template_directory() . '/assets/js/gsap/ResponsiveManager.js',
-                'url' => get_template_directory_uri() . '/assets/js/gsap/ResponsiveManager.js',
+                'path' =>SALNAMA_ASSETS_PATH . '/js/gsap/ResponsiveManager.js',
+                'url' => SALNAMA_ASSETS_URI . '/js/gsap/ResponsiveManager.js',
                 'deps' => ['gsap', 'salnama-gsap-engine']
             ]
         ];
@@ -81,23 +81,7 @@ class AnimationController {
      * Enqueue GSAP core libraries
      */
     private function enqueue_gsap_core() {
-        // GSAP Core
-        wp_enqueue_script(
-            'gsap',
-            'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js',
-            [],
-            '3.12.2',
-            true
-        );
-        
-        // ScrollTrigger Plugin
-        wp_enqueue_script(
-            'scroll-trigger',
-            'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js',
-            ['gsap'],
-            '3.12.2',
-            true
-        );
+
         
         // اضافه کردن inline script برای بررسی لود شدن GSAP
         wp_add_inline_script('gsap', '
@@ -141,11 +125,11 @@ class AnimationController {
      * Enqueue animation styles
      */
     private function enqueue_animation_styles() {
-        $css_path = get_template_directory() . '/assets/css/animations.css';
+        $css_path = SALNAMA_ASSETS_PATH . '/css/animations.css';
         if (file_exists($css_path)) {
             wp_enqueue_style(
                 'salnama-animations',
-                get_template_directory_uri() . '/assets/css/animations.css',
+                SALNAMA_ASSETS_URI . '/css/animations.css',
                 [],
                 filemtime($css_path)
             );
@@ -406,7 +390,7 @@ class AnimationController {
         libxml_clear_errors();
         return $content;
     }
-    
+        
     /**
      * Inject using regex (fallback)
      */

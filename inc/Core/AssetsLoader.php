@@ -129,40 +129,29 @@ class AssetsLoader {
     private function enqueue_scripts(): void {
 
             // The core GSAP library
-        wp_enqueue_script( 
-            'gsap-core', 
+        // GSAP Core
+        wp_enqueue_script(
+            'gsap',
             'https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js', 
-            array(), 
-            '3.13.0', 
-            true 
+            [],
+            '3.12.2',
+            true
         );
-
-        // ScrollTrigger - with gsap.js passed as a dependency
-        wp_enqueue_script( 
-            'gsap-scrolltrigger', 
+        
+        // ScrollTrigger Plugin
+        wp_enqueue_script(
+            'scroll-trigger',
             'https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js', 
-            array('gsap-core'), 
-            '3.13.0', 
-            true 
+            ['gsap'],
+            '3.12.2',
+            true
         );
-
-        // Your animation code file - with gsap.js passed as a dependency
-        wp_enqueue_script( 'gsap-js2', get_template_directory_uri() . 'js/app.js', array('gsap-js'), false, true );
-
-        // فایل اصلی جاوااسکریپت (برای موتور GSAP و ماژول‌های آینده)
-        // wp_enqueue_script(
-        //     'salnama-theme-main',
-        //     SALNAMA_ASSETS_URI . '/js/main.js',
-        //     [ 'gsap-core', 'gsap-scrolltrigger' ],
-        //     SALNAMA_THEME_VERSION,
-        //     true
-        // );
 
         wp_localize_script( 'salnama-theme-main', 'salnama_theme', [
             'ajax_url' => admin_url( 'admin-ajax.php' ),
             'is_rtl'   => is_rtl(),
         ] );
-        }
+    }
 
     public function salnama_allow_svg_uploads( $mimes ) {
         $mimes['svg'] = 'image/svg+xml';

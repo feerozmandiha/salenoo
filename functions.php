@@ -29,6 +29,10 @@ if ( ! defined( 'SALNAMA_ASSETS_URI' ) ) {
     define( 'SALNAMA_ASSETS_URI', SALNAMA_THEME_URI . '/assets' );
 }
 
+if ( ! defined( 'SALNAMA_ASSETS_PATH' ) ) {
+    define( 'SALNAMA_ASSETS_PATH', SALNAMA_THEME_PATH . '/assets' );
+}
+
 // فراخوانی Autoloader
 require_once SALNAMA_INC_PATH . '/Autoloader.php';
 

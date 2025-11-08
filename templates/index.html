@@ -1,63 +1,47 @@
 <!-- wp:template-part {"slug":"header","tagName":"header"} /-->
 
-<!-- wp:image {"sizeSlug":"full","linkDestination":"none","advancedAnimationType":"morphShape","animationType":"bounceIn","hoverAnimation":"scale"} -->
-<figure class="wp-block-image size-full"><img src="http://localhost:10053/wp-content/uploads/2025/11/download-2.jpg" alt="" class=""/></figure>
-<!-- /wp:image -->
-
-<!-- wp:buttons -->
+<!-- wp:group {"tagName":"main","layout":{"type":"constrained"}} -->
+<main class="wp-block-group"><!-- wp:buttons -->
 <div class="wp-block-buttons"><!-- wp:button -->
-<div class="wp-block-button"><a class="wp-block-button__link wp-element-button">یس</a></div>
+<div class="wp-block-button"><a class="wp-block-button__link wp-element-button">درخواست مشاوره</a></div>
 <!-- /wp:button --></div>
 <!-- /wp:buttons -->
 
-<!-- wp:heading {"advancedAnimationType":"typeWriter"} -->
-<h2 class="wp-block-heading">بشیبر یبشسیبش شسیبشبی شیب ش</h2>
-<!-- /wp:heading -->
+<!-- wp:query {"queryId":0,"query":{"perPage":10,"pages":0,"offset":0,"postType":"post","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":true,"taxQuery":null,"parents":[]},"layout":{"contentSize":null,"type":"constrained"}} -->
+<div class="wp-block-query"><!-- wp:post-template {"layout":{"type":"default"}} -->
+<!-- wp:group -->
+<div class="wp-block-group"><!-- wp:post-title {"isLink":true} /-->
 
-<!-- wp:heading -->
-<h2 class="wp-block-heading">9️⃣ جمع‌بندی</h2>
-<!-- /wp:heading -->
+<!-- wp:post-featured-image {"isLink":true} /-->
 
-<!-- wp:paragraph -->
-<p>با این ساختار شما یک سیستم جهانی انیمیشن دارید که:</p>
-<!-- /wp:paragraph -->
+<!-- wp:post-content /-->
 
-<!-- wp:list {"advancedAnimationType":"cardReveal","animationCondition":"load"} -->
-<ul class="wp-block-list"><!-- wp:list-item -->
-<li>بدون هیچ افزونه یا کتابخانه‌ی خارجی کار می‌کند؛</li>
-<!-- /wp:list-item -->
+<!-- wp:group {"style":{"typography":{"fontSize":"14px"}},"layout":{"type":"flex"}} -->
+<div class="wp-block-group" style="font-size:14px"><!-- wp:post-author {"showAvatar":false,"showBio":false} /-->
 
-<!-- wp:list-item -->
-<li>با FSE و گوتنبرگ کاملاً سازگار است؛</li>
-<!-- /wp:list-item -->
+<!-- wp:post-date {"isLink":true,"metadata":{"bindings":{"datetime":{"source":"core/post-data","args":{"field":"date"}}}}} /-->
 
-<!-- wp:list-item -->
-<li>از لحاظ SEO و سرعت، سبُک و پایدار است؛</li>
-<!-- /wp:list-item -->
+<!-- wp:post-terms {"term":"category"} /-->
 
-<!-- wp:list-item -->
-<li>قابل توسعه برای افکت‌های جدید (fade, slide, zoom, rotate و...) است.</li>
-<!-- /wp:list-item --></ul>
-<!-- /wp:list -->
+<!-- wp:post-terms {"term":"post_tag"} /--></div>
+<!-- /wp:group -->
 
-<!-- wp:separator -->
-<hr class="wp-block-separator has-alpha-channel-opacity"/>
-<!-- /wp:separator -->
+<!-- wp:spacer {"height":"40px"} -->
+<div style="height:40px" aria-hidden="true" class="wp-block-spacer"></div>
+<!-- /wp:spacer --></div>
+<!-- /wp:group -->
+<!-- /wp:post-template -->
 
-<!-- wp:paragraph -->
-<p>آیا دوست دارید مرحله بعد (اضافه کردن یک <strong>بلاک مخصوص انیمیشن‌دار</strong> در ویرایشگر گوتنبرگ که تنظیمات delay و نوع انیمیشن را از پنل سمت راست تنظیم کند) را هم پیاده‌سازی کنیم؟<br>اگر بله، می‌نویسم تا به افزونه‌ی <code>salnama</code> یا در خود قالب اضافه کنیم.</p>
-<!-- /wp:paragraph -->
+<!-- wp:group {"layout":{"inherit":true,"type":"constrained"}} -->
+<div class="wp-block-group"><!-- wp:query-pagination -->
+<!-- wp:query-pagination-previous /-->
 
-<!-- wp:group {"layout":{"type":"constrained"}} -->
-<div class="wp-block-group"><!-- wp:gallery {"linkTo":"none"} -->
-<figure class="wp-block-gallery has-nested-images columns-default is-cropped"><!-- wp:image {"sizeSlug":"large","linkDestination":"none"} -->
-<figure class="wp-block-image size-large"><img src="http://localhost:10053/wp-content/uploads/woocommerce-placeholder-1024x1024.webp" alt="" class=""/></figure>
-<!-- /wp:image -->
+<!-- wp:query-pagination-numbers /-->
 
-<!-- wp:image {"sizeSlug":"large","linkDestination":"none","animationType":"slideUp"} -->
-<figure class="wp-block-image size-large"><img src="http://localhost:10053/wp-content/uploads/2025/11/download-2.jpg" alt="" class=""/></figure>
-<!-- /wp:image --></figure>
-<!-- /wp:gallery --></div>
+<!-- wp:query-pagination-next /-->
+<!-- /wp:query-pagination --></div>
+<!-- /wp:group --></div>
+<!-- /wp:query --></main>
 <!-- /wp:group -->
 
 <!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
