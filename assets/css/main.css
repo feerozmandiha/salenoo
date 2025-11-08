@@ -139,3 +139,39 @@ body.salnama-hover-active {
     display: block !important;
     transform: translateZ(0);
 }
+
+/*==================================
+
+/* حالت اولیه: المان‌ها مخفی باشند تا FOUC جلوگیری شود */
+[data-salnama-animated="true"] {
+    opacity: 0;
+    visibility: hidden !important;
+}
+
+/* وقتی انیمیشن شروع شد، متن نمایش داده شود */
+.salnama-animation-loaded [data-salnama-animated="true"] {
+    visibility: visible !important;
+}
+
+/* استایل‌های هاور */
+.salnama-hover-scale,
+.salnama-hover-lift,
+.salnama-hover-tilt,
+.salnama-hover-glow,
+.salnama-hover-shrink,
+.salnama-magnetic-button {
+    cursor: pointer;
+}
+
+.salnama-hover-tilt {
+    transform-style: preserve-3d;
+}
+
+.salnama-magnetic-button {
+    display: inline-block;
+}
+
+/* جلوگیری از flickering */
+[data-salnama-animated="true"] {
+    will-change: transform, opacity;
+}

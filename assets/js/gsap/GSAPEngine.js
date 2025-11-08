@@ -1,13 +1,8 @@
 class GSAPEngine {
     constructor() {
-        console.log('🎬 salnama GSAP Engine Initializing...');
+        console.log('🎬 Salmama GSAP Engine Initializing...');
         this.advancedAnimations = null;
         this.hasInitialized = false;
-        this.conditionalAnimations = null;
-        this.responsiveManager = null;
-        this.animationLibrary = null;
-        this.initAdvancedSystems();
-
         this.init();
     }
 
@@ -16,7 +11,6 @@ class GSAPEngine {
             console.error('❌ GSAP not loaded!');
             return;
         }
-
         if (typeof ScrollTrigger === 'undefined') {
             console.error('❌ ScrollTrigger not loaded!');
             return;
@@ -24,56 +18,11 @@ class GSAPEngine {
 
         gsap.registerPlugin(ScrollTrigger);
         console.log('🔧 Checking AdvancedAnimations...');
-        console.log('AdvancedAnimations defined:', typeof AdvancedAnimations !== 'undefined');
-
-        // لود انیمیشن‌های پیشرفته
         this.loadAdvancedAnimations();
 
         console.log('✅ GSAP registered');
         this.initAnimations();
     }
-
-    initAdvancedSystems() {
-        // سیستم انیمیشن‌های شرطی
-        if (typeof ConditionalAnimations !== 'undefined') {
-            this.conditionalAnimations = new ConditionalAnimations(this);
-        }
-        
-        // سیستم ریسپانسیو
-        if (typeof ResponsiveManager !== 'undefined') {
-            this.responsiveManager = new ResponsiveManager(this);
-        }
-        
-        // کتابخانه انیمیشن
-        if (typeof AnimationLibrary !== 'undefined') {
-            this.animationLibrary = new AnimationLibrary(this);
-        }
-        
-        console.log('🚀 Advanced animation systems initialized');
-   }
-        
-        // متدهای جدید برای فاز 2
-        applyAdvancedAnimation(element, type, config = {}) {
-            if (this.advancedAnimations && this.advancedAnimations[type + 'Animation']) {
-                return this.advancedAnimations[type + 'Animation'](element, config);
-            }
-            
-            console.warn(`Advanced animation not found: ${type}`);
-            return this.applyBasicAnimation(element, 'fadeIn', 0.6, 0, 'power2.out', 'scroll', 0, false);
-        }
-        
-        registerConditionalAnimation(element, conditionConfig) {
-            if (this.conditionalAnimations) {
-                return this.conditionalAnimations.registerConditionalElement(element, conditionConfig);
-            }
-        }
-        
-        applyAnimationPreset(presetName, container) {
-            if (this.animationLibrary) {
-                return this.animationLibrary.applyPreset(presetName, container);
-            }
-        }
-    
 
     loadAdvancedAnimations() {
         if (typeof AdvancedAnimations === 'undefined') {
@@ -86,7 +35,6 @@ class GSAPEngine {
             console.log('🔧 Creating AdvancedAnimations instance...');
             this.advancedAnimations = new AdvancedAnimations(this);
             console.log('✅ Advanced animations loaded successfully');
-            console.log('Available methods:', Object.getOwnPropertyNames(Object.getPrototypeOf(this.advancedAnimations)));
         } catch (error) {
             console.error('❌ Error creating AdvancedAnimations instance:', error);
             this.advancedAnimations = null;
@@ -102,7 +50,6 @@ class GSAPEngine {
         this.hasInitialized = true;
         console.log('🔍 Looking for animated blocks...');
 
-        // استفاده از [data-salnama-animated="true"] برای شناسایی المان‌ها
         const animatedBlocks = document.querySelectorAll('[data-salnama-animated="true"]');
         console.log(`📦 Found ${animatedBlocks.length} animated blocks`);
 
@@ -114,24 +61,6 @@ class GSAPEngine {
         console.log('✅ All animations applied');
     }
 
-    setupElementClasses(element, animationType) {
-        // اضافه کردن کلاس‌های پایه
-        element.classList.add('salnama-animated-element', 'salnama-transform-element');
-        
-        // اضافه کردن کلاس بر اساس نوع المان
-        const displayStyle = window.getComputedStyle(element).display;
-        if (displayStyle === 'block') {
-            element.classList.add('salnama-transform-block');
-        } else {
-            element.classList.add('salnama-transform-inline');
-        }
-        
-        // اضافه کردن کلاس بر اساس نوع انیمیشن
-        if (animationType.includes('scale')) {
-            element.classList.add('salnama-scale-limited');
-        }
-    }
-
     animateBlock(block, index) {
         const type = block.getAttribute('data-animation-type');
         const duration = parseFloat(block.getAttribute('data-animation-duration')) || 0.6;
@@ -139,7 +68,6 @@ class GSAPEngine {
         const ease = block.getAttribute('data-animation-ease') || 'power2.out';
         const trigger = block.getAttribute('data-animation-trigger') || 'scroll';
 
-        // پارامترهای پیشرفته
         const stagger = parseFloat(block.getAttribute('data-animation-stagger')) || 0.1;
         const repeat = parseInt(block.getAttribute('data-animation-repeat')) || 0;
         const yoyo = block.getAttribute('data-animation-yoyo') === 'true';
@@ -148,22 +76,12 @@ class GSAPEngine {
             type, duration, delay, ease, trigger, stagger, repeat, yoyo
         });
 
-        // پاک کردن هر گونه انیمیشن قبلی
         gsap.killTweensOf(block);
-
-        this.setupElementClasses(block, type);
-
-
-        // تنظیم حالت اولیه
         this.setInitialState(block, type);
-
-        // اعمال انیمیشن
         this.applyAnimationByType(block, type, duration, delay, ease, trigger, stagger, repeat, yoyo);
     }
 
     setInitialState(element, type) {
-        console.log(`🔧 Setting initial state for: ${type}`);
-
         if (!this.isAdvancedAnimation(type)) {
             if (type.includes('slide')) {
                 gsap.set(element, {
@@ -187,7 +105,6 @@ class GSAPEngine {
                 gsap.set(element, { opacity: 0, y: 30 });
             }
         }
-        // برای انیمیشن‌های پیشرفته، حالت اولیه در خود متد تنظیم می‌شود
     }
 
     applyAnimationByType(element, type, duration, delay, ease, trigger, stagger, repeat, yoyo) {
@@ -199,7 +116,6 @@ class GSAPEngine {
             return;
         }
 
-        // انیمیشن‌های پایه
         console.log(`🔧 This is a basic animation: ${type}`);
         const animationProps = this.getAnimationProperties(type, element);
         const baseAnimation = {
@@ -230,9 +146,7 @@ class GSAPEngine {
             'typeWriter', 'staggerGrid', 'parallaxScroll',
             'gradientShift', 'magneticButton', 'textReveal', 'morphShape'
         ];
-        const isAdvanced = advancedTypes.includes(type);
-        console.log(`🔍 ${type} is advanced: ${isAdvanced}`);
-        return isAdvanced;
+        return advancedTypes.includes(type);
     }
 
     applyAdvancedAnimation(element, type, duration, delay, ease, trigger, stagger, repeat, yoyo) {
@@ -244,7 +158,6 @@ class GSAPEngine {
             return;
         }
 
-        // نام متدها بدون پسوند Animation هستند
         const methodName = this.getAdvancedMethodName(type);
         console.log(`🔧 Looking for method: ${methodName}`);
 
@@ -256,13 +169,10 @@ class GSAPEngine {
         }
 
         try {
-            console.log(`🔧 Calling ${methodName}...`);
-
             let animation;
 
-            switch (type) {
+            switch(type) {
                 case 'typeWriter':
-                    // استفاده از راه حل قطعی برای تایپ رایتر
                     animation = this.advancedAnimations.typeWriterAnimation(element, duration, delay);
                     break;
                 case 'staggerGrid':
@@ -326,88 +236,40 @@ class GSAPEngine {
     }
 
     getAnimationProperties(type, element) {
-        switch (type) {
+        switch(type) {
             case 'fadeIn':
-                return {
-                    from: { opacity: 0 },
-                    to: { opacity: 1 }
-                };
+                return { from: { opacity: 0 }, to: { opacity: 1 } };
             case 'slideUp':
-                return {
-                    from: { opacity: 0, y: 100 },
-                    to: { opacity: 1, y: 0 }
-                };
+                return { from: { opacity: 0, y: 100 }, to: { opacity: 1, y: 0 } };
             case 'slideDown':
-                return {
-                    from: { opacity: 0, y: -100 },
-                    to: { opacity: 1, y: 0 }
-                };
+                return { from: { opacity: 0, y: -100 }, to: { opacity: 1, y: 0 } };
             case 'slideLeft':
-                return {
-                    from: { opacity: 0, x: 100 },
-                    to: { opacity: 1, x: 0 }
-                };
+                return { from: { opacity: 0, x: 100 }, to: { opacity: 1, x: 0 } };
             case 'slideRight':
-                return {
-                    from: { opacity: 0, x: -100 },
-                    to: { opacity: 1, x: 0 }
-                };
+                return { from: { opacity: 0, x: -100 }, to: { opacity: 1, x: 0 } };
             case 'scaleIn':
-                return {
-                    from: { opacity: 0, scale: 0.5 },
-                    to: { opacity: 1, scale: 1 }
-                };
+                return { from: { opacity: 0, scale: 0.5 }, to: { opacity: 1, scale: 1 } };
             case 'scaleOut':
-                return {
-                    from: { opacity: 0, scale: 1.5 },
-                    to: { opacity: 1, scale: 1 }
-                };
+                return { from: { opacity: 0, scale: 1.5 }, to: { opacity: 1, scale: 1 } };
             case 'bounceIn':
-                return {
-                    from: { opacity: 0, scale: 0.3, y: 100 },
-                    to: { opacity: 1, scale: 1, y: 0, ease: "bounce.out" }
-                };
+                return { from: { opacity: 0, scale: 0.3, y: 100 }, to: { opacity: 1, scale: 1, y: 0, ease: "bounce.out" } };
             case 'rotateIn':
-                return {
-                    from: { opacity: 0, rotation: -180 },
-                    to: { opacity: 1, rotation: 0 }
-                };
+                return { from: { opacity: 0, rotation: -180 }, to: { opacity: 1, rotation: 0 } };
             case 'flipInX':
-                return {
-                    from: { opacity: 0, rotationX: 90 },
-                    to: { opacity: 1, rotationX: 0, transformPerspective: 1000 }
-                };
+                return { from: { opacity: 0, rotationX: 90 }, to: { opacity: 1, rotationX: 0, transformPerspective: 1000 } };
             case 'flipInY':
-                return {
-                    from: { opacity: 0, rotationY: 90 },
-                    to: { opacity: 1, rotationY: 0, transformPerspective: 1000 }
-                };
+                return { from: { opacity: 0, rotationY: 90 }, to: { opacity: 1, rotationY: 0, transformPerspective: 1000 } };
             case 'custom':
                 const x = parseInt(element.getAttribute('data-animation-x')) || 0;
                 const y = parseInt(element.getAttribute('data-animation-y')) || 50;
                 const scale = parseFloat(element.getAttribute('data-animation-scale')) || 0.8;
                 const rotation = parseInt(element.getAttribute('data-animation-rotation')) || 0;
                 return {
-                    from: {
-                        opacity: 0,
-                        x: x,
-                        y: y,
-                        scale: scale,
-                        rotation: rotation
-                    },
-                    to: {
-                        opacity: 1,
-                        x: 0,
-                        y: 0,
-                        scale: 1,
-                        rotation: 0
-                    }
+                    from: { opacity: 0, x, y, scale, rotation },
+                    to: { opacity: 1, x: 0, y: 0, scale: 1, rotation: 0 }
                 };
             default:
-                return {
-                    from: { opacity: 0, y: 50 },
-                    to: { opacity: 1, y: 0 }
-                };
+                return { from: { opacity: 0, y: 50 }, to: { opacity: 1, y: 0 } };
         }
     }
 
@@ -420,7 +282,7 @@ class GSAPEngine {
             const hoverType = element.getAttribute('data-hover-animation');
             console.log(`🎯 Hover element ${index + 1}:`, hoverType);
 
-            switch (hoverType) {
+            switch(hoverType) {
                 case 'scale':
                     const scaleAmount = parseFloat(element.getAttribute('data-hover-scale')) || 1.05;
                     this.addHoverScale(element, scaleAmount);
@@ -444,136 +306,34 @@ class GSAPEngine {
             }
         });
     }
-addHoverScale(element, scale) {
-    console.log(`🔧 Adding scale hover to:`, element, 'Scale:', scale);
-    
-    // اضافه کردن کلاس برای مدیریت بهتر
-    element.classList.add('salnama-hover-scale', 'salnama-transform-element');
-    
-    const hoverTimeline = gsap.timeline({ 
-        paused: true,
-        onStart: () => {
-            // جلوگیری از تاثیر روی layout
-            element.style.transform = 'translateZ(0)';
-        }
-    });
-    
-    // استفاده از transform-origin و محدود کردن scale
-    hoverTimeline.to(element, { 
-        scale: scale, 
-        duration: 0.3, 
-        ease: "power2.out",
-        transformOrigin: "center center" // نقطه تبدیل در مرکز
-    });
-    
-    element.addEventListener('mouseenter', (e) => {
-        e.stopPropagation();
-        hoverTimeline.play();
-    });
-    
-    element.addEventListener('mouseleave', (e) => {
-        e.stopPropagation();
-        hoverTimeline.reverse();
-    });
-}
 
-addHoverLift(element, lift) {
-    console.log(`🔧 Adding lift hover to:`, element, 'Lift:', lift);
-    
-    // اضافه کردن کلاس برای مدیریت بهتر
-    element.classList.add('salnama-hover-lift', 'salnama-transform-element');
-    
-    const hoverTimeline = gsap.timeline({ 
-        paused: true,
-        onStart: () => {
-            // تنظیم transform origin
-            element.style.transform = 'translateZ(0)';
-        }
-    });
-    
-    // فقط حرکت در جهت Y با محدودیت
-    hoverTimeline.to(element, { 
-        y: -lift, 
-        duration: 0.3, 
-        ease: "power2.out",
-        onUpdate: () => {
-            // اطمینان از اینکه فقط در جهت Y حرکت می‌کند
-            element.style.transform = `translateZ(0) translateY(${gsap.getProperty(element, "y")}px)`;
-        }
-    });
-    
-    element.addEventListener('mouseenter', (e) => {
-        e.stopPropagation();
-        hoverTimeline.play();
-    });
-    
-    element.addEventListener('mouseleave', (e) => {
-        e.stopPropagation();
-        hoverTimeline.reverse();
-    });
-}
-
-// اضافه کردن متد جدید برای magnetic button بهبود یافته
-addMagneticButtonImproved(element, magneticStrength = 0.2) {
-    console.log(`🔧 Adding improved magnetic button to:`, element);
-    
-    element.classList.add('salnama-magnetic-button', 'salnama-transform-element');
-    
-    // محدودیت حرکت
-    const maxMovement = 15;
-    
-    const magneticMove = (e) => {
-        const rect = element.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-        
-        let distanceX = (e.clientX - centerX) * magneticStrength;
-        let distanceY = (e.clientY - centerY) * magneticStrength;
-        
-        // محدود کردن حرکت
-        distanceX = Math.max(Math.min(distanceX, maxMovement), -maxMovement);
-        distanceY = Math.max(Math.min(distanceY, maxMovement), -maxMovement);
-        
-        gsap.to(element, {
-            x: distanceX,
-            y: distanceY,
-            duration: 0.5,
-            ease: "power2.out",
-            onUpdate: () => {
-                // استفاده از translateZ برای performance بهتر
-                element.style.transform = `translateZ(0) translate(${gsap.getProperty(element, "x")}px, ${gsap.getProperty(element, "y")}px)`;
-            }
+    addHoverScale(element, scale) {
+        const hoverTimeline = gsap.timeline({ paused: true });
+        hoverTimeline.to(element, {
+            scale: scale,
+            duration: 0.3,
+            ease: "power2.out"
         });
-    };
 
-    const magneticReset = () => {
-        gsap.to(element, {
-            x: 0,
-            y: 0,
-            duration: 0.5,
-            ease: "elastic.out(1, 0.5)",
-            onUpdate: () => {
-                element.style.transform = `translateZ(0) translate(${gsap.getProperty(element, "x")}px, ${gsap.getProperty(element, "y")}px)`;
-            }
+        element.addEventListener('mouseenter', () => hoverTimeline.play());
+        element.addEventListener('mouseleave', () => hoverTimeline.reverse());
+        element.classList.add('salmama-hover-scale');
+    }
+
+    addHoverLift(element, lift) {
+        const hoverTimeline = gsap.timeline({ paused: true });
+        hoverTimeline.to(element, {
+            y: -lift,
+            duration: 0.3,
+            ease: "power2.out"
         });
-    };
 
-    element.addEventListener('mousemove', magneticMove);
-    element.addEventListener('mouseleave', magneticReset);
-
-    return {
-        destroy: () => {
-            element.removeEventListener('mousemove', magneticMove);
-            element.removeEventListener('mouseleave', magneticReset);
-            element.classList.remove('salnama-magnetic-button', 'salnama-transform-element');
-            gsap.set(element, { x: 0, y: 0 });
-            element.style.transform = '';
-        }
-    };
-}
+        element.addEventListener('mouseenter', () => hoverTimeline.play());
+        element.addEventListener('mouseleave', () => hoverTimeline.reverse());
+        element.classList.add('salmama-hover-lift');
+    }
 
     addHoverTilt(element) {
-        console.log(`🔧 Adding tilt hover to:`, element);
         const hoverTimeline = gsap.timeline({ paused: true });
         hoverTimeline.to(element, {
             rotationY: 10,
@@ -583,20 +343,12 @@ addMagneticButtonImproved(element, magneticStrength = 0.2) {
             ease: "power2.out"
         });
 
-        element.addEventListener('mouseenter', () => {
-            console.log('(mouse enter - tilt');
-            hoverTimeline.play();
-        });
-        element.addEventListener('mouseleave', () => {
-            console.log('(mouse leave - tilt');
-            hoverTimeline.reverse();
-        });
-
-        element.classList.add('salnama-hover-tilt');
+        element.addEventListener('mouseenter', () => hoverTimeline.play());
+        element.addEventListener('mouseleave', () => hoverTimeline.reverse());
+        element.classList.add('salmama-hover-tilt');
     }
 
     addHoverGlow(element) {
-        console.log(`🔧 Adding glow hover to:`, element);
         const hoverTimeline = gsap.timeline({ paused: true });
         hoverTimeline.to(element, {
             boxShadow: '0 0 20px rgba(59, 130, 246, 0.5)',
@@ -604,20 +356,12 @@ addMagneticButtonImproved(element, magneticStrength = 0.2) {
             ease: "power2.out"
         });
 
-        element.addEventListener('mouseenter', () => {
-            console.log('(mouse enter - glow');
-            hoverTimeline.play();
-        });
-        element.addEventListener('mouseleave', () => {
-            console.log('(mouse leave - glow');
-            hoverTimeline.reverse();
-        });
-
-        element.classList.add('salnama-hover-glow');
+        element.addEventListener('mouseenter', () => hoverTimeline.play());
+        element.addEventListener('mouseleave', () => hoverTimeline.reverse());
+        element.classList.add('salmama-hover-glow');
     }
 
     addHoverShrink(element, scale) {
-        console.log(`🔧 Adding shrink hover to:`, element, 'Scale:', scale);
         const hoverTimeline = gsap.timeline({ paused: true });
         hoverTimeline.to(element, {
             scale: scale,
@@ -625,26 +369,18 @@ addMagneticButtonImproved(element, magneticStrength = 0.2) {
             ease: "power2.out"
         });
 
-        element.addEventListener('mouseenter', () => {
-            console.log('(mouse enter - shrink');
-            hoverTimeline.play();
-        });
-        element.addEventListener('mouseleave', () => {
-            console.log('(mouse leave - shrink');
-            hoverTimeline.reverse();
-        });
-
-        element.classList.add('salnama-hover-shrink');
+        element.addEventListener('mouseenter', () => hoverTimeline.play());
+        element.addEventListener('mouseleave', () => hoverTimeline.reverse());
+        element.classList.add('salmama-hover-shrink');
     }
 }
 
-// راه‌اندازی وقتی DOM کاملاً لود شد
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () {
-        console.log('🚀 DOM Ready - Starting salnama GSAP Engine');
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('🚀 DOM Ready - Starting Salmama GSAP Engine');
         new GSAPEngine();
     });
 } else {
-    console.log('🚀 DOM Already Ready - Starting salnama GSAP Engine');
+    console.log('🚀 DOM Already Ready - Starting Salmama GSAP Engine');
     new GSAPEngine();
 }

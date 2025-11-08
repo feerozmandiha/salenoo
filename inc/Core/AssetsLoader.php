@@ -150,13 +150,13 @@ class AssetsLoader {
         wp_enqueue_script( 'gsap-js2', get_template_directory_uri() . 'js/app.js', array('gsap-js'), false, true );
 
         // فایل اصلی جاوااسکریپت (برای موتور GSAP و ماژول‌های آینده)
-        wp_enqueue_script(
-            'salnama-theme-main',
-            SALNAMA_ASSETS_URI . '/js/main.js',
-            [ 'gsap-core', 'gsap-scrolltrigger' ],
-            SALNAMA_THEME_VERSION,
-            true
-        );
+        // wp_enqueue_script(
+        //     'salnama-theme-main',
+        //     SALNAMA_ASSETS_URI . '/js/main.js',
+        //     [ 'gsap-core', 'gsap-scrolltrigger' ],
+        //     SALNAMA_THEME_VERSION,
+        //     true
+        // );
 
         wp_localize_script( 'salnama-theme-main', 'salnama_theme', [
             'ajax_url' => admin_url( 'admin-ajax.php' ),
