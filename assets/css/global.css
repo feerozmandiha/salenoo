@@ -12,7 +12,7 @@
 
 @keyframes arrow-loop-horizontal {
     0%, 100% { transform: translateX(0); }
-    50% { transform: translateX(-20px); }
+    50% { transform: translateY(20px); }
 }
 
 .arrow-path.animate-loop-initial {
@@ -34,6 +34,10 @@
     transform: rotate(90deg);
 }
 
+.menu-icon.is-rotated-180 {
+    transform: rotate(180deg);
+}
+
 /* --------------------------------------------------
    ورود اولیه هدر و استایل‌های عمومی (حالت دسکتاپ پیش‌فرض)
    -------------------------------------------------- */
@@ -42,7 +46,7 @@
     top: 1rem;
     right: 1rem;
     width: 8.33vw;
-    height: 22vh;
+    height: 18vh;
     z-index: 1000;
     display: flex;
     flex-direction: column;
@@ -51,14 +55,13 @@
     box-sizing: border-box;
 
     backdrop-filter: blur(4px);
-    background-color: rgb(0 0 0 / 9%);
+    background-color: rgb(247 247 247 / 20%);
     transition: height 0.4s ease, backdrop-filter 0.4s ease, background-color 0.4s ease, transform 0.3s ease-in-out;
 
     opacity: 0;
     transform: translateY(-150px);
     animation: header-fade-in 5s 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    padding: 1rem 0;
-    border-radius: 12px;
+    padding-bottom: 1rem !important;
 }
 
 @keyframes header-fade-in {
@@ -73,16 +76,35 @@
     height: 4rem;
 }
 
+/* استایل‌های لوگو و CTA برای دسکتاپ */
 .logo-container {
     width: 60%;
+    opacity: 0;
+    visibility: hidden;
+    display: none; /* مقدار اولیه در دسکتاپ */
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    right: -12rem;
 }
 
 .cta-button-wrapper {
     opacity: 0;
     visibility: hidden;
+    display: none; /* مقدار اولیه در دسکتاپ */
     text-align: center;
     padding: 0;
     margin-left: 1rem;
+    right: -12rem;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* حالت فعال برای لوگو و CTA در دسکتاپ */
+.minimal-vertical-header.is-expanded-menu .logo-container,
+.minimal-vertical-header.is-expanded-menu .cta-button-wrapper,
+.minimal-vertical-header.header--expanded-bg .logo-container,
+.minimal-vertical-header.header--expanded-bg .cta-button-wrapper {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 /* --------------------------------------------------
@@ -101,19 +123,22 @@
 /* --------------------------------------------------
    حالت باز شده هدر
    -------------------------------------------------- */
-.minimal-vertical-header.is-expanded {
+
+/* کلاس جداگانه برای تغییر رنگ پس‌زمینه */
+.minimal-vertical-header.header--expanded-bg {
+    background-color: var(--wp--preset--color--azure-web) !important;
+}
+
+/* حالت گسترش یافته هدر در دسکتاپ */
+.minimal-vertical-header.is-expanded-menu {
     height: calc(100vh - 2rem);
-    background-color: var(--wp--preset--color--surface);
     color: #1a1a1a;
 }
 
-/* --------------------------------------------------
-   نمایش لوگو و CTA وقتی هدر باز است
-   -------------------------------------------------- */
-.minimal-vertical-header.is-expanded .logo-container,
-.minimal-vertical-header.is-expanded .cta-button-wrapper {
-    opacity: 1;
-    visibility: visible;
+/* حالت منو باز در موبایل */
+.minimal-vertical-header.is-menu-open-mobile {
+    /* در موبایل ارتفاع تغییر نمی‌کند */
+    z-index: 1001; /* بالاتر از overlay */
 }
 
 /* --------------------------------------------------
@@ -145,11 +170,13 @@
 /* --------------------------------------------------
    ریسپانسیو (موبایل و تبلت)
    -------------------------------------------------- */
-@media (max-width: 1024px) {
+@media (max-width: 1023px) {
+
+
     .minimal-vertical-header {
         right: 1rem;
         width: calc(100% - 2rem);
-        height: 16vh;
+        height: 16vh !important; /* ارتفاع ثابت در موبایل */
         flex-direction: row !important;
         justify-content: space-between;
         align-items: center;
@@ -161,43 +188,41 @@
 
         backdrop-filter: blur(4px) !important;
         background-color: rgb(0 0 0 / 9%) !important;
+        
+        /* جلوگیری از تغییر ارتفاع در موبایل */
+        transition: none !important;
     }
 
+    /* در موبایل، لوگو و CTA همیشه نمایش داده می‌شوند */
     .minimal-vertical-header > .logo-container {
-        position: static !important;
+        /* position: static !important; */
         opacity: 1 !important;
         visibility: visible !important;
-        width: auto !important;
         display: flex !important;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        height: auto !important;
+    }
+
+    .minimal-vertical-header > .cta-button-wrapper {
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: block !important;
     }
 
     .minimal-vertical-header > .logo-container .custom-logo {
         display: block !important;
         opacity: 1 !important;
         visibility: visible !important;
-        max-height: 50px !important;
-        width: auto !important;
-        height: auto !important;
+        max-height: 5.5rem !important;
     }
 
     .minimal-vertical-header > .logo-container .wp-block-site-title {
-        display: block !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-        font-size: 14px !important;
-        margin-top: 5px !important;
-        text-align: center !important;
+        display: none !important;
     }
 
     .minimal-vertical-header > .action-buttons-container {
         margin-right: auto;
         margin-top: 0 !important;
         width: auto !important;
-    }
+    }    
 
     .minimal-vertical-header .action-icons {
         flex-direction: row !important;
@@ -207,4 +232,42 @@
     .wp-block-site-title {
         display: none;
     }
+
+    /* غیرفعال کردن انیمیشن‌ها در موبایل */
+    .arrow-path {
+        animation: none !important;
+    }
+    
+    .menu-icon {
+        transform: none !important;
+        padding: 0px 0 0 1rem;
+    }
+    
+    /* جلوگیری از هرگونه تغییر ارتفاع با GSAP در موبایل */
+    .minimal-vertical-header {
+        height: 16vh !important;
+    }
 }
+
+/* استایل‌های بهبود یافته برای نمایش بهتر */
+.minimal-vertical-header .logo-container,
+.minimal-vertical-header .cta-button-wrapper {
+    will-change: opacity, transform;
+    backface-visibility: hidden;
+}
+
+/* تضمین نمایش صحیح CTA در موبایل */
+@media (max-width: 1023px) {
+    .cta-button-wrapper {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        right: 0;
+    }
+
+    .logo-container {
+        right: 0;
+    }
+}
+
+/*2 deepseek

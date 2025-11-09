@@ -134,7 +134,7 @@ class AssetsLoader {
             'gsap',
             'https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js', 
             [],
-            '3.12.2',
+            '3.13.0',
             true
         );
         
@@ -143,7 +143,7 @@ class AssetsLoader {
             'scroll-trigger',
             'https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js', 
             ['gsap'],
-            '3.12.2',
+            '3.13.0',
             true
         );
 
