@@ -35,7 +35,6 @@ if ( ! defined( 'SALNAMA_ASSETS_PATH' ) ) {
 
 // فراخوانی Autoloader
 require_once SALNAMA_INC_PATH . '/Autoloader.php';
-var_dump(SALNAMA_INC_PATH. '/Autoloader.php');die;
 
 // ثبت autoloader برای فضای نام Salnama_Theme
 spl_autoload_register( [ 'Salnama_Theme\Inc\Autoloader', 'autoload' ] );
