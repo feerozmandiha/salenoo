@@ -1,0 +1,48 @@
+
+name: Release Theme
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+          
+      - name: Validate theme
+        run: |
+          if [ ! -f style.css ]; then
+            echo "❌ فایل style.css یافت نشد"
+            exit 1
+          fi
+          if [ ! -f functions.php ]; then
+            echo "❌ فایل functions.php یافت نشد"
+            exit 1
+          fi
+          echo "✅ ساختار قالب معتبر است"
+          
+      - name: Create ZIP package
+        run: |
+          # ایجاد پوشه با نام صحیح
+          mkdir salnama-theme
+          # کپی تمام فایل‌ها به پوشه
+          cp -r *.php templates/ assets/ languages/ salnama-theme/
+          # ایجاد فایل ZIP
+          zip -r salnama-theme.zip salnama-theme/
+          # نمایش ساختار
+          echo "📦 ساختار پکیج:"
+          unzip -l salnama-theme.zip
+          
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: salnama-theme.zip
+          token: ${{ secrets.GITHUB_TOKEN }}
