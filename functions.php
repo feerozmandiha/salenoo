@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
 
 // تعریف ثابت‌ها به صورت شرطی
 if ( ! defined( 'SALNAMA_THEME_VERSION' ) ) {
-    define( 'SALNAMA_THEME_VERSION', '1.0.2' );
+    define( 'SALNAMA_THEME_VERSION', '1.0.3' );
 }
 
 if ( ! defined( 'SALNAMA_THEME_PATH' ) ) {
