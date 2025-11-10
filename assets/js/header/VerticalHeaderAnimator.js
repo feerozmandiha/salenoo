@@ -31,10 +31,10 @@ class VerticalHeaderAnimator {
         this.ctaButton = this.header.querySelector('.cta-button-wrapper');
         this.arrowPath = this.header.querySelector('.arrow-path');
 
-        if (!this.toggleArea || !this.overlay) {
-            console.warn('⚠️ VerticalHeaderAnimator: عناصر ضروری یافت نشدند.');
-            return;
-        }
+        // if (!this.toggleArea || !this.overlay) {
+        //     console.warn('⚠️ VerticalHeaderAnimator: عناصر ضروری یافت نشدند.');
+        //     return;
+        // }
 
         this.isMenuOpen = false;
         this.lastScrollTop = 0;
