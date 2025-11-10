@@ -1,30 +1,40 @@
 <?php
 /**
- * Autoloader.php
- *
- * بارگذار خودکار کلاس‌های پروژه با پشتیبانی از PSR-4.
- * فقط کلاس‌هایی که در فضای نام Salnama_Theme هستند را بارگذاری می‌کند.
+ * Simple Autoloader.php
  */
 
 namespace Salnama_Theme\Inc;
 
 class Autoloader {
-
-    /**
-     * متد بارگذاری خودکار کلاس‌ها
-     *
-     * @param string $class_name نام کامل کلاس همراه با namespace
-     * @return void
-     */
-    public static function autoload( string $class_name ): void {
+    
+    public static function autoload( $class_name ): void {
+        // فقط کلاس‌های مربوط به تم ما
         if ( strpos( $class_name, 'Salnama_Theme\\' ) !== 0 ) {
             return;
         }
 
-        $relative_class = substr( $class_name, strlen( 'Salnama_Theme\\' ) );
-        $file_path = SALNAMA_THEME_PATH . '/' . str_replace( '\\', DIRECTORY_SEPARATOR, $relative_class ) . '.php';
-        if ( file_exists( $file_path ) ) {
-            require_once $file_path;
+        // حذف namespace اصلی
+        $class_name = str_replace( 'Salnama_Theme\\', '', $class_name );
+        
+        // تبدیل به مسیر فایل
+        $file_path = SALNAMA_INC_PATH . '/' . str_replace( '\\', '/', $class_name ) . '.php';
+
+        // چندین مسیر ممکن را چک کن
+        $possible_paths = [
+            $file_path,
+            SALNAMA_THEME_PATH . '/' . str_replace( '\\', '/', $class_name ) . '.php',
+            str_replace( 'Inc/', '', $file_path ), // اگر Inc تکراری باشد
+        ];
+
+        foreach ( $possible_paths as $path ) {
+            if ( file_exists( $path ) ) {
+                require_once $path;
+                return;
+            }
         }
+        
+        // دیباگ
+        error_log( 'Salnama Autoloader: Cannot find file for class: ' . $class_name );
+        error_log( 'Searched paths: ' . implode( ', ', $possible_paths ) );
     }
 }
