@@ -231,7 +231,7 @@ class VerticalHeaderAnimator {
 
         // انیمیشن بستن
         gsap.to(this.header, {
-            height: '18vh',
+            height: '20vh',
             duration: 0.6,
             ease: 'expo.in'
         });
@@ -391,7 +391,7 @@ class VerticalHeaderAnimator {
         if (this.isDesktop()) {
             // در دسکتاپ: بازگشت به حالت اولیه
             gsap.to(this.header, {
-                height: '18vh',
+                height: '20vh',
                 duration: 0.5,
                 ease: 'expo.in'
             });
@@ -480,7 +480,7 @@ class VerticalHeaderAnimator {
             // در دسکتاپ
             if (!this.isMenuOpen && !this.isHoverExpanded) {
                 gsap.set(this.header, { 
-                    height: '18vh', 
+                    height: '20vh', 
                     y: 0,
                     visibility: 'visible' // اطمینان از نمایش در resize
                 });
