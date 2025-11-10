@@ -34,15 +34,15 @@ jobs:
           # ایجاد پوشه با نام صحیح
           mkdir salnama-theme
           # کپی تمام فایل‌ها به پوشه
-          cp -r *.php templates/ assets/ languages/ salnama-theme/
+          cp -r *.php templates/ assets/ languages/ salenoo/
           # ایجاد فایل ZIP
-          zip -r salnama-theme.zip salnama-theme/
+          zip -r salenoo.zip salenoo/
           # نمایش ساختار
           echo "📦 ساختار پکیج:"
-          unzip -l salnama-theme.zip
+          unzip -l salenoo.zip
           
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          files: salnama-theme.zip
+          files: salenoo.zip
           token: ${{ secrets.GITHUB_TOKEN }}
