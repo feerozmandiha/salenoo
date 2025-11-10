@@ -15,12 +15,21 @@
     50% { transform: translateY(20px); }
 }
 
+@keyframes arrow-loop-mobile {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(15px); }
+}
+
 .arrow-path.animate-loop-initial {
     animation: arrow-loop-vertical 2.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
 }
 
 .arrow-path.animate-loop-hovered {
     animation: arrow-loop-horizontal 2.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+}
+
+.arrow-path.animate-loop-mobile {
+    animation: arrow-loop-mobile 2.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
 }
 
 /* --------------------------------------------------
@@ -233,9 +242,9 @@
         display: none;
     }
 
-    /* غیرفعال کردن انیمیشن‌ها در موبایل */
-    .arrow-path {
-        animation: none !important;
+    /* فعال کردن انیمیشن فلش vertical در موبایل */
+    .arrow-path.animate-loop-mobile {
+        animation: arrow-loop-mobile 2.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite !important;
     }
     
     .menu-icon {
@@ -245,7 +254,7 @@
     
     /* جلوگیری از هرگونه تغییر ارتفاع با GSAP در موبایل */
     .minimal-vertical-header {
-        height: 16vh !important;
+        height: 17vh !important;
     }
 }
 
@@ -270,4 +279,4 @@
     }
 }
 
-/*2 deepseek
+/*3 deepseek

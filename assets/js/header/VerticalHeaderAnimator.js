@@ -97,15 +97,23 @@ class VerticalHeaderAnimator {
     setArrowLoop(state) {
         if (!this.arrowPath || this.isMenuOpen) return;
         
-        // در موبایل انیمیشن فلش غیرفعال است
-        if (this.isMobile()) return;
-        
-        this.arrowPath.classList.remove('animate-loop-initial', 'animate-loop-hovered');
-        
-        if (state === 'initial') {
-            this.arrowPath.classList.add('animate-loop-initial');
-        } else if (state === 'hovered') {
-            this.arrowPath.classList.add('animate-loop-hovered');
+        // در موبایل فقط انیمیشن vertical فعال باشد
+        if (this.isMobile()) {
+            this.arrowPath.classList.remove('animate-loop-initial', 'animate-loop-hovered', 'animate-loop-mobile');
+            
+            if (state === 'initial' || state === 'mobile') {
+                this.arrowPath.classList.add('animate-loop-mobile');
+            }
+        } else {
+                    // در دسکتاپ
+
+            this.arrowPath.classList.remove('animate-loop-initial', 'animate-loop-hovered');
+            
+            if (state === 'initial') {
+                this.arrowPath.classList.add('animate-loop-initial');
+            } else if (state === 'hovered') {
+                this.arrowPath.classList.add('animate-loop-hovered');
+            }
         }
     }
 
@@ -174,6 +182,16 @@ class VerticalHeaderAnimator {
     expandHeaderOnHover() {
         if (!this.isDesktop()) return;
 
+        // --- تنظیم display برای logoContainer قبل از انیمیشن ---
+        if (this.logoContainer) {
+            this.logoContainer.style.display = 'block'; // یا 'flex' بسته به نیاز شما
+            // opacity و transform بعداً با GSAP انجام می‌شود
+        }
+        if (this.ctaButton) {
+            this.ctaButton.style.display = 'block'; // همیشه block بماند
+        }
+        // ---
+
         
         // اضافه کردن کلاس رنگ پس‌زمینه
         if (this.header) {
@@ -186,14 +204,6 @@ class VerticalHeaderAnimator {
             duration: 0.7,
             ease: 'expo.out'
         });
-        
-        // فعال کردن نمایش المان‌ها قبل از انیمیشن
-        if (this.logoContainer) {
-            this.logoContainer.style.display = 'block';
-        }
-        if (this.ctaButton) {
-            this.ctaButton.style.display = 'block';
-        }
         
         // انیمیشن المان‌ها
         const targets = [];
@@ -424,6 +434,9 @@ class VerticalHeaderAnimator {
                 }
 
         } else {
+
+        // رفتار موبایل: ارتفاع هدر تغییر نکند
+        // gsap.set(this.header, { height: '16vh' }); // یا هر مقداری که نیاز دارید
             // در موبایل: بازگشت هدر به موقعیت اولیه
             if (this.header) {
                 // ابتدا visibility را بازنشانی کنید
@@ -441,14 +454,46 @@ class VerticalHeaderAnimator {
             }
         }
 
+            // --- حذف کلاس حالت منو باز ---
+        if (this.header) {
+            this.header.classList.remove('is-menu-open'); // حذف کلاس جدید
+            this.header.classList.remove('is-expanded-menu'); // حذف کلاس گسترش در هر دو حالت
+            this.header.classList.remove('header--expanded-bg');
+        }
+
+            // --- تغییر مهم: فقط opacity را تغییر بده، display را دستکاری نکن ---
+        if (this.isDesktop()) {
+            if (this.logoContainer) {
+                // فقط opacity را تغییر بده، display را دستکاری نکن
+                gsap.to(this.logoContainer, {
+                    opacity: 0,
+                    visibility: 'hidden',
+                    duration: 0.3,
+                    ease: 'circ.in'
+                });
+            }
+
+            if (this.ctaButton) {
+                // فقط opacity را تغییر بده، display را دستکاری نکن
+                gsap.to(this.ctaButton, {
+                    opacity: 0,
+                    visibility: 'hidden', 
+                    duration: 0.3,
+                    ease: 'circ.in'
+                });
+            }
+        }
+        // --- پایان تغییر مهم ---
+
         // بازنشانی آیکون منو
         if (this.menuIcon) {
             this.menuIcon.classList.remove('is-rotated-90', 'is-rotated-180');
         }
-
-        // شروع دوباره انیمیشن فلش فقط در دسکتاپ
+        // شروع دوباره انیمیشن فلش
         if (this.isDesktop()) {
             this.setArrowLoop('initial');
+        } else {
+            this.setArrowLoop('mobile');
         }
     }
 
@@ -458,20 +503,35 @@ class VerticalHeaderAnimator {
         
         const st = window.scrollY;
         const headerHeight = this.header.offsetHeight;
+        const threshold = headerHeight;
+        const isScrollingDown = st > this.lastScrollTop;
+        const isAtTop = st <= threshold;
 
-        if (st > this.lastScrollTop && st > headerHeight) {
-            gsap.to(this.header, {
-                y: -headerHeight - this.remToPx(2),
-                duration: 0.4,
-                ease: 'expo.in'
-            });
-        } else {
+        // اگر در بالای صفحه هستیم، هدر باید همیشه نمایش داده شود
+        if (isAtTop) {
             gsap.to(this.header, {
                 y: 0,
-                duration: 0.4,
+                duration: 0.8,
                 ease: 'expo.out'
             });
         }
+        // اسکرول به پایین و گذشتن از threshold - مخفی کردن هدر
+        else if (isScrollingDown && st > threshold) {
+            gsap.to(this.header, {
+                y: -headerHeight - this.remToPx(2),
+                duration: 0.8,
+                ease: 'expo.in'
+            });
+        }
+        // اسکرول به بالا - نمایش هدر
+        else if (!isScrollingDown) {
+            gsap.to(this.header, {
+                y: 0,
+                duration: 0.8,
+                ease: 'expo.out'
+            });
+        }
+        
         this.lastScrollTop = st;
     }
 
@@ -498,12 +558,10 @@ class VerticalHeaderAnimator {
             
             // اطمینان از نمایش المان‌ها در موبایل
             this.initializeElements();
-            
-            // غیرفعال کردن انیمیشن فلش در موبایل
-            if (this.arrowPath) {
-                this.arrowPath.classList.remove('animate-loop-initial', 'animate-loop-hovered');
+                
+            // فعال کردن انیمیشن فلش vertical در موبایل
+            this.setArrowLoop('mobile');
             }
-        }
     }
 }
 
