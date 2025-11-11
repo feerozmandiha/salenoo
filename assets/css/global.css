@@ -167,6 +167,26 @@
     transition: opacity 0.3s ease;
 }
 
+.full-screen-menu-group {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;   /* یا row بسته به نیاز */
+    justify-content: center;  /* عمودی وسط */
+    align-items: center;      /* افقی وسط */
+}
+
+.full-screen-menu-inner {
+    width: 100%;   /* کم کردن فاصله‌های راست و چپ */
+    height: 100%;  /* کم کردن فاصله‌های بالا و پایین */
+    box-shadow: inset 0 2px 8px rgb(0 0 0 / 30%);
+    
+    display: flex;
+    flex-direction: column;     /* عناصر به صورت ستونی */
+    justify-content: center;    /* عمودی وسط */
+    align-items: center;        /* افقی وسط */
+}
+
 .full-screen-menu-overlay.is-visible {
     opacity: 1;
     pointer-events: auto;
