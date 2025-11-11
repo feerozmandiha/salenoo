@@ -1,0 +1,27 @@
+<!-- templates/archive.html -->
+<!-- wp:template-part {"slug":"header","theme":"your-theme-slug"} /-->
+
+<!-- wp:group {"tagName":"main","layout":{"contentSize":"1200px"}} -->
+<main class="wp-block-group" style="max-width:1200px;margin:0 auto;">
+  <!-- Title: از بلاک عنوان بایگانی استفاده می‌شود -->
+  <!-- wp:archive-title {"level":1} /-->
+
+  <!-- Archive description (if any) -->
+  <!-- wp:archive-description /-->
+
+  <!-- wp:query {"query":{"perPage":12,"postType":"post","order":"desc","orderby":"date"},"layout":{"type":"flex","flexWrap":"wrap"}} -->
+  <div class="wp-block-query">
+    <!-- wp:post-template -->
+      <div style="width:calc(33.333% - 20px);padding:10px;">
+        <!-- wp:post-featured-image {"isLink":true} /-->
+        <!-- wp:post-title {"isLink":true,"level":4} /-->
+        <!-- wp:post-excerpt /-->
+      </div>
+    <!-- /wp:post-template -->
+    <!-- wp:pagination /-->
+  </div>
+
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","theme":"your-theme-slug"} /-->

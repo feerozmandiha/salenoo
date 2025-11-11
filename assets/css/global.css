@@ -54,7 +54,7 @@
     position: fixed;
     top: 1rem;
     right: 1rem;
-    width: 8.33vw;
+    width: 15vh;
     height: 22vh;
     z-index: 1000;
     display: flex;
@@ -154,20 +154,16 @@
    اورلی منو
    -------------------------------------------------- */
 .full-screen-menu-overlay {
+    direction: rtl;
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background-color: rgba(52, 57, 57, 0.95);
+    top: 1rem;
+    right: 9rem;
+    width: calc(100% - 10rem);
+    height: calc(100vh - 2rem);
     z-index: 999;
     opacity: 0;
     pointer-events: none;
-    display: flex;
     justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    color: #ffffff;
     transition: opacity 0.3s ease;
 }
 
@@ -277,6 +273,12 @@
     .logo-container {
         right: 0;
     }
+
+    .full-screen-menu-overlay {
+        right: 1rem;
+        width: calc(100% - 2rem);
+    }
+
 }
 
 /*3 deepseek

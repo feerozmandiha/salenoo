@@ -1,0 +1,32 @@
+<!-- templates/single-post.html -->
+<!-- wp:template-part {"slug":"header","theme":"your-theme-slug"} /-->
+
+<!-- wp:group {"tagName":"main","layout":{"contentSize":"800px"}} -->
+<main class="wp-block-group" style="max-width:800px;margin:0 auto;">
+
+  <!-- wp:post-featured-image {"isLink":false} /-->
+  <!-- wp:post-title {"level":1} /-->
+  <!-- wp:post-meta /-->
+  <!-- wp:post-content /-->
+
+  <!-- کلمات کلیدی / دسته‌ها -->
+  <!-- wp:post-terms {"term":"category","taxonomy":"category"} /-->
+
+  <!-- Comments -->
+  <!-- wp:comments /-->
+
+  <!-- Related posts (simple Query by same category, optional) -->
+  <!-- wp:query {"query":{"perPage":3,"postType":"post","order":"desc","orderby":"date"}} -->
+  <div class="wp-block-query" style="margin-top:36px;">
+    <!-- wp:heading {"level":3} -->
+    <h3>مطالب مرتبط</h3>
+    <!-- /wp:heading -->
+    <!-- wp:post-template -->
+      <!-- wp:post-title {"isLink":true,"level":4} /-->
+    <!-- /wp:post-template -->
+  </div>
+
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","theme":"your-theme-slug"} /-->
