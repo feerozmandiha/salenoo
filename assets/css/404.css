@@ -1,0 +1,67 @@
+/* بلوک اصلی که کل صفحه را می‌پوشاند */
+.error-404-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(-45deg, #fdfcfb, #e2d1c3, #cfd9df, #e6e9f0);
+    background-size: 400% 400%;
+    animation: gradientBG 20s ease infinite;
+}
+
+/* بلوک داخلی برای محتوا */
+.error-404-inner {
+    text-align: center;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(8px);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+/* کد 404 */
+.error-404-code {
+    font-size: clamp(48px, 10vw, 120px);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    background: linear-gradient(90deg, #6a11cb, #2575fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* پیام خطا */
+.error-404-message {
+    font-size: 1.2rem;
+    color: #374151;
+    margin-bottom: 2rem;
+}
+
+/* دکمه‌ها */
+.error-404-actions {
+    display: flex;
+    justify-content: center;
+}
+
+.error-404-btn {
+    background: #2575fc;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.error-404-btn:hover {
+    background: #6a11cb;
+    transform: translateY(-2px);
+}
+
+/* انیمیشن گرادیان بک‌گراند */
+@keyframes gradientBG {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}

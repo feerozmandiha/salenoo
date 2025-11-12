@@ -119,6 +119,13 @@ class AssetsLoader {
             SALNAMA_THEME_VERSION
         );
 
+        wp_enqueue_style(
+            'salnama-theme-404',
+            SALNAMA_ASSETS_URI . '/css/404.css',
+            [],
+            SALNAMA_THEME_VERSION
+        );
+
     }
 
     /**
