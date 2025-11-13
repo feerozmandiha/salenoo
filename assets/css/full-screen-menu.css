@@ -1,0 +1,92 @@
+
+.full-screen-menu-group {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;   /* یا row بسته به نیاز */
+    justify-content: center;  /* عمودی وسط */
+    align-items: center;      /* افقی وسط */
+}
+
+.full-screen-menu-inner {
+    width: 100%;   /* کم کردن فاصله‌های راست و چپ */
+    height: 100%;  /* کم کردن فاصله‌های بالا و پایین */
+    box-shadow: inset 0 2px 8px rgb(0 0 0 / 30%);
+    
+    display: flex;
+    flex-direction: column;     /* عناصر به صورت ستونی */
+    justify-content: center;    /* عمودی وسط */
+    align-items: center;        /* افقی وسط */
+}
+
+
+/* آیکون‌های وسط صفحه */
+.menu-icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: center;
+  align-items: center;
+}
+
+.menu-icons img {
+  width: 80px;
+  height: 80px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.menu-icons img:hover {
+  transform: scale(1.2);
+}
+
+/* Dock پایین صفحه */
+.full-screen-menu-inner dock {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 30px;
+  padding: 12px 24px;
+  border-radius: 30px;
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+/* آیکون‌های Dock */
+.dock img {
+  width: 40px;
+  height: 40px;
+  transition: transform 0.3s;
+}
+
+/* افکت بزرگ شدن هنگام هاور */
+.dock img:hover {
+  transform: scale(1.6);
+}
+
+/* افکت بزرگ شدن هنگام نزدیک شدن موس (شبیه مک) */
+.dock img {
+  transition: transform 0.2s ease-in-out;
+}
+.dock img:hover {
+  transform: scale(1.6);
+}
+
+/* واکنش‌گرایی */
+@media (max-width: 1024px) {
+  .menu-icons img { width: 60px; height: 60px; }
+  .dock img { width: 30px; height: 30px; }
+}
+
+@media (max-width: 768px) {
+  .menu-icons img { width: 50px; height: 50px; }
+  .dock { gap: 20px; padding: 8px 16px; }
+}
+
+@media (max-width: 480px) {
+  .menu-icons img { width: 40px; height: 40px; }
+  .dock img { width: 25px; height: 25px; }
+}
