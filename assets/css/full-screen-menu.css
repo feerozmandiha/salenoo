@@ -29,14 +29,14 @@
   align-items: center;
 }
 
-.menu-icons img {
+.menu-icons figure {
   width: 80px;
   height: 80px;
   cursor: pointer;
   transition: transform 0.3s;
 }
 
-.menu-icons img:hover {
+.menu-icons figure:hover {
   transform: scale(1.2);
 }
 
@@ -56,22 +56,22 @@
 }
 
 /* آیکون‌های Dock */
-.dock img {
+.dock li {
   width: 40px;
   height: 40px;
   transition: transform 0.3s;
 }
 
 /* افکت بزرگ شدن هنگام هاور */
-.dock img:hover {
+.dock li:hover {
   transform: scale(1.6);
 }
 
 /* افکت بزرگ شدن هنگام نزدیک شدن موس (شبیه مک) */
-.dock img {
+.dock li {
   transition: transform 0.2s ease-in-out;
 }
-.dock img:hover {
+.dock li:hover {
   transform: scale(1.6);
 }
 
