@@ -73,16 +73,19 @@
 
 /* واکنش‌گرایی */
 @media (max-width: 1024px) {
-  .menu-icons img { width: 60px; height: 60px; }
-  .dock img { width: 30px; height: 30px; }
+  .menu-icons figure { width: 60px; height: 60px; }
+  .dock li { width: 30px; height: 30px; }
 }
 
 @media (max-width: 768px) {
-  .menu-icons img { width: 50px; height: 50px; }
+  .menu-icons figure { width: 50px; height: 50px; }
   .dock { gap: 20px; padding: 8px 16px; }
 }
 
 @media (max-width: 480px) {
-  .menu-icons img { width: 40px; height: 40px; }
-  .dock img { width: 25px; height: 25px; }
+  .menu-icons figure { width: 40px; height: 40px; }
+  .menu-icons figure figcaption{
+    display: none;
+  }
+  .dock li { width: 25px; height: 25px; }
 }
