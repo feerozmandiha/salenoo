@@ -43,16 +43,11 @@
 /* Dock پایین صفحه */
 .full-screen-menu-inner dock {
   position: fixed;
-  bottom: 10px;
-  left: 50%;
   transform: translateX(-50%);
   display: flex;
   gap: 30px;
-  padding: 12px 24px;
-  border-radius: 30px;
   background: rgba(255,255,255,0.7);
   backdrop-filter: blur(12px);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
 }
 
 /* آیکون‌های Dock */
