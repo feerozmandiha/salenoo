@@ -254,3 +254,9 @@ body.salnama-hover-active {
     0%, 50% { opacity: 1; }
     51%, 100% { opacity: 0; }
 }
+
+
+.wp-block-image :where(figcaption) {
+    display: flex;
+    justify-content: space-evenly;
+}

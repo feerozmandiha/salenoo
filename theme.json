@@ -132,9 +132,9 @@
 		},
 		"spacing": {
 			"spacingScale": {
-					"increment": 0.25,
-					"steps": 7,
-					"unit": "rem"
+				"increment": 0.25,
+				"steps": 7,
+				"unit": "rem"
 			},
 			"spacingSizes": [],
 			"units": [
@@ -282,6 +282,15 @@
 					"margin": {
 						"left": "var(--wp--preset--spacing--40)",
 						"right": "var(--wp--preset--spacing--40)"
+					}
+				}
+			},
+			"core/image": {
+				"elements": {
+					"caption": {
+						"typography": {
+							"textAlign": "center"
+						}
 					}
 				}
 			}
