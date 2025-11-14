@@ -260,3 +260,7 @@ body.salnama-hover-active {
     display: flex;
     justify-content: space-evenly;
 }
+
+.wp-block-image:hover {
+  transform: scale(1.2);
+}
