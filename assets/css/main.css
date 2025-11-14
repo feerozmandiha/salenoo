@@ -48,7 +48,10 @@ html, body {
     transform: translateZ(0);
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
+
 }
+
+
 
 /* استایل برای المان‌های با هاور افکت */
 [data-hover-animation] {
@@ -62,16 +65,6 @@ html, body {
 .salnama-animation-container {
     overflow: hidden !important;
 }
-
-/* استایل برای المان‌هایی که transform دارند */
-.salnama-transform-element {
-    transform: translateZ(0);
-    will-change: transform;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-}
-
-/* اضافه کردن به main.css */
 
 /* جلوگیری از اسکرول در کل صفحه هنگام هاور */
 body.salnama-hover-active {
@@ -89,8 +82,10 @@ body.salnama-hover-active {
     
     /* جلوگیری از تاثیر روی dimensions */
     box-sizing: border-box;
-    display: inline-block;
+    /* display: inline-block; */
     vertical-align: top;
+    will-change: transform;
+
 }
 
 /* استایل برای المان‌های block-level */
@@ -107,7 +102,7 @@ body.salnama-hover-active {
     transform: translateZ(0);
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
-    display: inline-block;
+    /* display: inline-block; */
     box-sizing: border-box;
 }
 
@@ -167,11 +162,95 @@ body.salnama-hover-active {
     transform-style: preserve-3d;
 }
 
-.salnama-magnetic-button {
-    display: inline-block;
-}
 
 /* جلوگیری از flickering */
 [data-salnama-animated="true"] {
     will-change: transform, opacity;
+}
+
+
+/* برای flip animations */
+[data-animation-type*="flip"],
+[data-animation-type*="rotate"] {
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+/* برای cover blocks که نصف نشان داده می‌شوند */
+.wp-block-cover.salnama-animated-element {
+    overflow: hidden !important;
+}
+
+/* تضمین نمایش کامل المان‌ها پس از انیمیشن */
+.salnama-animated-element.animation-complete {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+}
+
+
+/* برای flip و rotate animations */
+[data-animation-type*="flip"],
+[data-animation-type*="rotate"] {
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    backface-visibility: hidden;
+}
+
+/* جلوگیری از تداخل transform */
+.wp-block-cover.salnama-animated-element,
+.wp-block-heading.salnama-animated-element {
+    transform-style: preserve-3d !important;
+    backface-visibility: hidden !important;
+}
+
+
+/* برای flip animations */
+[data-animation-type*="flip"] {
+    transform-style: preserve-3d !important;
+    backface-visibility: hidden !important;
+    perspective: 1000px;
+}
+
+/* رفع مشکل نمایش برای بلوک‌های خاص */
+.wp-block-cover[data-animation-type*="flip"],
+.wp-block-heading[data-animation-type*="flip"] {
+    transform-style: preserve-3d !important;
+    backface-visibility: hidden !important;
+    overflow: visible !important;
+}
+
+/* پس از اتمام انیمیشن */
+.salnama-animation-complete {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+}
+
+
+/* در فایل animations.css */
+[data-animation-type="typeWriter"] {
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: block !important;
+    min-height: 1.2em !important; /* تضمین فضای متن */
+}
+
+/* برای عناوین با typeWriter */
+.wp-block-heading[data-animation-type="typeWriter"] {
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: block !important;
+    min-height: 1.5em !important;
+}
+
+/* cursor در حین تایپ */
+[data-animation-type="typeWriter"]::after {
+    content: '|';
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
 }

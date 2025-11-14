@@ -213,29 +213,30 @@ class AnimationLibrary {
         return timeline;
     }
 
+// در متد applyElementAnimation
     applyElementAnimation(element, animationType, duration, delay, preset) {
-        if (!this.isValidElement(element)) {
-            console.warn('⚠️ Invalid element for animation');
-            return;
-        }
-
-        // استفاده از موتور انیمیشن اگر موجود باشد
-        if (this.engine && typeof this.engine.applyBasicAnimation === 'function') {
-            this.engine.applyBasicAnimation(
-                element,
-                animationType,
-                duration,
-                delay,
-                'power2.out',
-                'load',
-                0,
-                false
-            );
-        } else {
-            // fallback مستقیم با GSAP
-            this.applyGSAPAnimation(element, animationType, duration, delay);
-        }
+    if (!this.isValidElement(element)) {
+        console.warn('⚠️ Invalid element for animation');
+        return;
     }
+
+    // استفاده از موتور انیمیشن اگر موجود باشد
+    if (this.engine && typeof this.engine.applyBasicAnimation === 'function') {
+        this.engine.applyBasicAnimation(
+            element,
+            animationType,
+            duration,
+            delay,
+            'power2.out',
+            'load',
+            0,
+            false
+        );
+    } else {
+        // fallback مستقیم با GSAP
+        this.applyGSAPAnimation(element, animationType, duration, delay);
+    }
+}
 
     applyGSAPAnimation(element, animationType, duration, delay) {
         const animationProps = this.getAnimationProperties(animationType);

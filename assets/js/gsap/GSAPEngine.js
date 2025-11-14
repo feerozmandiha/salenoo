@@ -1,92 +1,108 @@
 class GSAPEngine {
     constructor() {
+        // جلوگیری از راه‌اندازی تکراری
+        if (window.salnamaGSAPEngine) {
+            console.log('⚠️ GSAP Engine already initialized, skipping...');
+            return window.salnamaGSAPEngine;
+        }
+        
         console.log('🎬 salnama GSAP Engine Initializing...');
         this.advancedAnimations = null;
         this.hasInitialized = false;
         this.conditionalAnimations = null;
         this.responsiveManager = null;
         this.animationLibrary = null;
-        this.initAdvancedSystems();
-
+        
+        window.salnamaGSAPEngine = this;
         this.init();
     }
 
+    // بقیه کدها...
+
     init() {
+        // بررسی وجود GSAP
         if (typeof gsap === 'undefined') {
             console.error('❌ GSAP not loaded!');
+            this.initializeFallback();
             return;
         }
 
         if (typeof ScrollTrigger === 'undefined') {
             console.error('❌ ScrollTrigger not loaded!');
+            this.initializeFallback();
             return;
         }
 
+        // ثبت پلاگین
         gsap.registerPlugin(ScrollTrigger);
-        console.log('🔧 Checking AdvancedAnimations...');
-        console.log('AdvancedAnimations defined:', typeof AdvancedAnimations !== 'undefined');
-
+        
+        // راه‌اندازی سیستم‌های پیشرفته
+        this.initAdvancedSystems();
+        
         // لود انیمیشن‌های پیشرفته
         this.loadAdvancedAnimations();
 
-        console.log('✅ GSAP registered');
+        console.log('✅ GSAP Engine initialized successfully');
         this.initAnimations();
+    }
+
+    initializeFallback() {
+        console.warn('⚠️ Using fallback animation system');
+        this.initBasicAnimations();
     }
 
     initAdvancedSystems() {
         // سیستم انیمیشن‌های شرطی
         if (typeof ConditionalAnimations !== 'undefined') {
             this.conditionalAnimations = new ConditionalAnimations(this);
+            console.log('✅ ConditionalAnimations loaded');
         }
         
         // سیستم ریسپانسیو
         if (typeof ResponsiveManager !== 'undefined') {
             this.responsiveManager = new ResponsiveManager(this);
+            console.log('✅ ResponsiveManager loaded');
         }
         
         // کتابخانه انیمیشن
         if (typeof AnimationLibrary !== 'undefined') {
             this.animationLibrary = new AnimationLibrary(this);
+            console.log('✅ AnimationLibrary loaded');
         }
-        
-        console.log('🚀 Advanced animation systems initialized');
-   }
+    }
         
         // متدهای جدید برای فاز 2
-        applyAdvancedAnimation(element, type, config = {}) {
-            if (this.advancedAnimations && this.advancedAnimations[type + 'Animation']) {
-                return this.advancedAnimations[type + 'Animation'](element, config);
-            }
+        // applyAdvancedAnimation(element, type, config = {}) {
+        //     if (this.advancedAnimations && this.advancedAnimations[type + 'Animation']) {
+        //         return this.advancedAnimations[type + 'Animation'](element, config);
+        //     }
             
-            console.warn(`Advanced animation not found: ${type}`);
-            return this.applyBasicAnimation(element, 'fadeIn', 0.6, 0, 'power2.out', 'scroll', 0, false);
-        }
+        //     console.warn(`Advanced animation not found: ${type}`);
+        //     return this.applyBasicAnimation(element, 'fadeIn', 0.6, 0, 'power2.out', 'scroll', 0, false);
+        // }
         
-        registerConditionalAnimation(element, conditionConfig) {
-            if (this.conditionalAnimations) {
-                return this.conditionalAnimations.registerConditionalElement(element, conditionConfig);
-            }
-        }
+        // registerConditionalAnimation(element, conditionConfig) {
+        //     if (this.conditionalAnimations) {
+        //         return this.conditionalAnimations.registerConditionalElement(element, conditionConfig);
+        //     }
+        // }
         
-        applyAnimationPreset(presetName, container) {
-            if (this.animationLibrary) {
-                return this.animationLibrary.applyPreset(presetName, container);
-            }
-        }
+        // applyAnimationPreset(presetName, container) {
+        //     if (this.animationLibrary) {
+        //         return this.animationLibrary.applyPreset(presetName, container);
+        //     }
+        // }
     
 
     loadAdvancedAnimations() {
         if (typeof AdvancedAnimations === 'undefined') {
             console.error('❌ AdvancedAnimations class not found!');
-            console.log('Available globals:', Object.keys(window).filter(key => key.includes('Animation')));
             return;
         }
 
         try {
-            console.log('🔧 Creating AdvancedAnimations instance...');
             this.advancedAnimations = new AdvancedAnimations(this);
             console.log('✅ Advanced animations loaded successfully');
-            console.log('Available methods:', Object.getOwnPropertyNames(Object.getPrototypeOf(this.advancedAnimations)));
         } catch (error) {
             console.error('❌ Error creating AdvancedAnimations instance:', error);
             this.advancedAnimations = null;
@@ -164,6 +180,9 @@ class GSAPEngine {
     setInitialState(element, type) {
         console.log(`🔧 Setting initial state for: ${type}`);
 
+        // پاک کردن transform های قبلی
+        gsap.set(element, { clearProps: "all" });
+
         if (!this.isAdvancedAnimation(type)) {
             if (type.includes('slide')) {
                 gsap.set(element, {
@@ -177,17 +196,23 @@ class GSAPEngine {
                     scale: type === 'scaleIn' ? 0.5 : 1.5
                 });
             } else if (type.includes('flip') || type.includes('rotate')) {
+                // برای flip animations - تنظیمات بهینه
                 gsap.set(element, {
                     opacity: 0,
-                    rotationX: type === 'flipInX' ? 90 : 0,
-                    rotationY: type === 'flipInY' ? 90 : 0,
-                    rotation: type === 'rotateIn' ? -180 : 0
+                    rotationX: type === 'flipInX' ? 90 : type === 'flipOutX' ? -90 : 0,
+                    rotationY: type === 'flipInY' ? 90 : type === 'flipOutY' ? -90 : 0,
+                    rotation: type === 'rotateIn' ? -180 : type === 'rotateOut' ? 180 : 0,
+                    transformPerspective: 1000,
+                    transformStyle: "preserve-3d"
                 });
             } else {
-                gsap.set(element, { opacity: 0, y: 30 });
+                gsap.set(element, { 
+                    opacity: 0, 
+                    y: 30,
+                    clearProps: "transform" // پاک کردن transform های اضافی
+                });
             }
         }
-        // برای انیمیشن‌های پیشرفته، حالت اولیه در خود متد تنظیم می‌شود
     }
 
     applyAnimationByType(element, type, duration, delay, ease, trigger, stagger, repeat, yoyo) {
@@ -202,13 +227,17 @@ class GSAPEngine {
         // انیمیشن‌های پایه
         console.log(`🔧 This is a basic animation: ${type}`);
         const animationProps = this.getAnimationProperties(type, element);
+        
         const baseAnimation = {
             ...animationProps.to,
             duration: duration,
             delay: delay,
             ease: ease,
             repeat: repeat,
-            yoyo: yoyo
+            yoyo: yoyo,
+            onComplete: () => {
+                element.classList.add('animation-complete');
+            }
         };
 
         if (trigger === 'scroll') {
@@ -217,8 +246,15 @@ class GSAPEngine {
                 start: "top 85%",
                 end: "bottom 15%",
                 toggleActions: "play none none reverse",
-                markers: false
+                markers: false,
+                onEnter: () => console.log(`✅ ${type} animation triggered for:`, element)
             };
+        }
+
+        // برای flip animations - تنظیمات خاص
+        if (type.includes('flip')) {
+            baseAnimation.transformPerspective = 1000;
+            baseAnimation.transformOrigin = "center center";
         }
 
         gsap.to(element, baseAnimation);
@@ -228,7 +264,9 @@ class GSAPEngine {
     isAdvancedAnimation(type) {
         const advancedTypes = [
             'typeWriter', 'staggerGrid', 'parallaxScroll',
-            'gradientShift', 'magneticButton', 'textReveal', 'morphShape'
+            'gradientShift', 'magneticButton', 'textReveal', 'morphShape',
+            'flipInX', 'flipInY', 'flipOutX', 'flipOutY', // اضافه کردن flip animations
+            'rotateIn', 'rotateOut' // اضافه کردن rotate animations
         ];
         const isAdvanced = advancedTypes.includes(type);
         console.log(`🔍 ${type} is advanced: ${isAdvanced}`);
@@ -244,13 +282,11 @@ class GSAPEngine {
             return;
         }
 
-        // نام متدها بدون پسوند Animation هستند
         const methodName = this.getAdvancedMethodName(type);
         console.log(`🔧 Looking for method: ${methodName}`);
 
         if (typeof this.advancedAnimations[methodName] !== 'function') {
             console.error(`❌ Method ${methodName} not found in AdvancedAnimations`);
-            console.log('Available methods:', Object.getOwnPropertyNames(Object.getPrototypeOf(this.advancedAnimations)));
             this.applyFallbackAnimation(element, type, duration, delay, ease);
             return;
         }
@@ -260,16 +296,18 @@ class GSAPEngine {
 
             let animation;
 
+            // اضافه کردن flip و rotate animations
             switch (type) {
                 case 'typeWriter':
-                    // استفاده از راه حل قطعی برای تایپ رایتر
                     animation = this.advancedAnimations.typeWriterAnimation(element, duration, delay);
                     break;
                 case 'staggerGrid':
                     animation = this.advancedAnimations.staggerGridAnimation(element, duration, stagger, 'start');
                     break;
-                case 'parallaxScroll':
-                    animation = this.advancedAnimations.parallaxAnimation(element, 0.5, element.parentElement);
+                case 'flipInX':
+                case 'flipInY':
+                case 'rotateIn':
+                    animation = this.advancedAnimations[methodName](element, duration, delay);
                     break;
                 case 'textReveal':
                     animation = this.advancedAnimations.textRevealAnimation(element, 'fromBottom', duration);
@@ -295,6 +333,57 @@ class GSAPEngine {
         } catch (error) {
             console.error(`💥 Error applying advanced animation ${type}:`, error);
             this.applyFallbackAnimation(element, type, duration, delay, ease);
+        }
+    }
+
+        // ===== متدهای اصلی انیمیشن =====
+    applyBasicAnimation(element, animationType, duration = 0.6, delay = 0, ease = 'power2.out', trigger = 'scroll', stagger = 0, repeat = 0) {
+        if (!element) {
+            console.error('❌ Invalid element for animation');
+            return null;
+        }
+
+        console.log(`🎬 Applying basic animation: ${animationType}`);
+
+        const animationProps = this.getAnimationProperties(animationType);
+        const baseAnimation = {
+            ...animationProps.to,
+            duration: duration,
+            delay: delay,
+            ease: ease,
+            repeat: repeat
+        };
+
+        if (trigger === 'scroll') {
+            baseAnimation.scrollTrigger = {
+                trigger: element,
+                start: "top 85%",
+                end: "bottom 15%",
+                toggleActions: "play none none reverse",
+                markers: false
+            };
+        }
+
+        return gsap.to(element, baseAnimation);
+    }
+
+    applyAdvancedAnimation(element, type, config = {}) {
+        if (!this.advancedAnimations) {
+            console.warn('❌ Advanced animations not available, using fallback');
+            return this.applyBasicAnimation(element, 'fadeIn', 0.6, 0, 'power2.out', 'scroll', 0, 0);
+        }
+
+        const methodName = this.getAdvancedMethodName(type);
+        if (typeof this.advancedAnimations[methodName] !== 'function') {
+            console.warn(`❌ Advanced animation method not found: ${methodName}`);
+            return this.applyBasicAnimation(element, 'fadeIn', 0.6, 0, 'power2.out', 'scroll', 0, 0);
+        }
+
+        try {
+            return this.advancedAnimations[methodName](element, config.duration, config.delay);
+        } catch (error) {
+            console.error(`💥 Error applying advanced animation ${type}:`, error);
+            return this.applyBasicAnimation(element, 'fadeIn', 0.6, 0, 'power2.out', 'scroll', 0, 0);
         }
     }
 

@@ -158,61 +158,50 @@ class ConditionalAnimations {
         return elementData && elementData.activated;
     }
     
-    executeConditionalAnimation(element, config, elementId) {
-        if (!this.isValidElement(element)) return;
+executeConditionalAnimation(element, config, elementId) {
+    if (!this.isValidElement(element)) return;
 
-        // علامت‌گذاری به عنوان فعال شده
-        if (elementId) {
-            const elementData = this.conditionalElements.get(elementId);
-            if (elementData) {
-                elementData.activated = true;
-                elementData.state = 'playing';
-            }
-        }
-
-        console.log(`🎬 Executing conditional animation: ${config.animationType}`);
-        
-        try {
-            if (this.engine && this.engine.advancedAnimations) {
-                const animationType = config.animationType || 'fadeIn';
-                const duration = config.duration || 0.6;
-                
-                // بررسی وجود متدهای پیشرفته
-                if (typeof this.engine.advancedAnimations[animationType + 'Animation'] === 'function') {
-                    this.engine.advancedAnimations[animationType + 'Animation'](element, duration);
-                } else {
-                    // fallback به انیمیشن پایه
-                    this.engine.applyBasicAnimation(element, animationType, duration, 0, 'power2.out', 'load', 0, false);
-                }
-            } else if (this.engine && typeof this.engine.applyBasicAnimation === 'function') {
-                // استفاده از انیمیشن پایه
-                this.engine.applyBasicAnimation(
-                    element, 
-                    config.animationType || 'fadeIn', 
-                    config.duration || 0.6, 
-                    0, 
-                    'power2.out', 
-                    'load', 
-                    0, 
-                    false
-                );
-            } else {
-                // fallback نهایی
-                this.applyFallbackAnimation(element, config);
-            }
-        } catch (error) {
-            console.error('❌ Error executing conditional animation:', error);
-            this.applyFallbackAnimation(element, config);
-        }
-
-        // به روزرسانی state
-        if (elementId) {
-            const elementData = this.conditionalElements.get(elementId);
-            if (elementData) {
-                elementData.state = 'completed';
-            }
+    // علامت‌گذاری به عنوان فعال شده
+    if (elementId) {
+        const elementData = this.conditionalElements.get(elementId);
+        if (elementData) {
+            elementData.activated = true;
+            elementData.state = 'playing';
         }
     }
+
+    console.log(`🎬 Executing conditional animation: ${config.animationType}`);
+    
+    try {
+        // استفاده از موتور اگر موجود باشد
+        if (this.engine && typeof this.engine.applyBasicAnimation === 'function') {
+            this.engine.applyBasicAnimation(
+                element, 
+                config.animationType || 'fadeIn', 
+                config.duration || 0.6, 
+                0, 
+                'power2.out', 
+                'load', 
+                0, 
+                false
+            );
+        } else {
+            // fallback مستقیم به GSAP
+            this.applyFallbackAnimation(element, config);
+        }
+    } catch (error) {
+        console.error('❌ Error executing conditional animation:', error);
+        this.applyFallbackAnimation(element, config);
+    }
+
+    // به روزرسانی state
+    if (elementId) {
+        const elementData = this.conditionalElements.get(elementId);
+        if (elementData) {
+            elementData.state = 'completed';
+        }
+    }
+}
     
     applyFallbackAnimation(element, config) {
         gsap.fromTo(element,

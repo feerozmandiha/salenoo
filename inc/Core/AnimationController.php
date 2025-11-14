@@ -25,7 +25,6 @@ class AnimationController {
         add_action('wp_enqueue_scripts', [$this, 'enqueue_animation_assets']);
         add_action('wp_head', [$this, 'add_animation_performance_meta']);
         
-        // Initialize animation files cache
         $this->init_animation_files();
     }
     
@@ -34,30 +33,35 @@ class AnimationController {
      */
     private function init_animation_files() {
         $this->animation_files = [
-            'advanced_animations' => [
+            'advanced-animations' => [
                 'path' => SALNAMA_ASSETS_PATH . '/js/gsap/AdvancedAnimations.js',
                 'url' => SALNAMA_ASSETS_URI . '/js/gsap/AdvancedAnimations.js',
-                'deps' => ['gsap', 'scroll-trigger']
+                'deps' => ['gsap', 'scroll-trigger'],
+                'handle' => 'salnama-advanced-animations'
             ],
-            'gsap_engine' => [
-                'path' => SALNAMA_ASSETS_PATH . '/js/gsap/GSAPEngine.js',
-                'url' => SALNAMA_ASSETS_URI . '/js/gsap/GSAPEngine.js',
-                'deps' => ['gsap', 'scroll-trigger', 'salnama-advanced-animations']
+            'conditional-animations' => [
+                'path' => SALNAMA_ASSETS_PATH . '/js/gsap/ConditionalAnimations.js',
+                'url' => SALNAMA_ASSETS_URI . '/js/gsap/ConditionalAnimations.js',
+                'deps' => ['gsap', 'salnama-advanced-animations'],
+                'handle' => 'salnama-conditional-animations'
             ],
-            'animation_library' => [
+            'responsive-manager' => [
+                'path' => SALNAMA_ASSETS_PATH . '/js/gsap/ResponsiveManager.js',
+                'url' => SALNAMA_ASSETS_URI . '/js/gsap/ResponsiveManager.js',
+                'deps' => ['gsap', 'salnama-advanced-animations'],
+                'handle' => 'salnama-responsive-manager'
+            ],
+            'animation-library' => [
                 'path' => SALNAMA_ASSETS_PATH . '/js/gsap/AnimationLibrary.js',
                 'url' => SALNAMA_ASSETS_URI . '/js/gsap/AnimationLibrary.js',
-                'deps' => ['gsap', 'salnama-gsap-engine']
+                'deps' => ['gsap', 'salnama-advanced-animations'],
+                'handle' => 'salnama-animation-library'
             ],
-            'conditional_animations' => [
-                'path' => SALNAMA_ASSETS_PATH . '/js/gsap/ConditionalAnimations.js',
-                'url' => SALNAMA_ASSETS_URI. '/js/gsap/ConditionalAnimations.js',
-                'deps' => ['gsap', 'salnama-gsap-engine']
-            ],
-            'responsive_manager' => [
-                'path' =>SALNAMA_ASSETS_PATH . '/js/gsap/ResponsiveManager.js',
-                'url' => SALNAMA_ASSETS_URI . '/js/gsap/ResponsiveManager.js',
-                'deps' => ['gsap', 'salnama-gsap-engine']
+            'gsap-engine' => [
+                'path' => SALNAMA_ASSETS_PATH . '/js/gsap/GSAPEngine.js',
+                'url' => SALNAMA_ASSETS_URI . '/js/gsap/GSAPEngine.js',
+                'deps' => ['gsap', 'scroll-trigger', 'salnama-advanced-animations', 'salnama-animation-library'],
+                'handle' => 'salnama-gsap-engine'
             ]
         ];
     }
@@ -66,7 +70,6 @@ class AnimationController {
      * Enqueue animation assets
      */
     public function enqueue_animation_assets() {
-        // فقط در frontend و زمانی که انیمیشن وجود دارد
         if (is_admin() || wp_is_json_request() || !$this->has_animations_on_page()) {
             return;
         }
@@ -81,44 +84,83 @@ class AnimationController {
      * Enqueue GSAP core libraries
      */
     private function enqueue_gsap_core() {
+        if (!wp_script_is('gsap', 'registered')) {
+            wp_enqueue_script(
+                'gsap',
+                'https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js',
+                [],
+                '3.13.0',
+                true
+            );
+        }
 
-        
-        // اضافه کردن inline script برای بررسی لود شدن GSAP
-        wp_add_inline_script('gsap', '
-            window.salnamaGSAPLoaded = new Promise((resolve) => {
-                if (typeof gsap !== "undefined") {
-                    resolve(gsap);
-                } else {
-                    document.addEventListener("DOMContentLoaded", function() {
-                        if (typeof gsap !== "undefined") {
-                            resolve(gsap);
-                        }
-                    });
-                }
-            });
-        ');
+        if (!wp_script_is('scroll-trigger', 'registered')) {
+            wp_enqueue_script(
+                'scroll-trigger',
+                'https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js',
+                ['gsap'],
+                '3.13.0',
+                true
+            );
+        }
     }
     
     /**
      * Enqueue custom animation scripts
      */
     private function enqueue_animation_scripts() {
-        foreach ($this->animation_files as $handle => $file_info) {
-            if (file_exists($file_info['path'])) {
-                wp_enqueue_script(
-                    'salnama-' . str_replace('_', '-', $handle),
-                    $file_info['url'],
-                    $file_info['deps'],
-                    filemtime($file_info['path']),
-                    true
-                );
-            } else {
-                // Log missing files only in debug mode
+        foreach ($this->animation_files as $file_info) {
+            if (!file_exists($file_info['path'])) {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     error_log('❌ salnama animation file missing: ' . $file_info['path']);
                 }
+                continue;
             }
+            
+            wp_enqueue_script(
+                $file_info['handle'],
+                $file_info['url'],
+                $file_info['deps'],
+                filemtime($file_info['path']),
+                true
+            );
         }
+        
+        // اضافه کردن initializer
+        $this->enqueue_main_initializer();
+    }
+
+    /**
+     * Enqueue main animation initializer
+     */
+    private function enqueue_main_initializer() {
+        $initializer_script = '
+            if (typeof window.salnamaAnimationSystem === "undefined") {
+                window.salnamaAnimationSystem = {
+                    initialized: false,
+                    init: function() {
+                        if (this.initialized || typeof GSAPEngine === "undefined") {
+                            return;
+                        }
+                        
+                        new GSAPEngine();
+                        this.initialized = true;
+                        console.log("✅ salnama Animation System Initialized");
+                    }
+                };
+                
+                // راه‌اندازی فقط یک بار
+                if (document.readyState === "loading") {
+                    document.addEventListener("DOMContentLoaded", function() {
+                        setTimeout(() => window.salnamaAnimationSystem.init(), 100);
+                    });
+                } else {
+                    setTimeout(() => window.salnamaAnimationSystem.init(), 100);
+                }
+            }
+        ';
+        
+        wp_add_inline_script('salnama-gsap-engine', $initializer_script);
     }
     
     /**
@@ -151,47 +193,81 @@ class AnimationController {
                 'mobile' => 768,
                 'tablet' => 1024,
                 'desktop' => 1200
-            ]
+            ],
+            'animationStats' => self::get_animation_stats()
         ];
         
-        wp_localize_script(
-            'salnama-gsap-engine',
-            'salnamaAnimationConfig',
-            $animation_data
-        );
+        // انتقال داده به اولین اسکریپت موجود
+        $first_script = reset($this->animation_files);
+        if ($first_script) {
+            wp_localize_script(
+                $first_script['handle'],
+                'salnamaAnimationConfig',
+                $animation_data
+            );
+        }
     }
     
     /**
      * Add animation data attributes to blocks
      */
     public function add_animation_data_attributes($block_content, $block) {
-        // شرایط خروج
+        // شرایط خروج سریع
         if (is_admin() || wp_is_json_request() || empty($block_content) || !is_string($block_content)) {
             return $block_content;
         }
-        
+
         if (empty($block['attrs']) || !$this->has_animation_attributes($block['attrs'])) {
             return $block_content;
         }
-        
+
         $attrs = $block['attrs'];
         
         // دیباگ لاگ فقط در حالت توسعه
         if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('🎯 Processing animation for block: ' . ($attrs['advancedAnimationType'] ?? $attrs['animationType'] ?? 'unknown'));
+            $animation_type = $attrs['advancedAnimationType'] ?? $attrs['animationType'] ?? 'unknown';
+            error_log('🎯 Processing animation for block: ' . $animation_type);
         }
-        
+
         // تولید data attributes
         $data_attributes = $this->generate_data_attributes($attrs);
-        
+
         if (empty($data_attributes)) {
             return $block_content;
         }
-        
-        // اضافه کردن attributes به بلوک
-        $block_content = $this->inject_data_attributes($block_content, $data_attributes);
-        
-        return $block_content;
+
+        // اضافه کردن attributes به بلوک با روش مطمئن
+        return $this->inject_data_attributes_safely($block_content, $data_attributes);
+    }
+
+
+    /**
+     * Inject data attributes safely - نسخه بهبود یافته
+     */
+
+    private function inject_data_attributes_safely($content, $data_attributes) {
+        if (empty($data_attributes) || !is_string($content)) {
+            return $content;
+        }
+
+        $data_string = '';
+        foreach ($data_attributes as $key => $value) {
+            $data_string .= ' ' . $key . '="' . esc_attr($value) . '"';
+        }
+
+        // روش ساده و مطمئن برای تزریق
+        return preg_replace_callback('/<([a-zA-Z][a-zA-Z0-9]*)(\s[^>]*)?>/', 
+            function($matches) use ($data_string) {
+                // اگر قبلاً data attributes داشته باشد
+                if (isset($matches[2]) && strpos($matches[2], 'data-salnama-animated') !== false) {
+                    return $matches[0]; // تغییر نده
+                }
+                
+                return '<' . $matches[1] . $data_string . ($matches[2] ?? '') . '>';
+            }, 
+            $content, 
+            1 // فقط اولین تگ
+        );
     }
     
     /**
@@ -419,6 +495,11 @@ class AnimationController {
             return false;
         }
         
+        // همیشه در صفحات خاص انیمیشن داشته باشیم
+        if (is_front_page() || is_page() || is_singular()) {
+            return true;
+        }
+        
         // بررسی پست فعلی
         if ($post && is_singular()) {
             $content = $post->post_content;
@@ -440,6 +521,7 @@ class AnimationController {
         
         return false;
     }
+
     
     /**
      * Check if reduce motion should be applied

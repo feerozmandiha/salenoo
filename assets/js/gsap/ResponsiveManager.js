@@ -92,7 +92,7 @@ class ResponsiveManager {
         const duration = breakpointSettings.duration || config.duration || 0.6;
         const shouldAnimate = breakpointSettings.enable !== false;
         
-        if (shouldAnimate && this.engine) {
+        if (shouldAnimate && this.engine && typeof this.engine.applyBasicAnimation === 'function') {
             const animationInstance = this.engine.applyBasicAnimation(
                 element, 
                 config.animationType || 'fadeIn', 
@@ -104,6 +104,14 @@ class ResponsiveManager {
                 false
             );
             
+            this.updateAnimationState(animationId, true, animationInstance);
+        } else if (shouldAnimate) {
+            // fallback
+            const animationInstance = gsap.to(element, {
+                opacity: 1,
+                duration: duration,
+                ease: config.ease || 'power2.out'
+            });
             this.updateAnimationState(animationId, true, animationInstance);
         } else {
             this.updateAnimationState(animationId, false);
