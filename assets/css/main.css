@@ -266,19 +266,19 @@ body.salnama-hover-active {
 } */
 
 .wp-block-group.is-style-card {
-  transition: box-shadow 0.3s ease;
+    display: inline-block;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .wp-block-group.is-style-card:hover {
-  box-shadow: var(--wp--preset--shadow--card-shadow-medium);
+    transform: scale(1.05); /* بزرگ‌نمایی 5 درصدی */
+    box-shadow: var(--wp--preset--shadow--card-shadow-medium);
 }
 
-.wp-block-image.is-style-card-image {
+/* .wp-block-image.is-style-card-image {
   display: inline-block;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
 .wp-block-image.is-style-card-image:hover {
-  transform: translateY(-8px); /* تصویر کمی بالا می‌آید */
-  box-shadow: var(--wp--preset--shadow--cardShadowMedium); /* سایه‌ی قوی‌تر */
-}
+  transform: scale(1.05); /* بزرگ‌نمایی 5 درصدی */
