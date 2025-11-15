@@ -263,13 +263,32 @@ class GSAPEngine {
 
     isAdvancedAnimation(type) {
         const advancedTypes = [
-            'typeWriter', 'staggerGrid', 'parallaxScroll',
-            'gradientShift', 'magneticButton', 'textReveal', 'morphShape',
-            'flipInX', 'flipInY', 'flipOutX', 'flipOutY', // اضافه کردن flip animations
-            'rotateIn', 'rotateOut' // اضافه کردن rotate animations
+            // انیمیشن‌های متنی
+            'typeWriter', 'textReveal', 'characterReveal', 'lineReveal',
+            
+            // انیمیشن‌های شبکه‌ای و گروهی
+            'staggerGrid', 'staggerList', 'sequentialGrid', 'masonryReveal',
+            
+            // انیمیشن‌های حرکتی
+            'parallaxScroll', 'magneticButton', 'dragElement', 'followCursor',
+            
+            // انیمیشن‌های ترنسفورم
+            'flipInX', 'flipInY', 'flipOutX', 'flipOutY',
+            'rotateIn', 'rotateOut', 'spinIn', 'spinOut',
+            
+            // انیمیشن‌های ویژه
+            'gradientShift', 'morphShape', 'liquidEffect', 'waveEffect',
+            'particleEffect', 'trailEffect', 'rippleEffect',
+            
+            // انیمیشن‌های اسلایدی
+            'slideInStagger', 'slideOutStagger', 'scaleInStagger',
+            
+            // انیمیشن‌های تعاملی
+            'hoverReveal', 'clickReveal', 'scrollReveal'
         ];
+        
         const isAdvanced = advancedTypes.includes(type);
-        console.log(`🔍 ${type} is advanced: ${isAdvanced}`);
+        console.log(`🔍 ${type} is advanced: ${isAdvanced}`, advancedTypes);
         return isAdvanced;
     }
 
@@ -287,6 +306,7 @@ class GSAPEngine {
 
         if (typeof this.advancedAnimations[methodName] !== 'function') {
             console.error(`❌ Method ${methodName} not found in AdvancedAnimations`);
+            console.log('Available methods:', Object.getOwnPropertyNames(Object.getPrototypeOf(this.advancedAnimations)));
             this.applyFallbackAnimation(element, type, duration, delay, ease);
             return;
         }
@@ -296,13 +316,18 @@ class GSAPEngine {
 
             let animation;
 
-            // اضافه کردن flip و rotate animations
+            // اضافه کردن تمام انیمیشن‌های جدید
             switch (type) {
                 case 'typeWriter':
                     animation = this.advancedAnimations.typeWriterAnimation(element, duration, delay);
                     break;
                 case 'staggerGrid':
-                    animation = this.advancedAnimations.staggerGridAnimation(element, duration, stagger, 'start');
+                case 'staggerList':
+                case 'sequentialGrid':
+                    animation = this.advancedAnimations[methodName](element, duration, stagger);
+                    break;
+                case 'parallaxScroll':
+                    animation = this.advancedAnimations.parallaxAnimation(element, 0.3);
                     break;
                 case 'flipInX':
                 case 'flipInY':
@@ -312,14 +337,17 @@ class GSAPEngine {
                 case 'textReveal':
                     animation = this.advancedAnimations.textRevealAnimation(element, 'fromBottom', duration);
                     break;
+                case 'characterReveal':
+                    animation = this.advancedAnimations.characterRevealAnimation(element, duration);
+                    break;
+                case 'scrollReveal':
+                    animation = this.advancedAnimations.scrollRevealAnimation(element, 'bottom', duration);
+                    break;
+                case 'hoverReveal':
+                    animation = this.advancedAnimations.hoverRevealAnimation(element);
+                    break;
                 case 'magneticButton':
                     animation = this.advancedAnimations.magneticButtonAnimation(element, 0.3);
-                    break;
-                case 'gradientShift':
-                    animation = this.advancedAnimations.gradientShiftAnimation(element, duration);
-                    break;
-                case 'morphShape':
-                    animation = this.advancedAnimations.morphShapeAnimation(element, [], duration);
                     break;
                 default:
                     console.warn(`❌ Unknown advanced animation type: ${type}`);
@@ -391,12 +419,21 @@ class GSAPEngine {
         const methodMap = {
             'typeWriter': 'typeWriterAnimation',
             'staggerGrid': 'staggerGridAnimation',
+            'staggerList': 'staggerListAnimation',
+            'sequentialGrid': 'sequentialGridAnimation',
             'parallaxScroll': 'parallaxAnimation',
             'textReveal': 'textRevealAnimation',
+            'characterReveal': 'characterRevealAnimation',
+            'scrollReveal': 'scrollRevealAnimation',
+            'hoverReveal': 'hoverRevealAnimation',
             'magneticButton': 'magneticButtonAnimation',
             'gradientShift': 'gradientShiftAnimation',
-            'morphShape': 'morphShapeAnimation'
+            'morphShape': 'morphShapeAnimation',
+            'flipInX': 'flipInXAnimation',
+            'flipInY': 'flipInYAnimation',
+            'rotateIn': 'rotateInAnimation'
         };
+        
         return methodMap[type] || type + 'Animation';
     }
 

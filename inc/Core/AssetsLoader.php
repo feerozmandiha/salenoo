@@ -14,6 +14,7 @@ class AssetsLoader {
         add_filter('render_block',[ $this, 'css_classes_block_filter'], 10, 2);
         add_filter( 'upload_mimes',[ $this,  'salnama_allow_svg_uploads' ] );
         add_filter( 'wp_check_filetype_and_ext', [ $this, 'salnama_check_svg_upload_permission' ] , 10, 4 );
+        add_action( 'init', [ $this, 'salnama_variations_block_style' ] );
     }
 
     public function setup_theme_support(): void {
@@ -111,5 +112,17 @@ class AssetsLoader {
             }
         }
         return $file;
+    }
+
+    public function salnama_variations_block_style() {
+        register_block_style('core/group', [
+            'name'  => 'card',
+            'label' => __('Card', 'textdomain'),
+        ]);
+
+        register_block_style('core/image', [
+            'name'  => 'card-image',
+            'label' => __('Card Image', 'textdomain'),
+        ]);
     }
 }

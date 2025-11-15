@@ -203,7 +203,10 @@
 				}
 			]
 		},
-		"useRootPaddingAwareAlignments": true
+		"useRootPaddingAwareAlignments": true,
+		"custom": {
+			"cardShadow": "0 4px 12px rgba(0,0,0,0.15)"
+		}
 	},
 	"styles": {
 		"blocks": {
@@ -262,6 +265,11 @@
 						"left": "var(--wp--preset--spacing--40)",
 						"right": "var(--wp--preset--spacing--40)",
 						"top": "var(--wp--preset--spacing--20)"
+					}
+				},
+				"variations": {
+					"card": {					
+
 					}
 				}
 			},

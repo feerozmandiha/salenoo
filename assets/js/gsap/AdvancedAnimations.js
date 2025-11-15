@@ -78,11 +78,10 @@ const timePerChar = Math.max(duration / chars.length, 0.06); // حداقل 0.06 
     
     return timeline;
 }
-    
-    // ===== STAGGER GRID ANIMATION =====
-    staggerGridAnimation(container, duration = 0.6, stagger = 0.1, direction = 'start') {
+    // ===== STAGGER GRID ANIMATIONS =====
+    staggerGridAnimation(container, duration = 0.8, stagger = 0.1, direction = 'start') {
         if (!container) {
-            console.error('❌ Invalid container for stagger grid animation');
+            console.error('❌ Invalid container for stagger grid');
             return null;
         }
         
@@ -92,46 +91,103 @@ const timePerChar = Math.max(duration / chars.length, 0.06); // حداقل 0.06 
             return null;
         }
         
-        const timeline = gsap.timeline();
+        console.log(`🎬 Stagger grid: ${elements.length} elements, stagger: ${stagger}s`);
         
+        // حالت اولیه - همه المان‌ها مخفی
         gsap.set(elements, { 
             opacity: 0, 
-            y: 30 
+            y: 50,
+            scale: 0.8
         });
+        
+        const timeline = gsap.timeline();
         
         timeline.to(elements, {
             opacity: 1,
             y: 0,
+            scale: 1,
             duration: duration,
             stagger: {
                 each: stagger,
-                from: direction
+                from: direction,
+                grid: "auto" // برای layout های grid
             },
+            ease: "back.out(1.2)",
+            onComplete: () => {
+                console.log('✅ Stagger grid completed');
+            }
+        });
+        
+        return timeline;
+    }
+
+    staggerListAnimation(container, duration = 0.6, stagger = 0.08) {
+        if (!container) return null;
+        
+        const elements = container.children;
+        if (elements.length === 0) return null;
+        
+        console.log(`🎬 Stagger list: ${elements.length} elements`);
+        
+        gsap.set(elements, { 
+            opacity: 0, 
+            x: -30 
+        });
+        
+        const timeline = gsap.timeline();
+        
+        timeline.to(elements, {
+            opacity: 1,
+            x: 0,
+            duration: duration,
+            stagger: stagger,
             ease: "power2.out"
         });
         
         return timeline;
     }
-    
-    // ===== PARALLAX SCROLL ANIMATION =====
-    parallaxAnimation(element, speed = 0.5, container = null) {
-        if (!element) {
-            console.error('❌ Invalid element for parallax animation');
-            return null;
-        }
+
+    // ===== SEQUENTIAL GRID =====
+    sequentialGridAnimation(container, duration = 0.5, rows = 'auto') {
+        if (!container) return null;
+        
+        const elements = Array.from(container.children);
+        if (elements.length === 0) return null;
+        
+        console.log(`🎬 Sequential grid: ${elements.length} elements`);
+        
+        const timeline = gsap.timeline();
+        
+        elements.forEach((element, index) => {
+            gsap.set(element, { opacity: 0, y: 30 });
+            
+            timeline.to(element, {
+                opacity: 1,
+                y: 0,
+                duration: duration,
+                ease: "power2.out"
+            }, index * 0.1);
+        });
+        
+        return timeline;
+    }
+
+    // ===== PARALLAX SCROLL =====
+    parallaxAnimation(element, speed = 0.3, container = null) {
+        if (!element) return null;
+        
+        console.log('🎬 Parallax scroll animation');
         
         const trigger = container || element.parentElement;
-        if (!trigger) {
-            console.error('❌ No trigger element found for parallax');
-            return null;
-        }
+        if (!trigger) return null;
         
         const parallaxTimeline = gsap.timeline({
             scrollTrigger: {
                 trigger: trigger,
                 start: "top bottom",
                 end: "bottom top",
-                scrub: true
+                scrub: true,
+                markers: false
             }
         });
         
@@ -140,14 +196,113 @@ const timePerChar = Math.max(duration / chars.length, 0.06); // حداقل 0.06 
             ease: "none"
         });
         
-        this.parallaxElements.set(element, {
-            timeline: parallaxTimeline,
-            speed: speed
-        });
-        
         return parallaxTimeline;
     }
-    
+
+    // ===== HOVER REVEAL =====
+    hoverRevealAnimation(element, revealElement = null) {
+        if (!element) return null;
+        
+        const target = revealElement || element.querySelector('.reveal-content') || element;
+        
+        gsap.set(target, { 
+            opacity: 0,
+            y: 20 
+        });
+        
+        element.addEventListener('mouseenter', () => {
+            gsap.to(target, {
+                opacity: 1,
+                y: 0,
+                duration: 0.4,
+                ease: "power2.out"
+            });
+        });
+        
+        element.addEventListener('mouseleave', () => {
+            gsap.to(target, {
+                opacity: 0,
+                y: 20,
+                duration: 0.3,
+                ease: "power2.in"
+            });
+        });
+        
+        return {
+            destroy: () => {
+                element.removeEventListener('mouseenter');
+                element.removeEventListener('mouseleave');
+            }
+        };
+    }
+
+    scrollRevealAnimation(element, direction = 'bottom', duration = 0.8) {
+        if (!element) return null;
+        
+        console.log(`🎬 Scroll reveal: ${direction}`);
+        
+        const from = {
+            bottom: { y: 100, opacity: 0 },
+            top: { y: -100, opacity: 0 },
+            left: { x: -100, opacity: 0 },
+            right: { x: 100, opacity: 0 }
+        }[direction] || { y: 50, opacity: 0 };
+        
+        gsap.set(element, from);
+        
+        const timeline = gsap.timeline({
+            scrollTrigger: {
+                trigger: element,
+                start: "top 85%",
+                end: "bottom 20%",
+                toggleActions: "play none none reverse"
+            }
+        });
+        
+        timeline.to(element, {
+            x: 0,
+            y: 0,
+            opacity: 1,
+            duration: duration,
+            ease: "power2.out"
+        });
+        
+        return timeline;
+    }
+
+    // ===== CHARACTER REVEAL =====
+    characterRevealAnimation(element, duration = 1.5) {
+        if (!element) return null;
+        
+        const text = element.textContent || element.innerText || '';
+        if (!text) return null;
+        
+        // پاک کردن و ایجاد span برای هر کاراکتر
+        element.textContent = '';
+        const chars = text.split('');
+        
+        chars.forEach(char => {
+            const span = document.createElement('span');
+            span.textContent = char;
+            span.style.display = 'inline-block';
+            span.style.opacity = '0';
+            span.style.transform = 'translateY(20px)';
+            element.appendChild(span);
+        });
+        
+        const spans = element.querySelectorAll('span');
+        
+        return gsap.to(spans, {
+            opacity: 1,
+            y: 0,
+            duration: 0.05,
+            stagger: {
+                each: duration / chars.length,
+                from: "start"
+            },
+            ease: "power2.out"
+        });
+    }
     // ===== TEXT REVEAL ANIMATION =====
     textRevealAnimation(element, direction = 'fromBottom', duration = 0.8) {
         if (!element) return null;
