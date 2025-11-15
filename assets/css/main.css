@@ -261,8 +261,17 @@ body.salnama-hover-active {
     justify-content: space-evenly;
 } */
 
+
+/* ردیف کارت‌ها */
+.wp-block-group.cards-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem; /* فاصله بین کارت‌ها */
+}
+
 .wp-block-group.is-style-card {
-    display: inline-block;
+    width: 85px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -273,6 +282,7 @@ body.salnama-hover-active {
 
 .wp-block-image.is-style-card-image img {
   display: block;
+  width: 100%;
   margin: 0 auto;
 }
 .wp-block-image.is-style-card-image figcaption {
