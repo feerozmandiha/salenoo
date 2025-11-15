@@ -270,3 +270,12 @@ body.salnama-hover-active {
     transform: scale(1.05); /* بزرگ‌نمایی 5 درصدی */
     box-shadow: var(--wp--preset--shadow--card-shadow-medium);
 }
+
+.wp-block-image.is-style-card-image img {
+  display: block;
+  margin: 0 auto;
+}
+.wp-block-image.is-style-card-image figcaption {
+  text-align: center;
+  margin-top: 0.5rem;
+}
