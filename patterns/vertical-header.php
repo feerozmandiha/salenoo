@@ -1,26 +1,40 @@
+<?php
+/**
+ * Title: هدر عمودی سالنما
+ * Slug: salenama-vertical-header
+ * Description: هدر عمودی با منوی تمام صفحه، انیمیشن‌های پیشرفته GSAP و طراحی ریسپانسیو
+ * Categories: salenama-headers
+ * Keywords: هدر, منو, عمودی, سالنما, header, vertical, منوی تمام صفحه, animated
+ * Viewport Width: 1200
+ * Inserter: true
+ * Block Types: core/template-part/header
+ */
+
+?>
+
 <!-- wp:group {"tagName":"header","align":"full","className":"minimal-vertical-header fixed top-0 right-0 h-full w-[8.33%] z-[100] p-6 lg:p-12 transition-all duration-300 ease-in-out is-minimal-header","style":{"spacing":{"padding":{"top":"var:preset|spacing|20","bottom":"0","left":"0","right":"0"},"blockGap":"0"},"border":{"radius":{"topLeft":"8px","topRight":"8px","bottomLeft":"8px","bottomRight":"8px"}},"shadow":"var:preset|shadow|3D","elements":{"link":{"color":{"text":"var:preset|color|background"}}}},"textColor":"background","layout":{"type":"flex","orientation":"vertical","justifyContent":"center","verticalAlignment":"space-between"}} -->
 <header class="wp-block-group alignfull minimal-vertical-header fixed top-0 right-0 h-full w-[8.33%] z-[100] p-6 lg:p-12 transition-all duration-300 ease-in-out is-minimal-header has-background-color has-text-color has-link-color" style="border-top-left-radius:8px;border-top-right-radius:8px;border-bottom-left-radius:8px;border-bottom-right-radius:8px;padding-top:var(--wp--preset--spacing--20);padding-right:0;padding-bottom:0;padding-left:0;box-shadow:var(--wp--preset--shadow--3-d)"><!-- wp:group {"style":{"shadow":"var:preset|shadow|none","spacing":{"padding":{"left":"0","right":"0","top":"0","bottom":"0"},"margin":{"top":"0","bottom":"0"},"blockGap":"0"}},"backgroundColor":"transparent","layout":{"type":"constrained","justifyContent":"right"}} -->
 <div class="wp-block-group has-transparent-background-color has-background" style="margin-top:0;margin-bottom:0;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0;box-shadow:var(--wp--preset--shadow--none)"><!-- wp:group {"className":"p-2 menu-toggle-area cursor-pointer","style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"var:preset|spacing|20"},"margin":{"top":"0","bottom":"0"},"blockGap":"0"},"shadow":"var:preset|shadow|none","layout":{"selfStretch":"fit","flexSize":null}},"backgroundColor":"transparent","layout":{"type":"flex","flexWrap":"nowrap"}} -->
 <div class="wp-block-group p-2 menu-toggle-area cursor-pointer has-transparent-background-color has-background" style="margin-top:0;margin-bottom:0;padding-top:0;padding-right:var(--wp--preset--spacing--20);padding-bottom:0;padding-left:0;box-shadow:var(--wp--preset--shadow--none)"><!-- wp:html -->
-<div class=menu-icon>  
+<div class="menu-icon">  
 <svg
     id="Layer_1"
     xmlns="http://www.w3.org/2000/svg"
     version="1.1"
     viewBox="0 0 73.7 73.7"
-	class=svg-menu-icon
+	class="svg-menu-icon"
   >
     <defs>
       <style>
         .st0 {
           fill: none;
-          stroke: currentColor; /* استفاده از currentColor */
+          stroke: currentColor;
           stroke-miterlimit: 10;
           stroke-width: 1;
         }
         .st1 {
           fill: none;
-          stroke: currentColor; /* استفاده از currentColor */
+          stroke: currentColor;
           stroke-miterlimit: 10;
           stroke-width: 1.5;
         }
@@ -65,49 +79,82 @@
 <!-- /wp:group --></header>
 <!-- /wp:group -->
 
-<!-- 
-    Full-Screen Navigation Overlay (منوی تمام صفحه)
-    Note: The width is dynamically calculated via CSS/JS to be (100% - vertical header width)
--->
-
 <!-- wp:group {"className":"full-screen-menu-overlay fixed top-0 left-0 h-full w-full z-[90] opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out bg-surface/95","style":{"elements":{"link":{"color":{"text":"var:preset|color|card-bg"}}}},"backgroundColor":"transparent","textColor":"card-bg","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"center","orientation":"vertical"}} -->
 <div class="wp-block-group full-screen-menu-overlay fixed top-0 left-0 h-full w-full z-[90] opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out bg-surface/95 has-card-bg-color has-transparent-background-color has-text-color has-background has-link-color"><!-- wp:group {"tagName":"section","className":"full-screen-menu-group","style":{"spacing":{"padding":{"right":"0px","top":"3rem","left":"0px"}},"border":{"radius":{"topLeft":"30px","topRight":"30px","bottomLeft":"30px","bottomRight":"30px"}},"shadow":"var:preset|shadow|3D"},"backgroundColor":"text-secondary","layout":{"type":"constrained"}} -->
 <section class="wp-block-group full-screen-menu-group has-text-secondary-background-color has-background" style="border-top-left-radius:30px;border-top-right-radius:30px;border-bottom-left-radius:30px;border-bottom-right-radius:30px;padding-top:3rem;padding-right:0px;padding-left:0px;box-shadow:var(--wp--preset--shadow--3-d)"><!-- wp:group {"className":"full-screen-menu-inner","style":{"border":{"radius":{"topLeft":"1px","topRight":"1px","bottomLeft":"1px","bottomRight":"1px"}},"spacing":{"padding":{"top":"0","bottom":"0"}}},"backgroundColor":"azure-web","layout":{"type":"constrained","contentSize":""}} -->
-<div class="wp-block-group full-screen-menu-inner has-azure-web-background-color has-background" style="border-top-left-radius:1px;border-top-right-radius:1px;border-bottom-left-radius:1px;border-bottom-right-radius:1px;padding-top:0;padding-bottom:0"><!-- wp:group {"className":"menu-icons","style":{"elements":{"link":{"color":{"text":"var:preset|color|text-primary"}}}},"backgroundColor":"transparent","textColor":"text-primary","layout":{"type":"constrained"}} -->
-<div class="wp-block-group menu-icons has-text-primary-color has-transparent-background-color has-text-color has-background has-link-color"><!-- wp:image {"lightbox":{"enabled":false},"id":329,"sizeSlug":"full","linkDestination":"custom","align":"center"} -->
-<figure class="wp-block-image aligncenter size-full"><img src="https://salenoo.ir/wp-content/uploads/2025/11/sarresid.svg" alt="" class="wp-image-329"/><figcaption class="wp-element-caption">سررسید</figcaption></figure>
-<!-- /wp:image -->
+<div class="wp-block-group full-screen-menu-inner has-azure-web-background-color has-background" style="border-top-left-radius:1px;border-top-right-radius:1px;border-bottom-left-radius:1px;border-bottom-right-radius:1px;padding-top:0;padding-bottom:0"><!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"80%"} -->
+<div class="wp-block-column" style="flex-basis:80%"><!-- wp:group {"backgroundColor":"transparent","layout":{"type":"default"}} -->
+<div class="wp-block-group has-transparent-background-color has-background"><!-- wp:woocommerce/accordion-group {"autoclose":true,"layout":{"type":"constrained","justifyContent":"right"}} -->
+<div class="wp-block-woocommerce-accordion-group"><!-- wp:woocommerce/accordion-item -->
+<div class="wp-block-woocommerce-accordion-item"><!-- wp:woocommerce/accordion-header {"icon":"caret","style":{"elements":{"link":{"color":{"text":"var:preset|color|text-primary"}}}},"textColor":"text-primary"} -->
+<h3 class="wp-block-woocommerce-accordion-header has-text-primary-color has-text-color has-link-color has-text-primary-color has-text-color has-link-color accordion-item__heading"><button class="accordion-item__toggle"><span>تقویم رومیزی</span><span class="accordion-item__toggle-icon has-icon-caret" style="width:1.2em;height:1.2em"><svg width="1.2em" height="1.2em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 14.5L16.5 9.5L7.5 9.5L12 14.5Z" fill="currentColor"></path></svg></span></button></h3>
+<!-- /wp:woocommerce/accordion-header -->
 
-<!-- wp:image {"lightbox":{"enabled":false},"id":331,"sizeSlug":"full","linkDestination":"custom","align":"center"} -->
-<figure class="wp-block-image aligncenter size-full"><img src="https://salenoo.ir/wp-content/uploads/2025/11/romizi.svg" alt="" class="wp-image-331"/><figcaption class="wp-element-caption">تقویم رومیزی</figcaption></figure>
-<!-- /wp:image -->
+<!-- wp:woocommerce/accordion-panel -->
+<div class="wp-block-woocommerce-accordion-panel"><div class="accordion-content__wrapper"><!-- wp:paragraph -->
+<p>اگر ابزار Git باز نمی‌شود و همان خطا را می‌دهد، معمولاً گزینه‌ی حذف (Remove Repository) در همان بخش وجود دارد.</p>
+<!-- /wp:paragraph -->
 
-<!-- wp:image {"lightbox":{"enabled":false},"id":332,"sizeSlug":"full","linkDestination":"custom","align":"center"} -->
-<figure class="wp-block-image aligncenter size-full"><img src="https://salenoo.ir/wp-content/uploads/2025/11/divari.svg" alt="" class="wp-image-332"/><figcaption class="wp-element-caption">تقویم دیواری</figcaption></figure>
-<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>اگر حتی وارد بخش Git نمی‌شوید، باید از <strong>پشتیبانی هاست</strong> بخواهید پوشه‌ی <code>git</code> را دوباره بسازند یا تنظیمات Git را ریست کنند.</p>
+<!-- /wp:paragraph --></div></div>
+<!-- /wp:woocommerce/accordion-panel --></div>
+<!-- /wp:woocommerce/accordion-item -->
 
-<!-- wp:image {"lightbox":{"enabled":false},"id":333,"sizeSlug":"full","linkDestination":"custom","align":"center"} -->
-<figure class="wp-block-image aligncenter size-full"><img src="https://salenoo.ir/wp-content/uploads/2025/11/ekhtesasi.svg" alt="" class="wp-image-333"/><figcaption class="wp-element-caption">تقویم دیواری</figcaption></figure>
-<!-- /wp:image -->
+<!-- wp:woocommerce/accordion-item -->
+<div class="wp-block-woocommerce-accordion-item"><!-- wp:woocommerce/accordion-header {"icon":"chevron"} -->
+<h3 class="wp-block-woocommerce-accordion-header accordion-item__heading"><button class="accordion-item__toggle"><span>تقویم دیواری </span><span class="accordion-item__toggle-icon has-icon-chevron" style="width:1.2em;height:1.2em"><svg width="1.2em" height="1.2em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M18.0041 10.5547L11.9996 16.0134L5.99512 10.5547L7.00413 9.44482L11.9996 13.9862L16.9951 9.44483L18.0041 10.5547Z" fill="currentColor"></path></svg></span></button></h3>
+<!-- /wp:woocommerce/accordion-header -->
 
-<!-- wp:image {"lightbox":{"enabled":false},"id":334,"sizeSlug":"full","linkDestination":"custom","align":"center"} -->
-<figure class="wp-block-image aligncenter size-full"><img src="https://salenoo.ir/wp-content/uploads/2025/11/hadaya.svg" alt="" class="wp-image-334"/><figcaption class="wp-element-caption">هدایای تبلیغاتی</figcaption></figure>
-<!-- /wp:image --></div>
-<!-- /wp:group -->
+<!-- wp:woocommerce/accordion-panel -->
+<div class="wp-block-woocommerce-accordion-panel"><div class="accordion-content__wrapper"><!-- wp:buttons -->
+<div class="wp-block-buttons"><!-- wp:button -->
+<div class="wp-block-button"><a class="wp-block-button__link wp-element-button">تک برگ</a></div>
+<!-- /wp:button -->
 
-<!-- wp:group {"className":"dock","style":{"elements":{"link":{"color":{"text":"var:preset|color|text-primary"}}},"border":{"radius":{"topLeft":"25px","topRight":"25px","bottomLeft":"25px","bottomRight":"25px"}},"shadow":"var:preset|shadow|cardShadowMedium"},"backgroundColor":"card-bg","textColor":"text-primary","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"center","verticalAlignment":"stretch"}} -->
-<div class="wp-block-group dock has-text-primary-color has-card-bg-background-color has-text-color has-background has-link-color" style="border-top-left-radius:25px;border-top-right-radius:25px;border-bottom-left-radius:25px;border-bottom-right-radius:25px;box-shadow:var(--wp--preset--shadow--card-shadow-medium)"><!-- wp:social-links {"size":"has-small-icon-size","className":"is-style-logos-only","style":{"layout":{"selfStretch":"fit","flexSize":null}},"layout":{"type":"flex","justifyContent":"center","flexWrap":"nowrap","orientation":"horizontal"}} -->
-<ul class="wp-block-social-links has-small-icon-size is-style-logos-only"><!-- wp:social-link {"url":"#","service":"instagram"} /-->
+<!-- wp:button -->
+<div class="wp-block-button"><a class="wp-block-button__link wp-element-button">چهار برگ</a></div>
+<!-- /wp:button -->
 
-<!-- wp:social-link {"url":"#","service":"mail"} /-->
+<!-- wp:button -->
+<div class="wp-block-button"><a class="wp-block-button__link wp-element-button">کوچک</a></div>
+<!-- /wp:button -->
 
-<!-- wp:social-link {"url":"#","service":"pinterest"} /-->
+<!-- wp:button -->
+<div class="wp-block-button"><a class="wp-block-button__link wp-element-button">بزرگ</a></div>
+<!-- /wp:button -->
 
-<!-- wp:social-link {"url":"#","service":"whatsapp"} /-->
-
-<!-- wp:social-link {"url":"#","service":"telegram"} /--></ul>
-<!-- /wp:social-links --></div>
+<!-- wp:button -->
+<div class="wp-block-button"><a class="wp-block-button__link wp-element-button">A3</a></div>
+<!-- /wp:button --></div>
+<!-- /wp:buttons --></div></div>
+<!-- /wp:woocommerce/accordion-panel --></div>
+<!-- /wp:woocommerce/accordion-item --></div>
+<!-- /wp:woocommerce/accordion-group --></div>
 <!-- /wp:group --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"20%","style":{"border":{"left":{"color":"var:preset|color|text-primary"},"top":[],"right":[],"bottom":[]}}} -->
+<div class="wp-block-column" style="border-left-color:var(--wp--preset--color--text-primary);flex-basis:20%"><!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>تماس با ما</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>درباره ما</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>حذف امنیت</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>لینک های مفید</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns --></div>
 <!-- /wp:group --></section>
 <!-- /wp:group --></div>
 <!-- /wp:group -->

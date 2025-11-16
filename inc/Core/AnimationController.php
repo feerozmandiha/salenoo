@@ -1,9 +1,7 @@
 <?php
 /**
- * Animation Controller for Salnama Theme
- * 
- * @package Salnama_Theme
- * @since 1.0.0
+ * Animation Controller for Salnama Theme - نسخه اصلاح شده
+ * GSAP همیشه بارگذاری می‌شود چون هدر در تمام صفحات وجود دارد
  */
 
 namespace Salnama_Theme\Inc\Core;
@@ -12,14 +10,8 @@ defined('ABSPATH') || exit;
 
 class AnimationController {
     
-    /**
-     * Animation files cache
-     */
     private $animation_files = [];
     
-    /**
-     * Constructor
-     */
     public function __construct() {
         add_filter('render_block', [$this, 'add_animation_data_attributes'], 10, 2);
         add_action('wp_enqueue_scripts', [$this, 'enqueue_animation_assets']);
@@ -28,9 +20,6 @@ class AnimationController {
         $this->init_animation_files();
     }
     
-    /**
-     * Initialize animation files cache
-     */
     private function init_animation_files() {
         $this->animation_files = [
             'advanced-animations' => [
@@ -62,15 +51,22 @@ class AnimationController {
                 'url' => SALNAMA_ASSETS_URI . '/js/gsap/GSAPEngine.js',
                 'deps' => ['gsap', 'scroll-trigger', 'salnama-advanced-animations', 'salnama-animation-library'],
                 'handle' => 'salnama-gsap-engine'
+            ],
+            'header-animator' => [
+                'path' => SALNAMA_ASSETS_PATH . '/js/header/VerticalHeaderAnimator.js',
+                'url' => SALNAMA_ASSETS_URI . '/js/header/VerticalHeaderAnimator.js',
+                'deps' => ['gsap', 'scroll-trigger'],
+                'handle' => 'salnama-header-animator'
             ]
         ];
     }
     
     /**
-     * Enqueue animation assets
+     * Enqueue animation assets - همیشه بارگذاری شود
      */
     public function enqueue_animation_assets() {
-        if (is_admin() || wp_is_json_request() || !$this->has_animations_on_page()) {
+        // فقط در frontend بارگذاری شود
+        if (is_admin() || wp_is_json_request()) {
             return;
         }
         
@@ -81,9 +77,10 @@ class AnimationController {
     }
     
     /**
-     * Enqueue GSAP core libraries
+     * Enqueue GSAP core libraries - همیشه بارگذاری شود
      */
     private function enqueue_gsap_core() {
+        // همیشه GSAP را بارگذاری کن
         if (!wp_script_is('gsap', 'registered')) {
             wp_enqueue_script(
                 'gsap',
@@ -103,20 +100,37 @@ class AnimationController {
                 true
             );
         }
+        
+        // اضافه کردن inline script برای تضمین لود شدن
+        wp_add_inline_script('gsap', '
+            window.salnamaGSAPLoaded = new Promise((resolve) => {
+                if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
+                    gsap.registerPlugin(ScrollTrigger);
+                    resolve(gsap);
+                } else {
+                    document.addEventListener("DOMContentLoaded", function() {
+                        if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
+                            gsap.registerPlugin(ScrollTrigger);
+                            resolve(gsap);
+                        } else {
+                            console.error("❌ GSAP failed to load");
+                            resolve(null);
+                        }
+                    });
+                }
+            });
+        ');
     }
     
     /**
-     * Enqueue custom animation scripts
+     * Enqueue custom animation scripts - هوشمند
      */
     private function enqueue_animation_scripts() {
-        foreach ($this->animation_files as $file_info) {
-            if (!file_exists($file_info['path'])) {
-                if (defined('WP_DEBUG') && WP_DEBUG) {
-                    error_log('❌ salnama animation file missing: ' . $file_info['path']);
-                }
-                continue;
-            }
+        // همیشه هدر انیماتور بارگذاری شود
+        if (isset($this->animation_files['header-animator']) && 
+            file_exists($this->animation_files['header-animator']['path'])) {
             
+            $file_info = $this->animation_files['header-animator'];
             wp_enqueue_script(
                 $file_info['handle'],
                 $file_info['url'],
@@ -126,8 +140,33 @@ class AnimationController {
             );
         }
         
-        // اضافه کردن initializer
-        $this->enqueue_main_initializer();
+        // بقیه انیمیشن‌ها فقط اگر المان انیمیشن‌دار وجود دارد
+        if ($this->has_animations_on_page()) {
+            foreach ($this->animation_files as $key => $file_info) {
+                if ($key === 'header-animator') continue; // قبلاً بارگذاری شد
+                
+                if (!file_exists($file_info['path'])) {
+                    if (defined('WP_DEBUG') && WP_DEBUG) {
+                        error_log('❌ salnama animation file missing: ' . $file_info['path']);
+                    }
+                    continue;
+                }
+                
+                wp_enqueue_script(
+                    $file_info['handle'],
+                    $file_info['url'],
+                    $file_info['deps'],
+                    filemtime($file_info['path']),
+                    true
+                );
+            }
+            
+            // اضافه کردن initializer برای انیمیشن‌های اصلی
+            $this->enqueue_main_initializer();
+        } else {
+            // فقط initializer برای هدر
+            $this->enqueue_header_initializer();
+        }
     }
 
     /**
@@ -139,42 +178,117 @@ class AnimationController {
                 window.salnamaAnimationSystem = {
                     initialized: false,
                     init: function() {
-                        if (this.initialized || typeof GSAPEngine === "undefined") {
-                            return;
-                        }
+                        if (this.initialized) return;
                         
-                        new GSAPEngine();
-                        this.initialized = true;
-                        console.log("✅ salnama Animation System Initialized");
+                        window.salnamaGSAPLoaded.then((gsap) => {
+                            if (!gsap) {
+                                console.error("❌ Cannot initialize animations - GSAP not available");
+                                return;
+                            }
+                            
+                            // راه‌اندازی سیستم هدر
+                            if (typeof VerticalHeaderAnimator !== "undefined") {
+                                new VerticalHeaderAnimator();
+                                console.log("✅ Header Animator Initialized");
+                            }
+                            
+                            // راه‌اندازی سیستم انیمیشن‌های اصلی
+                            if (typeof GSAPEngine !== "undefined") {
+                                new GSAPEngine();
+                                console.log("✅ Main Animation System Initialized");
+                            }
+                            
+                            this.initialized = true;
+                        }).catch((error) => {
+                            console.error("❌ GSAP loading failed:", error);
+                        });
                     }
                 };
                 
-                // راه‌اندازی فقط یک بار
+                // راه‌اندازی
                 if (document.readyState === "loading") {
                     document.addEventListener("DOMContentLoaded", function() {
-                        setTimeout(() => window.salnamaAnimationSystem.init(), 100);
+                        window.salnamaAnimationSystem.init();
                     });
                 } else {
-                    setTimeout(() => window.salnamaAnimationSystem.init(), 100);
+                    window.salnamaAnimationSystem.init();
                 }
             }
         ';
         
         wp_add_inline_script('salnama-gsap-engine', $initializer_script);
     }
+
+    /**
+     * Enqueue header-only initializer
+     */
+    private function enqueue_header_initializer() {
+        $initializer_script = '
+            // سیستم فقط برای هدر
+            window.salnamaHeaderSystem = {
+                initialized: false,
+                init: function() {
+                    if (this.initialized) return;
+                    
+                    window.salnamaGSAPLoaded.then((gsap) => {
+                        if (!gsap) {
+                            console.error("❌ Cannot initialize header - GSAP not available");
+                            return;
+                        }
+                        
+                        // راه‌اندازی فقط هدر
+                        if (typeof VerticalHeaderAnimator !== "undefined") {
+                            new VerticalHeaderAnimator();
+                            console.log("✅ Header Animator Initialized");
+                            this.initialized = true;
+                        } else {
+                            console.error("❌ VerticalHeaderAnimator not found");
+                        }
+                    }).catch((error) => {
+                        console.error("❌ GSAP loading failed:", error);
+                    });
+                }
+            };
+            
+            // راه‌اندازی هدر
+            if (document.readyState === "loading") {
+                document.addEventListener("DOMContentLoaded", function() {
+                    window.salnamaHeaderSystem.init();
+                });
+            } else {
+                window.salnamaHeaderSystem.init();
+            }
+        ';
+        
+        wp_add_inline_script('salnama-header-animator', $initializer_script);
+    }
     
     /**
      * Enqueue animation styles
      */
     private function enqueue_animation_styles() {
-        $css_path = SALNAMA_ASSETS_PATH . '/css/animations.css';
-        if (file_exists($css_path)) {
+        // همیشه استایل‌های هدر بارگذاری شود
+        $header_css_path = SALNAMA_ASSETS_PATH . '/css/header-animations.css';
+        if (file_exists($header_css_path)) {
             wp_enqueue_style(
-                'salnama-animations',
-                SALNAMA_ASSETS_URI . '/css/animations.css',
+                'salnama-header-animations',
+                SALNAMA_ASSETS_URI . '/css/header-animations.css',
                 [],
-                filemtime($css_path)
+                filemtime($header_css_path)
             );
+        }
+        
+        // استایل‌های انیمیشن اصلی فقط اگر نیاز است
+        if ($this->has_animations_on_page()) {
+            $css_path = SALNAMA_ASSETS_PATH . '/css/animations.css';
+            if (file_exists($css_path)) {
+                wp_enqueue_style(
+                    'salnama-animations',
+                    SALNAMA_ASSETS_URI . '/css/animations.css',
+                    [],
+                    filemtime($css_path)
+                );
+            }
         }
     }
     
@@ -194,14 +308,13 @@ class AnimationController {
                 'tablet' => 1024,
                 'desktop' => 1200
             ],
-            'animationStats' => self::get_animation_stats()
+            'hasAnimations' => $this->has_animations_on_page()
         ];
         
-        // انتقال داده به اولین اسکریپت موجود
-        $first_script = reset($this->animation_files);
-        if ($first_script) {
+        // انتقال داده به اسکریپت هدر (همیشه وجود دارد)
+        if (isset($this->animation_files['header-animator'])) {
             wp_localize_script(
-                $first_script['handle'],
+                'salnama-header-animator',
                 'salnamaAnimationConfig',
                 $animation_data
             );

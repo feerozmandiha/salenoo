@@ -774,4 +774,3 @@ if (document.readyState === 'loading') {
     console.log('🚀 DOM Already Ready - Starting salnama GSAP Engine');
     new GSAPEngine();
 }
-

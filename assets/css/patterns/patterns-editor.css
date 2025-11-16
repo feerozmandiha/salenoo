@@ -1,0 +1,65 @@
+/**
+ * استایل‌های ادیتور برای پترن‌های سالنما
+ */
+
+/* هایلایت پترن‌های سالنما در اینسرتر */
+.block-editor-block-patterns-list .block-editor-block-patterns-list__item[title*="سالنما"] {
+    border: 2px solid #3B82F6;
+    position: relative;
+    border-radius: 8px;
+}
+
+.block-editor-block-patterns-list .block-editor-block-patterns-list__item[title*="سالنما"]::before {
+    content: "سالنما";
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: #3B82F6;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    z-index: 1;
+    font-weight: 500;
+}
+
+/* بهبود نمایش پترن هدر عمودی در ادیتور */
+.block-editor-block-preview__content .minimal-vertical-header {
+    position: relative !important;
+    height: 200px !important;
+    width: 80px !important;
+    right: 0 !important;
+    top: 0 !important;
+}
+
+/* استایل‌های ریسپانسیو در ادیتور */
+@media (max-width: 1024px) {
+    .block-editor-block-preview__content .minimal-vertical-header {
+        width: 100% !important;
+        height: 80px !important;
+        flex-direction: row !important;
+    }
+}
+
+/* نشانگر پترن‌های فعال */
+.salenama-pattern-active {
+    box-shadow: 0 0 0 2px #3B82F6;
+}
+
+/* استایل برای دسته‌بندی‌های سالنما در اینسرتر */
+.block-editor-block-patterns-list__list {
+    position: relative;
+}
+
+/* جداکننده دسته‌بندی‌ها */
+.block-editor-block-patterns-list__list:has(.block-editor-block-patterns-list__item[title*="سالنما"])::before {
+    content: "پترن‌های سالنما";
+    display: block;
+    margin: 16px 0 8px;
+    padding: 8px 12px;
+    background: #f8fafc;
+    border-right: 3px solid #3B82F6;
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 14px;
+}
