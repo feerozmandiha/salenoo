@@ -95,6 +95,10 @@
     right: -12rem;
 }
 
+.footer-logo.site {
+    width: 80%;
+}
+
 .cta-button-wrapper {
     opacity: 0;
     visibility: hidden;
