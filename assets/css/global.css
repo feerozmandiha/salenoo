@@ -37,10 +37,6 @@
 .woocommerce .quantity .qty {
         font-family: inherit;
 }
-/* 
-.woocommerce div.product form.cart div.quantity .qty {
-        font-family: inherit;
-} */
 
 /* --------------------------------------------------
    چرخش آیکون منو — با CSS transition
@@ -106,7 +102,7 @@
 }
 
 .container-footer-logo-site {
-    width: 40%;
+    width: 30%;
 }
 
 .cta-button-wrapper {
