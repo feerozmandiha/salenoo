@@ -36,6 +36,10 @@
         font-family: inherit;
 }
 
+.woocommerce div.product form.cart div.quantity .qty {
+        font-family: inherit;
+}
+
 /* --------------------------------------------------
    چرخش آیکون منو — با CSS transition
    -------------------------------------------------- */
