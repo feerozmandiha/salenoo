@@ -33,7 +33,8 @@
 }
 
 .woocommerce div.product form.cart .variations select,
-.woocommerce div.product form.cart div.quantity .qty {
+.woocommerce div.product form.cart div.quantity .qty,
+.woocommerce .quantity .qty {
         font-family: inherit;
 }
 /* 
