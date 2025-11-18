@@ -270,7 +270,7 @@ body.salnama-hover-active {
 }
 
 .wp-block-group.is-style-product-card {
-    /* width: 100px; */
+    width: 100px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
