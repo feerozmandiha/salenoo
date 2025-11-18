@@ -121,7 +121,7 @@ class AssetsLoader {
         ]);
 
         register_block_style('core/group', [
-            'name'  => 'card',
+            'name'  => 'product card',
             'label' => __('Product-Card', 'textdomain'),
         ]);
 

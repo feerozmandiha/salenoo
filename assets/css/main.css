@@ -256,12 +256,6 @@ body.salnama-hover-active {
 }
 
 
-/* .wp-block-image :where(figcaption) {
-    display: flex;
-    justify-content: space-evenly;
-} */
-
-
 /* ردیف کارت‌ها */
 .wp-block-group.cards-row {
   display: flex;
