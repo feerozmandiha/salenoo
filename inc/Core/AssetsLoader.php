@@ -120,6 +120,11 @@ class AssetsLoader {
             'label' => __('Card', 'textdomain'),
         ]);
 
+        register_block_style('core/group', [
+            'name'  => 'card',
+            'label' => __('Product-Card', 'textdomain'),
+        ]);
+
         register_block_style('core/image', [
             'name'  => 'card-image',
             'label' => __('Card Image', 'textdomain'),
