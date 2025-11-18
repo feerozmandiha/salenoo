@@ -83,6 +83,7 @@
 }
 
 @media (max-width: 480px) {
+  .menu-icons { gap: 5px;}
   .menu-icons figure { width: 40px; height: 40px; }
   .menu-icons figure figcaption{
     display: none;
