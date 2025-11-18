@@ -280,7 +280,7 @@ body.salnama-hover-active {
 }
 
 .wp-block-group.is-style-product-card:hover {
-    transform: scale(1.05); /* بزرگ‌نمایی 5 درصدی */
+    transform: scale(1.05);
     box-shadow: var(--wp--preset--shadow--card-shadow-medium);
 }
 
