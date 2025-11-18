@@ -93,7 +93,7 @@
 
 /* استایل‌های لوگو و CTA برای دسکتاپ */
 .logo-container {
-    width: 60%;
+    /* width: 60%; */
     opacity: 0;
     visibility: hidden;
     display: none; /* مقدار اولیه در دسکتاپ */
