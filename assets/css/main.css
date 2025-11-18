@@ -269,14 +269,14 @@ body.salnama-hover-active {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.wp-block-group.is-style-product-card {
-    width: 100px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
 
 .wp-block-group.is-style-card:hover {
     transform: scale(1.05); /* بزرگ‌نمایی 5 درصدی */
     box-shadow: var(--wp--preset--shadow--card-shadow-medium);
+}
+
+.wp-block-group.is-style-product-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .wp-block-group.is-style-product-card:hover {

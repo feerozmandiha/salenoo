@@ -268,12 +268,8 @@
 					}
 				},
 				"variations": {
-					"card": {					
-
-					},
-					"product card": {					
-
-					}
+					"card": {},
+					"product-card": {}
 				}
 			},
 			"core/heading": {
