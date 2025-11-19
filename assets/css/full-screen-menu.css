@@ -23,11 +23,6 @@
     width: 100%;   /* کم کردن فاصله‌های راست و چپ */
     /* height: 100%;  کم کردن فاصله‌های بالا و پایین */
     box-shadow: inset 0 2px 8px rgb(0 0 0 / 30%);
-    
-    display: flex;
-    flex-direction: column;     /* عناصر به صورت ستونی */
-    justify-content: center;    /* عمودی وسط */
-    align-items: center;        /* افقی وسط */
 }
 
 
