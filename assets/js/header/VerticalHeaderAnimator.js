@@ -1,5 +1,4 @@
 
-
 // تابع کمکی برای تشخیص دسکتاپ
 function isDesktop() {
     return window.innerWidth >= 1024;
