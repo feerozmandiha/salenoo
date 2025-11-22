@@ -1,5 +1,21 @@
 /* ===== STYLES FOR FULL SCREEN MENU OVERLAY ===== */
 
+  :root{
+    /* رنگ‌های آلومینیوم، هایلایت و سایه‌ها */
+    --aluminum-dk: #17191c;
+    --aluminum: #1b1d21;
+    --aluminum-md: #21252a;
+    --aluminum-lit: #2a2f36;
+    --highlight: rgba(255,255,255,0.14);
+    --shadow-strong: rgba(0,0,0,0.55);
+    --shadow-md: rgba(0,0,0,0.28);
+    --shadow-soft: rgba(0,0,0,0.14);
+    --shadow-tiny: rgba(0,0,0,0.08);
+    --edge-sheen: rgba(255,255,255,0.10);
+    --edge-sheen-2: rgba(255,255,255,0.06);
+  }
+
+
 /* منوی تمام صفحه - پایه */
 .full-screen-menu-overlay {
     /* background: rgba(0, 0, 0, 0.92) !important; */
@@ -43,21 +59,16 @@
     border-radius:22px;
     position:relative;
     overflow:visible;
-
-    /* پس‌زمینه چند‌لایه با گرادیان‌های دقیق آلومینیومی */
     background:
-      /* باند نیم‌شفاف هایلایت روی لبه */
       linear-gradient(to bottom,
         transparent 0%,
         var(--edge-sheen) 8%,
         var(--edge-sheen-2) 15%,
         transparent 32%) ,
-      /* نوار تغییر تونالیته (نیمه بالایی) */
       linear-gradient(to bottom,
         var(--aluminum-lit) 0%,
         var(--aluminum-md) 28%,
         var(--aluminum) 48%),
-      /* گرادیان عرضی برای حس فلز برس‌خورده */
       linear-gradient(90deg,
         rgba(255,255,255,0.07) 0%,
         transparent 12%,
@@ -66,7 +77,6 @@
         rgba(255,255,255,0.06) 72%,
         transparent 88%,
         rgba(0,0,0,0.12) 100%),
-      /* گرادیان محیطی عمیق‌تر */
       radial-gradient(220% 90% at 50% -40%,
         var(--aluminum-dk) 0%,
         var(--aluminum) 48%,
@@ -74,13 +84,9 @@
         var(--aluminum-lit) 100%);
     background-blend-mode: soft-light, normal, overlay, normal;
 
-    /* سایه‌های چند‌لایه برای حجم‌دهی */
     box-shadow:
-      /* سایه اصلی زیر لبه */
       0 20px 30px -12px var(--shadow-strong),
-      /* سایه نرم گسترده */
       0 18px 60px -10px var(--shadow-md),
-      /* هاله بسیار نرم */
       0 4px 12px -4px var(--shadow-soft),
       inset 0 1px 0 rgba(255,255,255,0.05),
       inset 0 -1px 0 rgba(0,0,0,0.25);
@@ -116,13 +122,11 @@
     overflow:hidden;
 
     background:
-      /* براقیت بالایی داخل شیار */
       linear-gradient(to bottom,
         rgba(255,255,255,0.16) 0%,
         rgba(255,255,255,0.08) 22%,
         rgba(0,0,0,0.15) 48%,
         rgba(0,0,0,0.35) 100%),
-      /* عمق تیره داخل شیار */
       radial-gradient(80% 120% at 50% 40%,
         rgba(0,0,0,0.55) 0%,
         rgba(0,0,0,0.7) 60%,
@@ -130,9 +134,7 @@
     background-blend-mode: screen, normal;
 
     box-shadow:
-      /* سایه خارجی شیار */
       0 10px 16px -8px var(--shadow-strong),
-      /* سایه کناری برای حس فرورفتگی */
       inset 0 10px 12px -8px rgba(255,255,255,0.10),
       inset 0 -12px 18px -8px rgba(0,0,0,0.65),
       inset 0 1px 0 rgba(255,255,255,0.15);
