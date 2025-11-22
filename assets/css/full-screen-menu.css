@@ -15,7 +15,7 @@
 
 /* کانتینر اصلی منو */
 .full-screen-menu-group {
-    width: 95% !important;
+    width: 90% !important;
     height: 95% !important;
     display: flex !important;
     flex-direction: column !important;

@@ -169,7 +169,7 @@
     top: 1rem;
     right: 7rem;
     width: calc(100% - 7rem);
-    height: calc(100vh - 2rem);
+    height: calc(100vh - 1rem);
     z-index: 999;
     opacity: 0;
     pointer-events: none;
