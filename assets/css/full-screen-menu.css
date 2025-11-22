@@ -269,18 +269,18 @@
     }
     
     .menu-icons figure {
-        width: 90px !important;
-        height: 90px !important;
+        width: 50px !important;
+        height: 50 !important;
         border-radius: 18px !important;
     }
     
     .menu-icons img {
-        width: 35px !important;
-        height: 35px !important;
+        width: 25px !important;
+        height: 25px !important;
     }
     
     .menu-icons figcaption {
-        font-size: 12px !important;
+        font-size: 10px !important;
     }
     
     /* داک آیفون */
