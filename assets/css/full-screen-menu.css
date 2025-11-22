@@ -29,6 +29,11 @@
     overflow: hidden !important;
 }
 
+.full-screen-under-menu-desktop {
+    width: 100%;
+    height: 2rem;
+}
+
 /* پس‌زمینه داخلی با افکت شیشه‌ای */
 .full-screen-menu-inner {
     width: 100% !important;
@@ -50,7 +55,7 @@
 /* رفع مشکل تراز اولین تصویر */
 .menu-icons {
     display: grid !important;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)) !important;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)) !important;
     gap: 40px !important;
     justify-content: center !important;
     align-items: start !important; /* تغییر از center به start */
