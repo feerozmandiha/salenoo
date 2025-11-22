@@ -145,7 +145,7 @@
 
 /* کلاس جداگانه برای تغییر رنگ پس‌زمینه */
 .minimal-vertical-header.header--expanded-bg {
-    background-color: var(--wp--preset--color--azure-web) !important;
+    background-color: #8f8e8e !important;
 }
 
 /* حالت گسترش یافته هدر در دسکتاپ */
