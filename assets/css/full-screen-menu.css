@@ -2,7 +2,7 @@
 
 /* منوی تمام صفحه - پایه */
 .full-screen-menu-overlay {
-    /* background: rgba(0, 0, 0, 0.92) !important; */
+    background: rgba(0, 0, 0, 0.92) !important;
     backdrop-filter: blur(15px) !important;
     -webkit-backdrop-filter: blur(15px) !important;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
@@ -23,7 +23,7 @@
     align-items: center !important;
     margin: auto !important;
     position: relative !important;
-    /* background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%) !important; */
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%) !important;
     backdrop-filter: blur(20px) !important;
     border: 1px solid rgba(255,255,255,0.1) !important;
     overflow: hidden !important;
@@ -38,22 +38,22 @@
     justify-content: center !important;
     align-items: center !important;
     position: relative !important;
-    /* background: 
+    background: 
         radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
         radial-gradient(circle at 80% 20%, rgba(255, 139, 147, 0.2) 0%, transparent 50%),
-        radial-gradient(circle at 40% 40%, rgba(99, 179, 237, 0.15) 0%, transparent 50%) !important; */
+        radial-gradient(circle at 40% 40%, rgba(99, 179, 237, 0.15) 0%, transparent 50%) !important;
     box-shadow: 
         inset 0 2px 20px rgba(255,255,255,0.1),
         inset 0 0 0 1px rgba(255,255,255,0.05) !important;
 }
 
-/* آیکون‌های وسط صفحه - مک‌بوک استایل */
+/* رفع مشکل تراز اولین تصویر */
 .menu-icons {
     display: grid !important;
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)) !important;
     gap: 40px !important;
     justify-content: center !important;
-    align-items: center !important;
+    align-items: start !important; /* تغییر از center به start */
     padding: 60px 40px !important;
     max-width: 900px !important;
     width: 100% !important;
@@ -61,6 +61,26 @@
     z-index: 2 !important;
 }
 
+/* رفع مشکل aligncenter برای تمام تصاویر */
+.menu-icons .wp-block-image {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+}
+
+.menu-icons .aligncenter {
+    float: none !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* استایل یکسان برای تمام figureها */
 .menu-icons figure {
     width: 120px !important;
     height: 120px !important;
@@ -78,6 +98,21 @@
     padding: 15px !important;
     position: relative !important;
     overflow: hidden !important;
+    margin: 0 !important; /* حذف margin پیشفرض */
+}
+
+/* اطمینان از تراز یکسان تمام آیتم‌ها */
+.menu-icons > .wp-block-group {
+    display: contents !important; /* حذف تأثیر layout والد */
+}
+
+.menu-icons .wp-block-image:first-child figure,
+.menu-icons .wp-block-image:nth-child(2) figure,
+.menu-icons .wp-block-image:nth-child(3) figure,
+.menu-icons .wp-block-image:nth-child(4) figure,
+.menu-icons .wp-block-image:nth-child(5) figure {
+    align-self: center !important;
+    justify-self: center !important;
 }
 
 .menu-icons figure::before {
@@ -112,6 +147,7 @@
     object-fit: contain !important;
     filter: brightness(0) invert(1) !important;
     transition: transform 0.3s ease !important;
+    display: block !important; /* رفع مشکل تراز */
 }
 
 .menu-icons figure:hover img {
@@ -127,6 +163,8 @@
     transition: all 0.3s ease !important;
     position: relative !important;
     z-index: 1 !important;
+    margin-top: 8px !important;
+    line-height: 1.3 !important;
 }
 
 .menu-icons figure:hover figcaption {
@@ -225,6 +263,7 @@
         gap: 30px !important;
         padding: 40px 30px !important;
         max-width: 700px !important;
+        align-items: start !important;
     }
     
     .menu-icons figure {
@@ -266,21 +305,22 @@
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 25px !important;
         padding: 60px 20px 100px 20px !important;
+        align-items: start !important;
     }
     
     .menu-icons figure {
-        width: 50px !important;
-        height: 50 !important;
+        width: 90px !important;
+        height: 90px !important;
         border-radius: 18px !important;
     }
     
     .menu-icons img {
-        width: 25px !important;
-        height: 25px !important;
+        width: 35px !important;
+        height: 35px !important;
     }
     
     .menu-icons figcaption {
-        font-size: 10px !important;
+        font-size: 12px !important;
     }
     
     /* داک آیفون */
@@ -335,6 +375,7 @@
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 20px !important;
         padding: 50px 15px 90px 15px !important;
+        align-items: start !important;
     }
     
     .menu-icons figure {
@@ -395,6 +436,33 @@
 .full-screen-menu-overlay.active .menu-icons figure:nth-child(4) { animation-delay: 0.4s; }
 .full-screen-menu-overlay.active .menu-icons figure:nth-child(5) { animation-delay: 0.5s; }
 
+/* ===== FIX FOR FIRST IMAGE ALIGNMENT ===== */
+/* رفع مشکل تراز اولین تصویر با aligncenter */
+.menu-icons .wp-block-image.aligncenter {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin: 0 !important;
+}
+
+.menu-icons .wp-block-image:first-child {
+    margin-top: 0 !important;
+}
+
+/* اطمینان از تراز عمودی یکسان */
+.menu-icons .wp-block-image {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 100% !important;
+}
+
+.menu-icons .wp-block-image figure {
+    align-self: center !important;
+    justify-self: center !important;
+}
+
 /* ===== ACCESSIBILITY ===== */
 @media (prefers-reduced-motion: reduce) {
     .full-screen-menu-overlay,
@@ -406,8 +474,8 @@
 }
 
 /* حالت تاریک */
-/* @media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark) {
     .full-screen-menu-overlay {
         background: rgba(10, 10, 10, 0.95) !important;
     }
-} */
+}
