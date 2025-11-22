@@ -474,8 +474,8 @@
 }
 
 /* حالت تاریک */
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
     .full-screen-menu-overlay {
         background: rgba(10, 10, 10, 0.95) !important;
-    }
-}
+    } */
+/* } */
