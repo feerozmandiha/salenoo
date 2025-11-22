@@ -1,98 +1,409 @@
+/* ===== STYLES FOR MACBOOK DESKTOP ===== */
+@media (min-width: 1024px) {
+    /* هدر شبیه مک‌بوک */
+    .minimal-vertical-header {
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%) !important;
+        border: 1px solid #404040 !important;
+        box-shadow: 
+            0 0 0 1px rgba(255,255,255,0.1),
+            0 8px 32px rgba(0,0,0,0.3),
+            inset 0 1px 0 rgba(255,255,255,0.1) !important;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+    }
 
+    /* داک مک‌بوک در پایین */
+    .full-screen-menu-overlay .dock {
+        position: fixed !important;
+        bottom: 30px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        background: rgba(255,255,255,0.15) !important;
+        backdrop-filter: blur(40px) !important;
+        -webkit-backdrop-filter: blur(40px) !important;
+        border: 1px solid rgba(255,255,255,0.2) !important;
+        border-radius: 20px !important;
+        padding: 12px 24px !important;
+        min-width: 400px !important;
+        box-shadow: 
+            0 8px 32px rgba(0,0,0,0.2),
+            inset 0 1px 0 rgba(255,255,255,0.1) !important;
+    }
+
+    /* افکت موجی داک مک‌بوک */
+    .dock .wp-block-social-links {
+        gap: 16px !important;
+        justify-content: center !important;
+    }
+
+    .dock .wp-block-social-links li {
+        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+        transform-origin: center bottom !important;
+    }
+
+    .dock .wp-block-social-links li:hover {
+        transform: scale(2.0) translateY(-8px) !important;
+    }
+
+    /* سلسله مراتب در بزرگ شدن */
+    .dock .wp-block-social-links li:hover + li,
+    .dock .wp-block-social-links li:has(+ li:hover) {
+        transform: scale(1.6) translateY(-4px) !important;
+    }
+
+    /* آیکون‌های منوی اصلی */
+    .menu-icons figure {
+        width: 100px !important;
+        height: 100px !important;
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+        filter: drop-shadow(0 6px 12px rgba(0,0,0,0.3)) !important;
+    }
+
+    .menu-icons figure:hover {
+        transform: scale(1.3) translateY(-10px) !important;
+        filter: drop-shadow(0 12px 24px rgba(0,0,0,0.4)) !important;
+    }
+
+    /* دکمه CTA شبیه مک‌بوک */
+    .cta-button-wrapper .cta-button {
+        background: linear-gradient(145deg, #007AFF, #0056CC) !important;
+        border: none !important;
+        border-radius: 12px !important;
+        color: white !important;
+        padding: 14px 24px !important;
+        font-weight: 600 !important;
+        cursor: pointer !important;
+        transition: all 0.3s ease !important;
+        box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4) !important;
+        text-decoration: none !important;
+        display: inline-block !important;
+        text-align: center !important;
+    }
+
+    .cta-button-wrapper .cta-button:hover {
+        transform: translateY(-3px) !important;
+        box-shadow: 0 10px 25px rgba(0, 122, 255, 0.5) !important;
+    }
+}
+
+/* ===== STYLES FOR IPAD TABLET ===== */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .minimal-vertical-header {
+        width: 70px !important;
+        right: 20px !important;
+        top: 20px !important;
+        height: calc(100% - 40px) !important;
+        border-radius: 24px !important;
+        background: rgba(0,0,0,0.7) !important;
+        backdrop-filter: blur(25px) !important;
+        -webkit-backdrop-filter: blur(25px) !important;
+        border: 1px solid rgba(255,255,255,0.15) !important;
+    }
+
+    /* فریم آیپد */
+    body::before {
+        content: '' !important;
+        position: fixed !important;
+        top: 10px !important;
+        left: 10px !important;
+        right: 10px !important;
+        bottom: 10px !important;
+        border: 12px solid #333 !important;
+        border-radius: 38px !important;
+        pointer-events: none !important;
+        z-index: 9999 !important;
+        box-shadow: 0 0 0 1px rgba(255,255,255,0.1) !important;
+    }
+
+    /* داک آیپد */
+    .full-screen-menu-overlay .dock {
+        position: fixed !important;
+        bottom: 20px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        background: rgba(255,255,255,0.9) !important;
+        backdrop-filter: blur(30px) !important;
+        -webkit-backdrop-filter: blur(30px) !important;
+        border: 1px solid rgba(0,0,0,0.1) !important;
+        border-radius: 20px !important;
+        padding: 10px 20px !important;
+        min-width: 350px !important;
+    }
+
+    .menu-icons figure {
+        width: 80px !important;
+        height: 80px !important;
+    }
+}
+
+/* ===== STYLES FOR IPHONE MOBILE ===== */
+@media (max-width: 767px) {
+    .minimal-vertical-header {
+        width: 60px !important;
+        right: 10px !important;
+        top: 10px !important;
+        height: calc(100% - 20px) !important;
+        border-radius: 20px !important;
+        background: rgba(0,0,0,0.8) !important;
+        backdrop-filter: blur(30px) !important;
+        -webkit-backdrop-filter: blur(30px) !important;
+        border: 1px solid rgba(255,255,255,0.1) !important;
+    }
+
+    /* نوار وضعیت آیفون */
+    .minimal-vertical-header::before {
+        content: '' !important;
+        position: absolute !important;
+        top: 12px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: 35% !important;
+        height: 4px !important;
+        background: #fff !important;
+        border-radius: 2px !important;
+        opacity: 0.6 !important;
+    }
+
+    /* ناچ آیفون برای محتوای اصلی */
+    .full-screen-menu-group::before {
+        content: '' !important;
+        position: absolute !important;
+        top: 15px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: 120px !important;
+        height: 25px !important;
+        background: #000 !important;
+        border-radius: 0 0 15px 15px !important;
+        z-index: 10 !important;
+    }
+
+    /* داک آیفون */
+    .full-screen-menu-overlay .dock {
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        background: rgba(255,255,255,0.95) !important;
+        backdrop-filter: blur(25px) !important;
+        -webkit-backdrop-filter: blur(25px) !important;
+        border-top: 1px solid rgba(0,0,0,0.1) !important;
+        padding: 12px 16px !important;
+        border-radius: 25px 25px 0 0 !important;
+        box-shadow: 0 -4px 20px rgba(0,0,0,0.1) !important;
+    }
+
+    .dock .wp-block-social-links {
+        justify-content: space-around !important;
+        gap: 0 !important;
+    }
+}
+
+/* ===== ENHANCED EXISTING STYLES ===== */
 .full-screen-menu-group {
     width: 100%;
     height: 100%;
     display: flex;
-    flex-direction: column;   /* یا row بسته به نیاز */
-    justify-content: center;  /* عمودی وسط */
-    align-items: center;      /* افقی وسط */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }
 
 .full-screen-menu-inner {
-    width: 100%;   /* کم کردن فاصله‌های راست و چپ */
-    height: 100%;  /* کم کردن فاصله‌های بالا و پایین */
+    width: 100%;
+    height: 100%;
     box-shadow: inset 0 2px 8px rgb(0 0 0 / 30%);
-    
     display: flex;
-    flex-direction: column;     /* عناصر به صورت ستونی */
-    justify-content: center;    /* عمودی وسط */
-    align-items: center;        /* افقی وسط */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }
 
-.full-screen-menu-inner-botton {
-    width: 100%;   /* کم کردن فاصله‌های راست و چپ */
-    /* height: 100%;  کم کردن فاصله‌های بالا و پایین */
-    box-shadow: inset 0 2px 8px rgb(0 0 0 / 30%);
-}
-
-
-/* آیکون‌های وسط صفحه */
+/* آیکون‌های وسط صفحه - بهبود یافته */
 .menu-icons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 40px;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    position: relative;
+    z-index: 2;
 }
 
 .menu-icons figure {
-  width: 80px;
-  height: 80px;
-  cursor: pointer;
-  transition: transform 0.3s;
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
 }
 
 .menu-icons figure:hover {
-  transform: scale(1.2);
+    transform: scale(1.2);
 }
 
-/* Dock پایین صفحه */
-.full-screen-menu-inner dock {
-  position: fixed;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 30px;
-  background: rgba(255,255,255,0.7);
-  backdrop-filter: blur(12px);
+.menu-icons figcaption {
+    font-size: 12px;
+    color: currentColor;
+    text-align: center;
+    margin-top: 8px;
+    font-weight: 500;
 }
 
-/* آیکون‌های Dock */
-.dock li {
-  width: 40px;
-  height: 40px;
-  display: flex !important;
-  transition: transform 0.3s;
+/* Dock پایین صفحه - بهبود یافته */
+.dock {
+    position: relative !important;
+    z-index: 100;
+    margin-top: auto;
 }
 
-/* افکت بزرگ شدن هنگام هاور */
-.dock li:hover {
-  transform: scale(1.6);
+.dock .wp-block-social-links {
+    display: flex !important;
+    gap: 20px !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 15px 25px !important;
 }
 
-/* افکت بزرگ شدن هنگام نزدیک شدن موس (شبیه مک) */
-.dock li {
-  transition: transform 0.2s ease-in-out;
-}
-.dock li:hover {
-  transform: scale(1.6);
+.dock .wp-block-social-links li {
+    width: 44px !important;
+    height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+    border-radius: 10px !important;
 }
 
-/* واکنش‌گرایی */
+.dock .wp-block-social-links li:hover {
+    background: rgba(255,255,255,0.2) !important;
+}
+
+/* آیکون منو - انیمیشن پیشرفته */
+.menu-icon {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.menu-icon:hover {
+    transform: scale(1.1);
+}
+
+.menu-icon:hover .arrow-path {
+    stroke: #007AFF !important;
+    transition: stroke 0.3s ease;
+}
+
+.menu-icon:hover .circle-path {
+    stroke: #007AFF !important;
+    transition: stroke 0.3s ease;
+}
+
+/* لوگو - انیمیشن ظریف */
+.logo-container {
+    transition: all 0.5s ease !important;
+}
+
+.logo-container:hover {
+    opacity: 1 !important;
+    transform: translateY(-50%) scale(1.05) !important;
+}
+
+/* ===== RESPONSIVE ENHANCEMENTS ===== */
 @media (max-width: 1024px) {
-  .menu-icons figure { width: 60px; height: 60px; }
-  .dock li { width: 30px; height: 30px; }
+    .menu-icons figure { 
+        width: 70px !important; 
+        height: 70px !important; 
+    }
+    
+    .menu-icons { 
+        gap: 30px !important; 
+        padding: 30px !important;
+    }
+    
+    .dock .wp-block-social-links li { 
+        width: 38px !important; 
+        height: 38px !important; 
+    }
 }
 
 @media (max-width: 768px) {
-  .menu-icons figure { width: 50px; height: 50px; }
-  .dock { gap: 20px; padding: 8px 16px; }
+    .menu-icons figure { 
+        width: 60px !important; 
+        height: 60px !important; 
+    }
+    
+    .menu-icons { 
+        gap: 25px !important; 
+        padding: 25px !important;
+    }
+    
+    .dock .wp-block-social-links { 
+        gap: 15px !important; 
+        padding: 12px 20px !important;
+    }
+    
+    .dock .wp-block-social-links li { 
+        width: 36px !important; 
+        height: 36px !important; 
+    }
 }
 
 @media (max-width: 480px) {
-  .menu-icons { row-gap: 17px; column-gap: 17px;}
-  .menu-icons figure { width: 40px; height: 40px; }
-  .menu-icons figure figcaption{
-    display: none;
-  }
-  .dock li { width: 25px; height: 25px; }
+    .menu-icons { 
+        row-gap: 20px !important; 
+        column-gap: 20px !important;
+    }
+    
+    .menu-icons figure { 
+        width: 55px !important; 
+        height: 55px !important; 
+    }
+    
+    .menu-icons figure figcaption {
+        display: block !important; /* نمایش در موبایل */
+        font-size: 10px !important;
+    }
+    
+    .dock .wp-block-social-links li { 
+        width: 32px !important; 
+        height: 32px !important; 
+    }
+    
+    .full-screen-menu-group::before {
+        width: 100px !important;
+        height: 20px !important;
+    }
+}
+
+/* ===== ACCESSIBILITY ENHANCEMENTS ===== */
+@media (prefers-reduced-motion: reduce) {
+    .minimal-vertical-header,
+    .full-screen-menu-overlay,
+    .menu-icons figure,
+    .dock li,
+    .menu-icon,
+    .logo-container,
+    .cta-button {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* ===== DARK MODE SUPPORT ===== */
+@media (prefers-color-scheme: dark) {
+    .minimal-vertical-header {
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%) !important;
+    }
+    
+    .full-screen-menu-overlay .dock {
+        background: rgba(0,0,0,0.8) !important;
+        border-color: rgba(255,255,255,0.1) !important;
+    }
 }
