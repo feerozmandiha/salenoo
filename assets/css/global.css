@@ -167,8 +167,8 @@
     direction: rtl;
     position: fixed;
     top: 1rem;
-    right: 9rem;
-    width: calc(100% - 10rem);
+    right: 7rem;
+    width: calc(100% - 7rem);
     height: calc(100vh - 2rem);
     z-index: 999;
     opacity: 0;
