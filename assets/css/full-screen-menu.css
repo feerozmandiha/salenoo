@@ -29,40 +29,182 @@
     overflow: hidden !important;
 }
 
-.laptop {
-    position: relative;
-    width: 100%;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-
+/* استایل زیر منوی تمام صفحه*/
+.scene {
+    position:relative;
+    filter:drop-shadow(0 30px 60px rgba(0,0,0,0.6))
+           drop-shadow(0 8px 24px rgba(0,0,0,0.4));
 }
 
-.rubber-foot {
-  position: absolute;
-  bottom: -5px;
-  width: 20px;
-  height: 5px;
-  background-color: #333;
-  border-radius: 3px;
-}
 
-.rubber-foot.left {
-  left: 20px;
-}
+  /* بدنه پایینی لپ‌تاپ (لبه جلویی) */
+  .mac-edge{
+    height:76px;
+    border-radius:22px;
+    position:relative;
+    overflow:visible;
 
-.rubber-foot.right {
-  right: 20px;
-}
+    /* پس‌زمینه چند‌لایه با گرادیان‌های دقیق آلومینیومی */
+    background:
+      /* باند نیم‌شفاف هایلایت روی لبه */
+      linear-gradient(to bottom,
+        transparent 0%,
+        var(--edge-sheen) 8%,
+        var(--edge-sheen-2) 15%,
+        transparent 32%) ,
+      /* نوار تغییر تونالیته (نیمه بالایی) */
+      linear-gradient(to bottom,
+        var(--aluminum-lit) 0%,
+        var(--aluminum-md) 28%,
+        var(--aluminum) 48%),
+      /* گرادیان عرضی برای حس فلز برس‌خورده */
+      linear-gradient(90deg,
+        rgba(255,255,255,0.07) 0%,
+        transparent 12%,
+        rgba(0,0,0,0.10) 28%,
+        transparent 50%,
+        rgba(255,255,255,0.06) 72%,
+        transparent 88%,
+        rgba(0,0,0,0.12) 100%),
+      /* گرادیان محیطی عمیق‌تر */
+      radial-gradient(220% 90% at 50% -40%,
+        var(--aluminum-dk) 0%,
+        var(--aluminum) 48%,
+        var(--aluminum-md) 82%,
+        var(--aluminum-lit) 100%);
+    background-blend-mode: soft-light, normal, overlay, normal;
 
-.indentation {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 10px;
-  background-color: #222;
-  border-radius: 0 0 10px 10px;
-}
+    /* سایه‌های چند‌لایه برای حجم‌دهی */
+    box-shadow:
+      /* سایه اصلی زیر لبه */
+      0 20px 30px -12px var(--shadow-strong),
+      /* سایه نرم گسترده */
+      0 18px 60px -10px var(--shadow-md),
+      /* هاله بسیار نرم */
+      0 4px 12px -4px var(--shadow-soft),
+      inset 0 1px 0 rgba(255,255,255,0.05),
+      inset 0 -1px 0 rgba(0,0,0,0.25);
+  }
+
+  /* لبه فوقانی (برآمدگی خیلی نازک برای حس ضخامت) */
+  .mac-edge::before{
+    content:"";
+    position:absolute;
+    left:8px; right:8px; top:-6px; height:8px;
+    border-radius:14px 14px 10px 10px;
+    background:
+      linear-gradient(to bottom,
+        rgba(255,255,255,0.18) 0%,
+        rgba(255,255,255,0.06) 48%,
+        rgba(0,0,0,0.18) 100%);
+    box-shadow:
+      0 6px 10px -6px var(--shadow-md),
+      inset 0 1px 0 rgba(255,255,255,0.25);
+    filter:contrast(1.02) saturate(0.94);
+  }
+
+  /* شیار مرکزی (indention) برای باز کردن درِ لپ‌تاپ */
+  .notch{
+    position:absolute;
+    left:50%; transform:translateX(-50%);
+    bottom:0;
+    width:112px; height:28px;
+    border-bottom-left-radius:18px;
+    border-bottom-right-radius:18px;
+    border-top-left-radius:12px;
+    border-top-right-radius:12px;
+    overflow:hidden;
+
+    background:
+      /* براقیت بالایی داخل شیار */
+      linear-gradient(to bottom,
+        rgba(255,255,255,0.16) 0%,
+        rgba(255,255,255,0.08) 22%,
+        rgba(0,0,0,0.15) 48%,
+        rgba(0,0,0,0.35) 100%),
+      /* عمق تیره داخل شیار */
+      radial-gradient(80% 120% at 50% 40%,
+        rgba(0,0,0,0.55) 0%,
+        rgba(0,0,0,0.7) 60%,
+        rgba(0,0,0,0.85) 100%);
+    background-blend-mode: screen, normal;
+
+    box-shadow:
+      /* سایه خارجی شیار */
+      0 10px 16px -8px var(--shadow-strong),
+      /* سایه کناری برای حس فرورفتگی */
+      inset 0 10px 12px -8px rgba(255,255,255,0.10),
+      inset 0 -12px 18px -8px rgba(0,0,0,0.65),
+      inset 0 1px 0 rgba(255,255,255,0.15);
+  }
+
+  /* لبه‌های داخلی شیار با انحنای دقیق */
+  .notch::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:inherit;
+    background:
+      conic-gradient(from 210deg at 12% 92%,
+        rgba(255,255,255,0.14), transparent 30%) ,
+      conic-gradient(from -30deg at 88% 92%,
+        rgba(255,255,255,0.14), transparent 30%);
+    mix-blend-mode:screen;
+    opacity:.8;
+    pointer-events:none;
+  }
+
+  /* کف لاستیکی‌های کوچک (گوشه‌ها) */
+  .feet{
+    position:absolute; bottom:-6px;
+    width:14px; height:6px;
+    border-radius:10px;
+    background:
+      linear-gradient(to bottom,
+        #0a0c0e 0%, #0b0d10 40%, #0e1114 100%);
+    box-shadow:
+      0 2px 6px -2px rgba(0,0,0,0.55),
+      inset 0 1px 0 rgba(255,255,255,0.08);
+    filter:saturate(0.9);
+  }
+  .feet.left{ left:22px; }
+  .feet.right{ right:22px; }
+
+  /* لبۀ زیرین خیلی نازک برای جداسازی از پس‌زمینه */
+  .underline{
+    position:absolute; bottom:-1px; left:12px; right:12px; height:2px;
+    border-radius:2px;
+    background:
+      linear-gradient(to right,
+        rgba(255,255,255,0.06), rgba(255,255,255,0.0) 30%,
+        rgba(255,255,255,0.0) 70%, rgba(255,255,255,0.06));
+    opacity:.6;
+  }
+
+  /* اندک بوکه نور خیلی نرم روی بدنه برای حس متریال پریمیوم */
+  .mac-edge::after{
+    content:"";
+    position:absolute; inset:-10% -4% 0 -4%;
+    pointer-events:none;
+    background:
+      radial-gradient(160px 48px at 26% 22%, rgba(255,255,255,0.08), transparent 60%),
+      radial-gradient(220px 62px at 78% 18%, rgba(255,255,255,0.06), transparent 62%);
+    mix-blend-mode:soft-light;
+  }
+
+  /* بازتاب بسیار ظریف زیر دستگاه برای واقع‌گرایی */
+  .reflection{
+    position:absolute; left:6%; right:6%; bottom:-34px; height:36px;
+    border-radius:18px;
+    background:
+      linear-gradient(to bottom,
+        rgba(255,255,255,0.06) 0%,
+        rgba(255,255,255,0.02) 28%,
+        rgba(0,0,0,0.20) 100%);
+    filter:blur(2px) saturate(0.9);
+    opacity:.35;
+  }
+
 
 /* پس‌زمینه داخلی با افکت شیشه‌ای */
 .full-screen-menu-inner {
