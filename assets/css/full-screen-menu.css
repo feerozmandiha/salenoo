@@ -41,114 +41,161 @@
   .macbook-pro-edge-desktop-only {
     display: block;
     position: relative;
-    width: 100%; /* قابل تنظیم بر اساس تصویر واقعی */
-    margin: 0 auto;
+    width: 100%; /* ← قابل تنظیم بر اساس تصویر واقعی */
+    margin: 30px auto;
     overflow: visible;
   }
 
-  /* بدنه اصلی — بدون تغییر در نام یا ساختار */
+  /* === بدنه اصلی: فلز مشکی مات با بافت نوری === */
   .edge-main {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: 
-      linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 45%, #121212 100%),
-      linear-gradient(90deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.02) 100%);
-    box-shadow: 
-      inset 0 3px 8px rgba(0,0,0,0.5),
-      inset 0 -2px 6px rgba(0,0,0,0.3),
-      0 6px 16px rgba(0,0,0,0.3);
-    filter: contrast(1.1) brightness(0.95);
+    /* لایه اصلی: رنگ پایه */
+    background-color: #0a0a0a;
+    /* لایه‌های نور: گرادینت‌های ظریف */
+    background-image:
+      /* بازتاب عمودی نرم */
+      linear-gradient(180deg,
+        rgba(255, 255, 255, 0.08) 0%,
+        rgba(255, 255, 255, 0.02) 30%,
+        transparent 60%
+      ),
+      /* بافت افقی نرم (برای جلوگیری از یکنواختی) */
+      linear-gradient(90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.015) 50%,
+        transparent 100%
+      );
+    /* سایه‌های چندلایه برای عمق فیزیکی */
+    box-shadow:
+      /* سایه داخلی روشن (top) */
+      inset 0 1px 2px rgba(255, 255, 255, 0.06),
+      /* سایه داخلی تیره (bottom) */
+      inset 0 -2px 6px rgba(0, 0, 0, 0.55),
+      /* سایه خارجی پایین */
+      0 6px 18px rgba(0, 0, 0, 0.35);
+    /* تنظیمات نور و کنتراست برای واقع‌گرایی */
+    filter: contrast(1.15) brightness(0.98);
   }
 
-  /* خط بازتاب مرکزی — حالا جای خود فرورفتگی را می‌دهد */
-  .edge-highlight {
-    position: absolute;
-    top: 2px;
-    left: 12%;
-    right: 12%;
-    height: 3px;
-    background: linear-gradient(to right, transparent, rgba(255,255,255,0.08), transparent);
-    border-radius: 2px;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.3);
-    filter: blur(0.4px);
-    z-index: 2;
-  }
-
-  /* سایه‌های جانبی — بدون تغییر اسم */
-  .edge-shadow-left,
-  .edge-shadow-right {
-    position: absolute;
-    top: 0;
-    height: 100%;
-    width: 18px;
-    z-index: -1;
-  }
-
-  .edge-shadow-left {
-    left: 0;
-    background: radial-gradient(ellipse at 90% 20%, rgba(255,255,255,0.15) 0%, transparent 60%),
-                radial-gradient(ellipse at 80% 50%, rgba(0,0,0,0.5) 0%, transparent 80%);
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-  }
-
-  .edge-shadow-right {
-    right: 0;
-    background: radial-gradient(ellipse at 10% 20%, rgba(255,255,255,0.15) 0%, transparent 60%),
-                radial-gradient(ellipse at 20% 50%, rgba(0,0,0,0.5) 0%, transparent 80%);
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-  }
-
-  /* سایه پایینی */
-  .edge-bottom-glow {
-    position: absolute;
-    bottom: -10px;
-    left: 0;
-    right: 0;
-    height: 12px;
-    background: 
-      radial-gradient(circle at 20% 50%, rgba(0,0,0,0.2) 0%, transparent 50%),
-      radial-gradient(circle at 80% 50%, rgba(0,0,0,0.2) 0%, transparent 50%);
-    filter: blur(4px);
-    opacity: 0.6;
-    z-index: -2;
-  }
-
-  /* ✨ المان جدید: فرورفتگی مرکزی 150px */
+  /* === فرورفتگی مرکزی 150px === */
   .edge-center-inset {
     position: absolute;
     top: 2px;
     left: 50%;
     transform: translateX(-50%);
     width: 150px;
-    background: transparent;
+    height: 6px;
     border-radius: 3px;
+    /* شبیه‌سازی یک شیار فیزیکی */
     box-shadow:
-      inset 0 1px 2px rgba(0,0,0,0.6),
-      inset 0 -1px 3px rgba(0,0,0,0.5),
-      0 -1px 1px rgba(255,255,255,0.07);
-    z-index: 3;
+      /* لبه بالایی روشن (بازتاب نور) */
+      inset 0 -1px 0 rgba(255, 255, 255, 0.07),
+      /* سایه داخلی تیره */
+      inset 0 2px 4px rgba(0, 0, 0, 0.4),
+      /* سایه خارجی پایین برای جداکردن */
+      0 1px 2px rgba(0, 0, 0, 0.2);
+    z-index: 4;
   }
 
-  /* لایه نور عمودی — محو از بالا تا وسط */
+  /* === نوار بازتاب مرکزی (بالای فرورفتگی) === */
+  .edge-highlight {
+    position: absolute;
+    top: 1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 160px; /* کمی بزرگ‌تر از فرورفتگی */
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.18) 30%,
+      rgba(255, 255, 255, 0.25) 50%,
+      rgba(255, 255, 255, 0.18) 70%,
+      transparent
+    );
+    border-radius: 1px;
+    filter: blur(0.6px);
+    z-index: 5;
+  }
+
+  /* === انعکاس نور در گوشه‌ها — پیشرفته با radial-gradient === */
+  .edge-shadow-left,
+  .edge-shadow-right {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 24px;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .edge-shadow-left {
+    left: 0;
+    /* گرادینت رادیال: نور از بالا-وسط به پایین-چپ محو می‌شود */
+    background: radial-gradient(
+      ellipse at 95% 15%,
+      rgba(255, 255, 255, 0.22) 0%,
+      rgba(255, 255, 255, 0.09) 25%,
+      rgba(255, 255, 255, 0.03) 45%,
+      transparent 80%
+    );
+    mask: linear-gradient(to right, black 70%, transparent 100%);
+  }
+
+  .edge-shadow-right {
+    right: 0;
+    /* گرادینت رادیال: نور از بالا-وسط به پایین-راست محو می‌شود */
+    background: radial-gradient(
+      ellipse at 5% 15%,
+      rgba(255, 255, 255, 0.22) 0%,
+      rgba(255, 255, 255, 0.09) 25%,
+      rgba(255, 255, 255, 0.03) 45%,
+      transparent 80%
+    );
+    mask: linear-gradient(to left, black 70%, transparent 100%);
+  }
+
+  /* === سایه پایینی برای حجم === */
+  .edge-bottom-glow {
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 720px;
+    height: 14px;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(0, 0, 0, 0.22) 0%,
+      transparent 70%
+    );
+    filter: blur(6px);
+    opacity: 0.65;
+    z-index: -1;
+  }
+
+  /* === لایه نور عمودی عمیق‌تر (بهبود شده) === */
   .edge-main::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 60%;
-    background: linear-gradient(180deg,
-      rgba(255,255,255,0.12) 0%,
-      rgba(255,255,255,0.04) 40%,
-      transparent 100%
+    height: 100%;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.11) 0%,
+      rgba(255, 255, 255, 0.05) 20%,
+      rgba(255, 255, 255, 0.02) 40%,
+      transparent 70%
     );
     pointer-events: none;
-    z-index: 1;
+    z-index: 2;
     mix-blend-mode: overlay;
-    opacity: 0.9;
+    opacity: 0.92;
   }
 }
 
