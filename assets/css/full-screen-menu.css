@@ -423,7 +423,11 @@
     .full-screen-menu-group {
         width: 92% !important;
         height: 92% !important;
-        border-radius: 30px !important;
+        border-radius: 20px !important;
+        margin-top: 5px;
+        margin-right: 5px;
+        margin-left: 5px;
+        margin-bottom: 5px;
     }
     
     .menu-icons {
