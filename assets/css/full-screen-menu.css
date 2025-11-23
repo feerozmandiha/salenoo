@@ -41,6 +41,7 @@
 @media only screen and (min-width: 1025px) {
   .macbook-pro-edge-desktop-only {
     display: block;
+    width: 100%;
     position: relative;
     margin: 0 auto; /* مرکز کردن در صفحه */
     overflow: hidden;
