@@ -88,8 +88,6 @@
     left: 50%;
     transform: translateX(-50%);
     width: 150px;
-    height: 6px;
-    border-radius: 3px;
     /* شبیه‌سازی یک شیار فیزیکی */
     box-shadow:
       /* لبه بالایی روشن (بازتاب نور) */
