@@ -32,23 +32,22 @@
 }
 
 /* ساخت لبه پایین لب تاپ در حالت دسکتاپ */
-/* پیش‌فرض: المان مخفی است */
+/* پیش‌فرض: مخفی در غیر از دسکتاپ */
 .macbook-pro-edge-desktop-only {
   display: none;
 }
 
-/* فقط در دسکتاپ (عرض ≥ 1025px) فعال شود */
 @media only screen and (min-width: 1025px) {
   .macbook-pro-edge-desktop-only {
     display: block;
-    width: 100%;
     position: relative;
-    margin: 0 auto; /* مرکز کردن در صفحه */
-    overflow: hidden;
-    /* ❌ بدون background-color یا border برای پس‌زمینه صفحه */
+    width: 100%; /* قابل تنظیم بر اساس تصویر واقعی */
+    margin: 0 auto;
+    overflow: visible;
   }
 
-  .macbook-pro-edge-desktop-only .edge-main {
+  /* بدنه اصلی — بدون تغییر در نام یا ساختار */
+  .edge-main {
     position: absolute;
     top: 0;
     left: 0;
@@ -58,52 +57,57 @@
       linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 45%, #121212 100%),
       linear-gradient(90deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.02) 100%);
     box-shadow: 
-      inset 0 4px 10px rgba(0,0,0,0.6),
-      inset 0 -3px 8px rgba(0,0,0,0.4),
-      0 8px 20px rgba(0,0,0,0.35);
+      inset 0 3px 8px rgba(0,0,0,0.5),
+      inset 0 -2px 6px rgba(0,0,0,0.3),
+      0 6px 16px rgba(0,0,0,0.3);
     filter: contrast(1.1) brightness(0.95);
   }
 
-  .macbook-pro-edge-desktop-only .edge-highlight {
+  /* خط بازتاب مرکزی — حالا جای خود فرورفتگی را می‌دهد */
+  .edge-highlight {
     position: absolute;
     top: 2px;
     left: 12%;
     right: 12%;
-    height: 4px;
-    background: linear-gradient(to right, transparent, rgba(255,255,255,0.12), transparent);
+    height: 3px;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.08), transparent);
     border-radius: 2px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.4);
-    filter: blur(0.5px);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    filter: blur(0.4px);
     z-index: 2;
   }
 
-  .macbook-pro-edge-desktop-only .edge-shadow-left,
-  .macbook-pro-edge-desktop-only .edge-shadow-right {
+  /* سایه‌های جانبی — بدون تغییر اسم */
+  .edge-shadow-left,
+  .edge-shadow-right {
     position: absolute;
     top: 0;
     height: 100%;
-    width: 16px;
+    width: 18px;
     z-index: -1;
   }
 
-  .macbook-pro-edge-desktop-only .edge-shadow-left {
+  .edge-shadow-left {
     left: 0;
-    background: radial-gradient(circle at 80% 50%, rgba(0,0,0,0.6) 0%, transparent 70%);
+    background: radial-gradient(ellipse at 90% 20%, rgba(255,255,255,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 50%, rgba(0,0,0,0.5) 0%, transparent 80%);
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
   }
 
-  .macbook-pro-edge-desktop-only .edge-shadow-right {
+  .edge-shadow-right {
     right: 0;
-    background: radial-gradient(circle at 20% 50%, rgba(0,0,0,0.6) 0%, transparent 70%);
+    background: radial-gradient(ellipse at 10% 20%, rgba(255,255,255,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 20% 50%, rgba(0,0,0,0.5) 0%, transparent 80%);
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
   }
 
-  .macbook-pro-edge-desktop-only .edge-bottom-glow {
+  /* سایه پایینی */
+  .edge-bottom-glow {
     position: absolute;
     bottom: -10px;
     left: 0;
     right: 0;
-    height: 10px;
+    height: 12px;
     background: 
       radial-gradient(circle at 20% 50%, rgba(0,0,0,0.2) 0%, transparent 50%),
       radial-gradient(circle at 80% 50%, rgba(0,0,0,0.2) 0%, transparent 50%);
@@ -112,18 +116,39 @@
     z-index: -2;
   }
 
-  .macbook-pro-edge-desktop-only .edge-main::before {
+  /* ✨ المان جدید: فرورفتگی مرکزی 150px */
+  .edge-center-inset {
+    position: absolute;
+    top: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150px;
+    background: transparent;
+    border-radius: 3px;
+    box-shadow:
+      inset 0 1px 2px rgba(0,0,0,0.6),
+      inset 0 -1px 3px rgba(0,0,0,0.5),
+      0 -1px 1px rgba(255,255,255,0.07);
+    z-index: 3;
+  }
+
+  /* لایه نور عمودی — محو از بالا تا وسط */
+  .edge-main::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0;
-    background: 
-      linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 20%),
-      linear-gradient(0deg, rgba(255,255,255,0.02) 0%, transparent 30%);
+    height: 60%;
+    background: linear-gradient(180deg,
+      rgba(255,255,255,0.12) 0%,
+      rgba(255,255,255,0.04) 40%,
+      transparent 100%
+    );
     pointer-events: none;
     z-index: 1;
+    mix-blend-mode: overlay;
+    opacity: 0.9;
   }
 }
 
