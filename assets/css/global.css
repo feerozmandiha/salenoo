@@ -207,7 +207,7 @@
         transform: none;
 
         backdrop-filter: blur(4px) !important;
-        background-color: rgb(0 0 0 / 9%) !important;
+        background-color: rgba(0, 0, 0, 0.42) !important;
         
         /* جلوگیری از تغییر ارتفاع در موبایل */
         transition: none !important;
