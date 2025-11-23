@@ -517,7 +517,7 @@ class VerticalHeaderAnimator {
             });
         } else if (isScrollingDown && st > threshold) {
             gsap.to(this.header, {
-                y: -headerHeight - 12,
+                y: -headerHeight - 14,
                 duration: 0.4,
                 ease: 'power2.in'
             });
