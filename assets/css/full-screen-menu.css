@@ -68,6 +68,27 @@
   z-index: 2;
 }
 
+/* سایه‌های جانبی گرد و محو (برای ایجاد حجم) */
+.edge-shadow-left,
+.edge-shadow-right {
+  position: absolute;
+  top: 0;
+  width: 16px;
+  z-index: -1;
+}
+
+.edge-shadow-left {
+  left: 0;
+  background: radial-gradient(circle at 80% 50%, rgba(0,0,0,0.6) 0%, transparent 70%);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.edge-shadow-right {
+  right: 0;
+  background: radial-gradient(circle at 20% 50%, rgba(0,0,0,0.6) 0%, transparent 70%);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
 /* +++++++++++++++++++++++++++++++++++++++++++++++++ */
 /* پس‌زمینه داخلی با افکت شیشه‌ای */
 .full-screen-menu-inner {
