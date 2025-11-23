@@ -498,7 +498,7 @@
     /* داک آیفون */
     .dock {
         position: fixed !important;
-        bottom: 10px !important;
+        /* bottom: 10px !important; */
         left: 0 !important;
         right: 0 !important;
         transform: none !important;
