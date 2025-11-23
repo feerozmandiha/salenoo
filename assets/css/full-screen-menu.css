@@ -476,7 +476,7 @@
     .menu-icons {
         grid-template-columns: repeat(3, 1fr) !important;
         gap: 25px !important;
-        padding: 60px 20px 92px 20px !important;
+        padding: 60px 20px 100px 20px !important;
         align-items: start !important;
     }
     
@@ -520,7 +520,7 @@
         width: 40px !important;
         height: 40px !important;
         background: transparent !important;
-        margin-right: 20px;
+        margin-right: 20px !important;
     }
     
     .dock .wp-social-link svg {
