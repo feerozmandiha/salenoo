@@ -203,7 +203,7 @@
     height: 100% !important;
     display: flex !important;
     flex-direction: column !important;
-    justify-content: center !important;
+    /* justify-content: center !important; */
     align-items: center !important;
     position: relative !important;
     /* background: radial-gradient(circle at 20% 80%, rgba(120, 119, 1
