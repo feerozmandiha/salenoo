@@ -42,7 +42,6 @@
   .macbook-pro-edge-desktop-only {
     display: block;
     position: relative;
-    width: 800px; /* اندازه دقیق تصویر اصلی — قابل تنظیم */
     margin: 0 auto; /* مرکز کردن در صفحه */
     overflow: hidden;
     /* ❌ بدون background-color یا border برای پس‌زمینه صفحه */
