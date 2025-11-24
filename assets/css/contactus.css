@@ -1,17 +1,13 @@
 /* ===== Contact Page Base ===== */
 :root{
-  --c-bg: #ffffff;
   --c-accent: #0b73ff;     /* رنگ تاکید */
-  --c-text: #222;
   --c-muted: #6b6f76;
   --max-width: 1100px;
   --radius: 12px;
-  --card-shadow: 0 10px 30px rgba(10,15,25,0.06);
 }
 
 /* Wrapper general */
 .wp-block-group.contact-hero,
-.wp-block-group.contact-map,
 .wp-block-group.footer-note{
   width: 100%;
   max-width: var(--max-width);
@@ -23,19 +19,15 @@
 /* HERO */
 .wp-block-group.contact-hero{
   background: linear-gradient(180deg, rgba(11,115,255,0.06), rgba(11,115,255,0.02));
-  border-radius: var(--radius);
   display:flex;
   flex-direction:column;
   gap:8px;
   align-items:flex-start;
-  box-shadow: var(--card-shadow);
-  padding: 36px 32px;
   direction: rtl; /* RTL */
 }
 .wp-block-group.contact-hero .wp-block-heading{
   margin:0;
   font-size: 30px;
-  color: var(--c-text);
   font-weight: 700;
   line-height:1.05;
 }
@@ -66,43 +58,37 @@
 /* Card look for both columns */
 .contact-form-col > .wp-block-group,
 .contact-info-col > .wp-block-group{
-  background: var(--c-bg);
-  border-radius: 12px;
   padding: 22px;
-  box-shadow: var(--card-shadow);
 }
 
 /* Form styling */
-.cf-form { font-family: inherit; color: var(--c-text); }
+.cf-form { font-family: inherit;}
 .cf-row { display:block; margin-bottom:14px; }
 .cf-label { display:block; font-size:13px; color:var(--c-muted); margin-bottom:6px; }
 .cf-form input[type="text"],
 .cf-form textarea {
   width:100%;
   padding:10px 12px;
-  border-radius:8px;
   border:1px solid rgba(30,34,39,0.06);
-  background: #fff;
   box-sizing: border-box;
   font-size:14px;
-  color:var(--c-text);
   transition: box-shadow .15s, border-color .15s;
   direction: rtl;
 }
 .cf-form input:focus,
 .cf-form textarea:focus {
   outline:none;
-  border-color: rgba(11,115,255,0.22);
-  box-shadow: 0 6px 20px rgba(11,115,255,0.06);
+  /* border-color: rgba(11,115,255,0.22); */
+  /* box-shadow: 0 6px 20px rgba(11,115,255,0.06); */
 }
 
 /* Submit button */
 .cf-submit {
   display:inline-block;
-  background: var(--c-accent);
-  color:#fff;
+  /* background: var(--c-accent); */
+  /* color:#fff; */
   padding: 11px 18px;
-  border-radius: 10px;
+  /* border-radius: 10px; */
   border: none;
   font-weight: 600;
   cursor: pointer;
