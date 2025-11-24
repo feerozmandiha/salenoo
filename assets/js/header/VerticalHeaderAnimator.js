@@ -501,8 +501,11 @@ class VerticalHeaderAnimator {
     }
 
     handleScroll() {
-        if (this.isDesktop || this.isMenuOpen) return;
+        // اگر منو باز است، کاملاً از اسکرول جلوگیری کن
+        if (this.isMenuOpen) return;
         
+        // فقط برای موبایل و تبلت ادامه بده
+        if (this.isDesktop) return;        
         const st = window.scrollY;
         const headerHeight = this.header.offsetHeight;
         const threshold = headerHeight;
