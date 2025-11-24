@@ -290,6 +290,9 @@
 						"left": "var(--wp--preset--spacing--40)",
 						"right": "var(--wp--preset--spacing--40)"
 					}
+				},
+				"typography": {
+					"textAlign": "justify"
 				}
 			},
 			"core/image": {
