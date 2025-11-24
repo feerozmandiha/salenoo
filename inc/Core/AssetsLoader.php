@@ -76,6 +76,7 @@ class AssetsLoader {
             'salnama-theme-global' => '/css/global.css',
             'salnama-theme-menu' => '/css/full-screen-menu.css',
             'salnama-theme-404' => '/css/404.css',
+            'salnama-theme-contactus' => '/css/contactus.css',
         ];
 
         foreach ($styles as $handle => $path) {
