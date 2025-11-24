@@ -292,7 +292,7 @@
     .full-screen-menu-overlay {
         right: 1rem;
         width: calc(100% - 2rem);
-        height: calc(100% + 1rem);
+        height: calc(100% + 2rem);
     }
 
 }
