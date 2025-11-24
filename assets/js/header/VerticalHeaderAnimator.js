@@ -330,10 +330,29 @@ class VerticalHeaderAnimator {
             }
         });
 
-        // جلوگیری از بسته شدن منو با کلیک روی محتوای منو
-        const menuContent = this.overlay.querySelector('.full-screen-menu-inner');
+        // اضافه کردن کلیک روی full-screen-menu-inner برای بستن منو
+        const menuInner = this.overlay.querySelector('.full-screen-menu-inner');
+        if (menuInner) {
+            menuInner.addEventListener('click', (e) => {
+                // فقط اگر روی خود container کلیک شده (نه روی آیتم‌های داخلی)
+                if (e.target === menuInner) {
+                    this.toggleMenu();
+                }
+            });
+        }
+
+        // جلوگیری از بسته شدن منو با کلیک روی محتوای منو (آیتم‌ها)
+        const menuContent = this.overlay.querySelector('.menu-icons');
         if (menuContent) {
             menuContent.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+        }
+
+        // جلوگیری از بسته شدن منو با کلیک روی داک
+        const dock = this.overlay.querySelector('.dock');
+        if (dock) {
+            dock.addEventListener('click', (e) => {
                 e.stopPropagation();
             });
         }
