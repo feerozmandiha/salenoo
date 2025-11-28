@@ -20,9 +20,9 @@ class HeaderAnimationManager {
             // اسکریپت انیمیشن‌های هدر
             wp_enqueue_script(
                 'salnama-header-animations',
-                get_template_directory_uri() . '/assets/js/header/VerticalHeaderAnimator.js', // ✅ مسیر صحیح
+                SALNAMA_ASSETS_URI . '/js/header/VerticalHeaderAnimator.js', // ✅ مسیر صحیح
                 ['gsap'], // ✅ وابستگی به GSAP
-                filemtime(get_template_directory() . '/assets/js/header/VerticalHeaderAnimator.js'), // ✅ مسیر باید با مسیر بالا یکسان باشد
+                filemtime(SALNAMA_THEME_PATH . '/assets/js/header/VerticalHeaderAnimator.js'), // ✅ مسیر باید با مسیر بالا یکسان باشد
                 true
             );
 

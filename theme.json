@@ -132,9 +132,9 @@
 		},
 		"spacing": {
 			"spacingScale": {
-					"increment": 0.25,
-					"steps": 7,
-					"unit": "rem"
+				"increment": 0.25,
+				"steps": 7,
+				"unit": "rem"
 			},
 			"spacingSizes": [],
 			"units": [
@@ -203,7 +203,10 @@
 				}
 			]
 		},
-		"useRootPaddingAwareAlignments": true
+		"useRootPaddingAwareAlignments": true,
+		"custom": {
+			"cardShadow": "0 4px 12px rgba(0,0,0,0.15)"
+		}
 	},
 	"styles": {
 		"blocks": {
@@ -263,6 +266,10 @@
 						"right": "var(--wp--preset--spacing--40)",
 						"top": "var(--wp--preset--spacing--20)"
 					}
+				},
+				"variations": {
+					"card": {},
+					"product-card": {}
 				}
 			},
 			"core/heading": {
@@ -282,6 +289,18 @@
 					"margin": {
 						"left": "var(--wp--preset--spacing--40)",
 						"right": "var(--wp--preset--spacing--40)"
+					}
+				},
+				"typography": {
+					"textAlign": "justify"
+				}
+			},
+			"core/image": {
+				"elements": {
+					"caption": {
+						"typography": {
+							"textAlign": "center"
+						}
 					}
 				}
 			}

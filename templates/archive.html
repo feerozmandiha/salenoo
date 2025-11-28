@@ -1,0 +1,19 @@
+<!-- wp:template-part {"slug":"header","theme":"salnama-theme","area":"header"} /-->
+
+<!-- wp:group {"tagName":"main","layout":{"contentSize":"1200px"}} -->
+<main class="wp-block-group"><!-- wp:heading {"level":1} -->
+<h1 class="wp-block-heading">بلاگ</h1>
+<!-- /wp:heading -->
+
+<!-- wp:query {"queryId":10,"query":{"perPage":10,"postType":"post","order":"desc","orderby":"date"},"layout":{"type":"flex","flexWrap":"nowrap"}} -->
+<div class="wp-block-query"><!-- wp:post-template {"className":"wp-block-group"} -->
+<!-- wp:post-featured-image {"isLink":true,"width":"200"} /-->
+
+<!-- wp:post-title {"level":3,"isLink":true} /-->
+
+<!-- wp:post-excerpt {"moreText":"ادامه"} /-->
+<!-- /wp:post-template --></div>
+<!-- /wp:query --></main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","theme":"salnama-theme","area":"footer"} /-->

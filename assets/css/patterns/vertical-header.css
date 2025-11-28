@@ -1,41 +1,36 @@
 /* ==================================================
-   استایل‌های جهانی و کمکی برای هدر عمودی مینیمال
+   استایل‌های پترن هدر عمودی سالنما
+   نسخه کامل بر اساس کدهای header.html
    ================================================== */
 
 /* --------------------------------------------------
    انیمیشن‌های فلش — فقط با CSS
    -------------------------------------------------- */
-@keyframes arrow-loop-vertical {
+@keyframes salnama-arrow-loop-vertical {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(20px); }
 }
 
-@keyframes arrow-loop-horizontal {
+@keyframes salnama-arrow-loop-horizontal {
     0%, 100% { transform: translateX(0); }
     50% { transform: translateY(20px); }
 }
 
-@keyframes arrow-loop-mobile {
+@keyframes salnama-arrow-loop-mobile {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(15px); }
 }
 
 .arrow-path.animate-loop-initial {
-    animation: arrow-loop-vertical 2.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+    animation: salnama-arrow-loop-vertical 2.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
 }
 
 .arrow-path.animate-loop-hovered {
-    animation: arrow-loop-horizontal 2.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+    animation: salnama-arrow-loop-horizontal 2.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
 }
 
 .arrow-path.animate-loop-mobile {
-    animation: arrow-loop-mobile 2.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
-}
-
-.woocommerce div.product form.cart .variations select,
-.woocommerce div.product form.cart div.quantity .qty,
-.woocommerce .quantity .qty {
-        font-family: inherit;
+    animation: salnama-arrow-loop-mobile 2.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
 }
 
 /* --------------------------------------------------
@@ -54,32 +49,32 @@
 }
 
 /* --------------------------------------------------
-   ورود اولیه هدر و استایل‌های عمومی (حالت دسکتاپ پیش‌فرض)
+   هدر عمودی اصلی
    -------------------------------------------------- */
 .minimal-vertical-header {
     position: fixed;
-    top: 1rem;
-    right: 1rem;
-    width: 15vh;
-    height: 22vh;
-    z-index: 1000;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 8.33%;
+    z-index: 100;
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
     align-items: center;
     box-sizing: border-box;
+    padding: 1.5rem 3rem;
 
     backdrop-filter: blur(4px);
-    background-color: rgba(0, 0, 0, 0.42);
-    transition: height 0.4s ease, backdrop-filter 0.4s ease, background-color 0.4s ease, transform 0.3s ease-in-out;
+    background-color: rgb(247 247 247 / 20%);
+    transition: all 0.3s ease-in-out;
 
     opacity: 0;
     transform: translateY(-150px);
-    animation: header-fade-in 5s 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    padding-bottom: 1rem !important;
+    animation: salnama-header-fade-in 5s 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-@keyframes header-fade-in {
+@keyframes salnama-header-fade-in {
     to {
         opacity: 1;
         transform: translateY(0);
@@ -93,26 +88,22 @@
 
 /* استایل‌های لوگو و CTA برای دسکتاپ */
 .logo-container {
-    /* width: 60%; */
+    width: 60%;
     opacity: 0;
     visibility: hidden;
-    display: none; /* مقدار اولیه در دسکتاپ */
+    display: none;
     transition: opacity 0.3s ease, visibility 0.3s ease;
-    right: -8rem;
-}
-
-.container-footer-logo-site {
-    width: 35%;
+    right: -12rem;
 }
 
 .cta-button-wrapper {
     opacity: 0;
     visibility: hidden;
-    display: none; /* مقدار اولیه در دسکتاپ */
+    display: none;
     text-align: center;
     padding: 0;
     margin-left: 1rem;
-    right: -8rem;
+    right: -12rem;
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
@@ -127,7 +118,7 @@
 }
 
 /* --------------------------------------------------
-   ناحیه آیتم‌های اکشن (اکانت، سبد، CTA)
+   ناحیه آیتم‌های اکشن
    -------------------------------------------------- */
 .action-buttons-container {
     margin-top: auto;
@@ -139,13 +130,15 @@
     width: 100%;
 }
 
-/* --------------------------------------------------
-   حالت باز شده هدر
-   -------------------------------------------------- */
+.action-icons {
+    border-bottom: 2px solid var(--wp--preset--color--brand-blue);
+    margin: var(--wp--preset--spacing--20) 0;
+    gap: var(--wp--preset--spacing--40);
+}
 
 /* کلاس جداگانه برای تغییر رنگ پس‌زمینه */
 .minimal-vertical-header.header--expanded-bg {
-    background-color: #8f8e8e !important;
+    background-color: var(--wp--preset--color--azure-web) !important;
 }
 
 /* حالت گسترش یافته هدر در دسکتاپ */
@@ -156,8 +149,7 @@
 
 /* حالت منو باز در موبایل */
 .minimal-vertical-header.is-menu-open-mobile {
-    /* در موبایل ارتفاع تغییر نمی‌کند */
-    z-index: 1001; /* بالاتر از overlay */
+    z-index: 1001;
 }
 
 /* --------------------------------------------------
@@ -166,72 +158,103 @@
 .full-screen-menu-overlay {
     direction: rtl;
     position: fixed;
-    top: 1rem;
-    right: 7rem;
-    width: calc(100% - 7rem);
-    height: calc(100vh - 1rem);
-    z-index: 999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 90;
     opacity: 0;
     pointer-events: none;
     justify-content: center;
     transition: opacity 0.3s ease;
+    background: rgba(0, 0, 0, 0.95);
 }
-
-
 
 .full-screen-menu-overlay.is-visible {
     opacity: 1;
     pointer-events: auto;
 }
 
+.full-screen-menu-group {
+    border-radius: 30px;
+    padding-top: 3rem;
+    box-shadow: var(--wp--preset--shadow--3-d);
+}
 
+.full-screen-menu-inner {
+    border-radius: 1px;
+    padding: 0;
+}
 
+/* --------------------------------------------------
+   استایل‌های ووکامرس
+   -------------------------------------------------- */
+.wc-block-customer-account__account-icon,
+.wc-block-mini-cart__button {
+    color: currentColor;
+}
+
+/* --------------------------------------------------
+   دکمه CTA
+   -------------------------------------------------- */
+.cta-button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: var(--wp--preset--color--consult-cta);
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+    background: var(--wp--preset--color--primary);
+    transform: translateY(-2px);
+}
 
 /* --------------------------------------------------
    ریسپانسیو (موبایل و تبلت)
    -------------------------------------------------- */
 @media (max-width: 1023px) {
-
-
     .minimal-vertical-header {
-        right: 1rem;
-        width: calc(100% - 2rem);
-        height: 16vh !important; /* ارتفاع ثابت در موبایل */
+        right: 0;
+        width: 100%;
+        height: 16vh !important;
         flex-direction: row !important;
         justify-content: space-between;
         align-items: center;
-
         padding: 0 1.5rem !important;
         animation: none;
         opacity: 1;
         transform: none;
-
         backdrop-filter: blur(4px) !important;
-        background-color: rgba(0, 0, 0, 0.42) !important;
-        
-        /* جلوگیری از تغییر ارتفاع در موبایل */
+        background-color: rgb(0 0 0 / 9%) !important;
         transition: none !important;
     }
 
     /* در موبایل، لوگو و CTA همیشه نمایش داده می‌شوند */
     .minimal-vertical-header > .logo-container {
-        /* position: static !important; */
         opacity: 1 !important;
         visibility: visible !important;
         display: flex !important;
+        position: static !important;
+        transform: none !important;
+        width: auto !important;
     }
 
     .minimal-vertical-header > .cta-button-wrapper {
         opacity: 1 !important;
         visibility: visible !important;
         display: block !important;
+        position: static !important;
+        transform: none !important;
     }
 
     .minimal-vertical-header > .logo-container .custom-logo {
         display: block !important;
         opacity: 1 !important;
         visibility: visible !important;
-        max-height: 4.5rem !important;
+        max-height: 5.5rem !important;
     }
 
     .minimal-vertical-header > .logo-container .wp-block-site-title {
@@ -242,11 +265,14 @@
         margin-right: auto;
         margin-top: 0 !important;
         width: auto !important;
+        flex-direction: row !important;
     }    
 
     .minimal-vertical-header .action-icons {
         flex-direction: row !important;
         gap: 1rem;
+        margin: 0 !important;
+        border-bottom: none !important;
     }
 
     .wp-block-site-title {
@@ -255,17 +281,28 @@
 
     /* فعال کردن انیمیشن فلش vertical در موبایل */
     .arrow-path.animate-loop-mobile {
-        animation: arrow-loop-mobile 2.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite !important;
+        animation: salnama-arrow-loop-mobile 2.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite !important;
     }
     
     .menu-icon {
         transform: none !important;
-        padding: 0px 0 0 1rem;
+        padding: 0 0 0 1rem;
     }
     
     /* جلوگیری از هرگونه تغییر ارتفاع با GSAP در موبایل */
     .minimal-vertical-header {
         height: 17vh !important;
+    }
+
+    .full-screen-menu-overlay {
+        right: 0;
+        width: 100%;
+        top: 0;
+    }
+
+    .full-screen-menu-group {
+        border-radius: 0;
+        height: 100%;
     }
 }
 
@@ -283,18 +320,27 @@
         opacity: 1 !important;
         visibility: visible !important;
         right: 0;
+        margin: 0;
     }
 
     .logo-container {
         right: 0;
+        margin: 0;
     }
 
-    .full-screen-menu-overlay {
-        right: 1rem;
-        width: calc(100% - 2rem);
-        height: calc(100% + 2rem);
+    .header-cta-container {
+        margin: 0;
     }
-
 }
 
-/*3 deepseek
+/* استایل‌های ادیتور */
+@media (min-width: 1024px) {
+    .editor-styles-wrapper .minimal-vertical-header {
+        position: relative !important;
+        height: 300px !important;
+        width: 80px !important;
+        right: 0 !important;
+        top: 0 !important;
+        margin: 20px;
+    }
+}

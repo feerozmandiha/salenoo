@@ -1,21 +1,12 @@
 <?php
 /**
- * AssetsLoader.php
- *
- * کلاس بارگذار هوشمند دارایی‌های قالب.
- * فونت‌ها از طریق theme.json مدیریت می‌شوند.
- * این کلاس فقط فایل‌های CSS/JS عمومی و پشتیبانی RTL را مدیریت می‌کند.
+ * AssetsLoader.php - نسخه نهایی بدون GSAP
  */
 
 namespace Salnama_Theme\Inc\Core;
 
 class AssetsLoader {
 
-    /**
-     * شروع به بارگذاری دارایی‌ها و فعال‌سازی پشتیبانی‌ها می‌کند
-     *
-     * @return void
-     */
     public function run(): void {
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_assets' ] );
         add_action( 'after_setup_theme', [ $this, 'setup_theme_support' ] );
@@ -23,20 +14,10 @@ class AssetsLoader {
         add_filter('render_block',[ $this, 'css_classes_block_filter'], 10, 2);
         add_filter( 'upload_mimes',[ $this,  'salnama_allow_svg_uploads' ] );
         add_filter( 'wp_check_filetype_and_ext', [ $this, 'salnama_check_svg_upload_permission' ] , 10, 4 );
-
-
+        add_action( 'init', [ $this, 'salnama_variations_block_style' ] );
     }
 
-    
-
-
-    /**
-     * فعال‌سازی پشتیبانی‌های لازم برای تم
-     *
-     * @return void
-     */
     public function setup_theme_support(): void {
-        // فعال‌سازی پشتیبانی HTML5
         add_theme_support( 'html5', [
             'search-form',
             'comment-form',
@@ -47,13 +28,9 @@ class AssetsLoader {
             'script',
         ] );
 
-        // فعال‌سازی تصاویر برجسته
         add_theme_support( 'post-thumbnails' );
-
-        // فعال‌سازی پشتیبانی از راست‌به‌چپ (RTL)
         add_theme_support( 'rtl' );
 
-        // پشتیبانی از ووکامرس (در صورت نصب)
         if ( class_exists( 'WooCommerce' ) ) {
             add_theme_support( 'woocommerce' );
             add_theme_support( 'wc-product-gallery-zoom' );
@@ -62,12 +39,9 @@ class AssetsLoader {
         }
     }
 
-
-        // در functions.php یا در header قالب اضافه کنید
     public function inline_css_fouc() {
         ?>
         <style id="salnama-preload-css">
-            /* جلوگیری از FOUC و اطمینان از نمایش المان‌ها */
             [data-salnama-animated="true"] {
                 opacity: 0;
                 visibility: visible !important;
@@ -76,83 +50,57 @@ class AssetsLoader {
         <?php
     }
 
-    // در functions.php یا block filter
     public function css_classes_block_filter($block_content, $block) {
-            if ($block['blockName'] === 'core/post-title') {
-                $block_content = str_replace(
-                    '<h1 class="wp-block-post-title"',
-                    '<h1 class="wp-block-post-title salnama-animated" data-animation-type="typeWriter"',
-                    $block_content
-                );
-            }
-            return $block_content;
+        if ($block['blockName'] === 'core/post-title') {
+            $block_content = str_replace(
+                '<h1 class="wp-block-post-title"',
+                '<h1 class="wp-block-post-title salnama-animated" data-animation-type="typeWriter"',
+                $block_content
+            );
         }
+        return $block_content;
+    }
 
     /**
-     * بارگذاری فایل‌های CSS و JS
-     *
-     * @return void
+     * بارگذاری فایل‌های CSS و JS (بدون GSAP)
      */
     public function enqueue_assets(): void {
         $this->enqueue_styles();
         $this->enqueue_scripts();
     }
 
-    /**
-     * بارگذاری فایل‌های سبک (CSS)
-     *
-     * @return void
-     */
     private function enqueue_styles(): void {
-        // فایل سبک اصلی (برای override یا اصلاحات جزئی)
-        wp_enqueue_style(
-            'salnama-theme-main',
-            SALNAMA_ASSETS_URI . '/css/main.css',
-            [],
-            SALNAMA_THEME_VERSION
-        );
+        // فایل‌های CSS با نام‌های منحصربفرد
+        $styles = [
+            'salnama-theme-main' => '/css/main.css',
+            'salnama-theme-global' => '/css/global.css',
+            'salnama-theme-menu' => '/css/full-screen-menu.css',
+            'salnama-theme-404' => '/css/404.css',
+            'salnama-theme-contactus' => '/css/contactus.css',
+        ];
 
-        wp_enqueue_style(
-            'salnama-theme-menu',
-            SALNAMA_ASSETS_URI . '/css/global.css',
-            [],
-            SALNAMA_THEME_VERSION
-        );
-
+        foreach ($styles as $handle => $path) {
+            wp_enqueue_style(
+                $handle,
+                SALNAMA_ASSETS_URI . $path,
+                [],
+                SALNAMA_THEME_VERSION
+            );
+        }
     }
 
-    /**
-     * بارگذاری اسکریپت‌ها
-     *
-     * @return void
-     */
     private function enqueue_scripts(): void {
 
-            // The core GSAP library
-        // GSAP Core
-        wp_enqueue_script(
-            'gsap',
-            'https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js', 
-            [],
-            '3.13.0',
-            true
-        );
-        
-        // ScrollTrigger Plugin
-        wp_enqueue_script(
-            'scroll-trigger',
-            'https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js', 
-            ['gsap'],
-            '3.13.0',
-            true
-        );
-
+        // انتقال داده‌ها به جاوااسکریپت
         wp_localize_script( 'salnama-theme-main', 'salnama_theme', [
             'ajax_url' => admin_url( 'admin-ajax.php' ),
             'is_rtl'   => is_rtl(),
+            'assets_uri' => SALNAMA_ASSETS_URI,
         ] );
     }
 
+    // حذف کامل متد conditionally_enqueue_gsap و متدهای وابسته
+    
     public function salnama_allow_svg_uploads( $mimes ) {
         $mimes['svg'] = 'image/svg+xml';
         return $mimes;
@@ -167,4 +115,20 @@ class AssetsLoader {
         return $file;
     }
 
+    public function salnama_variations_block_style() {
+        register_block_style('core/group', [
+            'name'  => 'card',
+            'label' => __('Card', 'textdomain'),
+        ]);
+
+        register_block_style('core/group', [
+            'name'  => 'product-card',
+            'label' => __('Product Card', 'textdomain'),
+        ]);
+
+        register_block_style('core/image', [
+            'name'  => 'card-image',
+            'label' => __('Card Image', 'textdomain'),
+        ]);
     }
+}

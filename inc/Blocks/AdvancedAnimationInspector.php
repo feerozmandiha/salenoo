@@ -30,8 +30,8 @@ class AdvancedAnimationInspector {
             return;
         }
 
-        $file_path = get_template_directory() . '/assets/js/editor/advanced-animation-controls.js';
-        $file_url = get_template_directory_uri() . '/assets/js/editor/advanced-animation-controls.js';
+        $file_path = SALNAMA_THEME_PATH . '/assets/js/editor/advanced-animation-controls.js';
+        $file_url = SALNAMA_ASSETS_URI . '/js/editor/advanced-animation-controls.js';
         
         if (!file_exists($file_path)) {
             error_log('❌ Advanced animation controls file missing: ' . $file_path);
@@ -86,7 +86,7 @@ class AdvancedAnimationInspector {
             
             // تنظیمات عمومی
             'settings' => [
-                'themePath' => get_template_directory_uri(),
+                'themePath' => SALNAMA_THEME_URI,
                 'ajaxUrl' => admin_url('admin-ajax.php'),
                 'nonce' => wp_create_nonce('salnama_animation_nonce'),
                 'debugMode' => defined('WP_DEBUG') && WP_DEBUG

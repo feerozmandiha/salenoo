@@ -1,243 +1,382 @@
-// assets/js/gsap/AdvancedAnimations.js
-
-// بررسی اینکه کلاس قبلاً تعریف نشده باشد
-if (typeof AdvancedAnimations === 'undefined') {
-    console.log('🔧 Loading AdvancedAnimations class...');
-
+/**
+ * AdvancedAnimations - نسخه پایدار و بهینه شده
+ * سیستم انیمیشن‌های پیشرفته برای سالنمای نو
+ */
+// بررسی اگر کلاس از قبل تعریف شده است
+if (typeof AdvancedAnimations !== 'undefined') {
+    console.log('⚠️ AdvancedAnimations already defined, skipping re-declaration');
+} else {
     class AdvancedAnimations {
         constructor(engine) {
-            console.log('🎯 AdvancedAnimations constructor called');
             this.engine = engine;
-            this.activeAnimations = new Map();
+            this.typeWriterElements = new Map();
+            this.parallaxElements = new Map();
+            this.magneticButtons = new Map();
+            this.init();
         }
-
-        // انیمیشن تایپ رایتر بهبود یافته برای متن
+        
+        init() {
+            console.log('🚀 Advanced Animations System Initialized');
+        }
+        
+        // ===== TYPEWRITER ANIMATION =====
         typeWriterAnimation(element, duration = 2, delay = 0) {
-            console.log('🔧 typeWriterAnimation called', { element, duration, delay });
-
-            // بررسی اینکه المان معتبر است و متن دارد
-            if (!this.isValidElement(element)) {
+            if (!element) {
                 console.error('❌ Invalid element for typewriter animation');
                 return null;
             }
-
-            const originalText = element.textContent || element.innerText;
-            if (!originalText || originalText.trim() === '') {
-                console.warn('⚠️ No text content for typewriter animation');
-                return this.applyFallbackAnimation(element);
-            }
-
-            console.log('📝 Original text:', originalText);
-
-            // ذخیره متن اصلی و پاک کردن المان
-            element.setAttribute('data-original-text', originalText);
-            element.textContent = '';
             
-            // تنظیم استایل‌های ضروری
-            this.setElementStyles(element, {
-                visibility: 'visible',
-                opacity: '1',
-                display: 'block'
-            });
-
-            const chars = originalText.split('');
-            let currentText = '';
-
+            console.log('🎬 Starting typewriter animation');
+            
+            // پیدا کردن متن
+            const originalText = element.textContent || element.innerText || '';
+            const textToType = originalText.trim() || element.getAttribute('data-text') || '';
+            
+            if (!textToType) {
+                console.warn('⚠️ No text content for typewriter, using fallback');
+                return this.createTypeWriterFallback(element, duration, delay);
+            }
+            
+            console.log('📝 Typewriter text:', textToType.substring(0, 50) + '...');
+            
+            // پاکسازی کامل المان
+            element.textContent = '';
+            element.innerHTML = '';
+            element.style.visibility = 'visible';
+            element.style.opacity = '1';
+            
+            const chars = textToType.split('');
+            const timePerChar = Math.max(duration / chars.length, 0.04); // حداقل سرعت
+            
+            console.log(`⏱️ ${chars.length} chars, ${timePerChar.toFixed(3)}s per char`);
+            
             const timeline = gsap.timeline({
                 delay: delay,
+                onStart: () => {
+                    console.log('🚀 Typewriter animation started');
+                },
                 onComplete: () => {
                     console.log('✅ Typewriter animation completed');
-                    element.style.borderRight = 'none';
-                    this.removeActiveAnimation(element);
+                    element.classList.add('salnama-animation-complete');
                 }
             });
-
-            // محاسبه تاخیر بین کاراکترها
-            const charDuration = duration / Math.max(chars.length, 1);
-
-            chars.forEach((char, index) => {
-                timeline.call(() => {
-                    currentText += char;
+            
+            let currentText = '';
+            
+            // اضافه کردن کاراکترها
+            for (let i = 0; i < chars.length; i++) {
+                timeline.add(() => {
+                    currentText += chars[i];
                     element.textContent = currentText;
-                    
-                    // اضافه کردن cursor effect برای کاراکتر آخر
-                    if (index === chars.length - 1) {
-                        element.style.borderRight = '2px solid currentColor';
-                    }
-                    
-                    console.log('✍️ Typing:', currentText);
-                }, null, index === 0 ? 0 : `+=${charDuration}`);
+                }, i * timePerChar);
+            }
+            
+            this.typeWriterElements.set(element, {
+                timeline: timeline,
+                originalText: textToType
             });
-
-            this.addActiveAnimation(element, timeline);
+            
             return timeline;
         }
-
-        // انیمیشن استاگر برای المان‌های فرزند
-        staggerGridAnimation(element, duration = 0.6, stagger = 0.1, from = 'start') {
-            console.log('🔧 staggerGridAnimation called', { element, duration, stagger, from });
-
-            if (!this.isValidElement(element)) {
-                console.error('❌ Invalid element for stagger animation');
+        
+        createTypeWriterFallback(element, duration, delay) {
+            console.log('🔄 Using fallback fade animation for typewriter');
+            
+            return gsap.fromTo(element, 
+                { 
+                    opacity: 0, 
+                    y: 20 
+                },
+                { 
+                    opacity: 1, 
+                    y: 0, 
+                    duration: duration, 
+                    delay: delay,
+                    ease: "power2.out",
+                    onComplete: () => {
+                        element.classList.add('salnama-animation-complete');
+                    }
+                }
+            );
+        }
+        
+        // ===== STAGGER GRID ANIMATIONS =====
+        staggerGridAnimation(container, duration = 0.8, stagger = 0.1, direction = 'start') {
+            if (!container) {
+                console.error('❌ Invalid container for stagger grid');
                 return null;
             }
-
-            const children = Array.from(element.children);
-            console.log('👶 Children count:', children.length);
-
-            if (children.length === 0) {
-                console.warn('❌ No children found for stagger animation');
-                return this.applyFallbackAnimation(element);
+            
+            const elements = container.children;
+            if (elements.length === 0) {
+                console.warn('⚠️ No child elements found for stagger grid');
+                return null;
             }
-
-            // تنظیم حالت اولیه
-            gsap.set(children, { 
+            
+            console.log(`🎬 Stagger grid: ${elements.length} elements, stagger: ${stagger}s`);
+            
+            // حالت اولیه
+            gsap.set(elements, { 
                 opacity: 0, 
-                y: 30,
-                willChange: 'transform, opacity' // بهینه‌سازی performance
+                y: 30 
             });
-
-            const animation = gsap.to(children, {
+            
+            const timeline = gsap.timeline();
+            
+            timeline.to(elements, {
                 opacity: 1,
                 y: 0,
                 duration: duration,
                 stagger: {
                     each: stagger,
-                    from: from,
-                    ease: "power2.out"
+                    from: direction
                 },
                 ease: "power2.out",
-                onStart: () => {
-                    console.log('🎬 Stagger animation started');
-                },
                 onComplete: () => {
-                    console.log('✅ Stagger animation completed');
-                    // پاک کردن willChange برای جلوگیری از memory issues
-                    gsap.set(children, { willChange: 'auto' });
-                    this.removeActiveAnimation(element);
+                    console.log('✅ Stagger grid completed');
                 }
             });
-
-            this.addActiveAnimation(element, animation);
-            return animation;
+            
+            return timeline;
         }
-
-        // انیمیشن پارالاکس برای اسکرول
-        parallaxAnimation(element, speed = 0.5, trigger = null) {
-            console.log('🔧 parallaxAnimation called', { element, speed, trigger });
-
-            if (!this.isValidElement(element)) {
-                console.error('❌ Invalid element for parallax animation');
-                return null;
-            }
-
-            const parallaxTrigger = trigger || element;
-            const movementDistance = () => {
-                const elementHeight = element.offsetHeight;
-                return -elementHeight * speed;
-            };
-
-            const animation = gsap.to(element, {
-                y: movementDistance,
-                ease: "none",
+        
+        staggerListAnimation(container, duration = 0.6, stagger = 0.08) {
+            if (!container) return null;
+            
+            const elements = container.children;
+            if (elements.length === 0) return null;
+            
+            console.log(`🎬 Stagger list: ${elements.length} elements`);
+            
+            gsap.set(elements, { 
+                opacity: 0, 
+                x: -20 
+            });
+            
+            const timeline = gsap.timeline();
+            
+            timeline.to(elements, {
+                opacity: 1,
+                x: 0,
+                duration: duration,
+                stagger: stagger,
+                ease: "power2.out"
+            });
+            
+            return timeline;
+        }
+        
+        // ===== FLIP ANIMATIONS =====
+        flipInXAnimation(element, duration = 0.8, delay = 0) {
+            if (!element) return null;
+            
+            console.log('🎬 Applying flipInX animation');
+            
+            // ذخیره وضعیت اولیه
+            const originalTransform = element.style.transform;
+            
+            // تنظیمات اولیه
+            gsap.set(element, {
+                rotationX: -90,
+                opacity: 0,
+                transformPerspective: 1000,
+                transformOrigin: "50% 50%"
+            });
+            
+            const timeline = gsap.timeline({
+                delay: delay,
+                onStart: () => {
+                    element.style.visibility = 'visible';
+                },
+                onComplete: () => {
+                    // بازگشت به حالت نرمال
+                    gsap.set(element, { 
+                        clearProps: "rotationX,opacity,transformPerspective,transformOrigin" 
+                    });
+                    element.classList.add('salnama-animation-complete');
+                }
+            });
+            
+            timeline.to(element, {
+                rotationX: 0,
+                opacity: 1,
+                duration: duration,
+                ease: "back.out(1.2)"
+            });
+            
+            return timeline;
+        }
+        
+        flipInYAnimation(element, duration = 0.8, delay = 0) {
+            if (!element) return null;
+            
+            console.log('🎬 Applying flipInY animation');
+            
+            // ذخیره وضعیت اولیه
+            const originalTransform = element.style.transform;
+            
+            // تنظیمات اولیه
+            gsap.set(element, {
+                rotationY: -90,
+                opacity: 0,
+                transformPerspective: 1000,
+                transformOrigin: "50% 50%"
+            });
+            
+            const timeline = gsap.timeline({
+                delay: delay,
+                onStart: () => {
+                    element.style.visibility = 'visible';
+                },
+                onComplete: () => {
+                    // بازگشت به حالت نرمال
+                    gsap.set(element, { 
+                        clearProps: "rotationY,opacity,transformPerspective,transformOrigin" 
+                    });
+                    element.classList.add('salnama-animation-complete');
+                }
+            });
+            
+            timeline.to(element, {
+                rotationY: 0,
+                opacity: 1,
+                duration: duration,
+                ease: "back.out(1.2)"
+            });
+            
+            return timeline;
+        }
+        
+        // ===== ROTATE ANIMATIONS =====
+        rotateInAnimation(element, duration = 0.8, delay = 0) {
+            if (!element) return null;
+            
+            gsap.set(element, {
+                rotation: -180,
+                opacity: 0,
+                transformOrigin: "center center"
+            });
+            
+            const timeline = gsap.timeline({
+                delay: delay,
+                onStart: () => {
+                    element.style.visibility = 'visible';
+                },
+                onComplete: () => {
+                    gsap.set(element, { clearProps: "rotation,opacity" });
+                    element.classList.add('salnama-animation-complete');
+                }
+            });
+            
+            timeline.to(element, {
+                rotation: 0,
+                opacity: 1,
+                duration: duration,
+                ease: "back.out(1.2)"
+            });
+            
+            return timeline;
+        }
+        
+        // ===== PARALLAX SCROLL =====
+        parallaxAnimation(element, speed = 0.3, container = null) {
+            if (!element) return null;
+            
+            console.log('🎬 Parallax scroll animation');
+            
+            const trigger = container || element.parentElement;
+            if (!trigger) return null;
+            
+            const parallaxTimeline = gsap.timeline({
                 scrollTrigger: {
-                    trigger: parallaxTrigger,
+                    trigger: trigger,
                     start: "top bottom",
                     end: "bottom top",
                     scrub: true,
-                    invalidateOnRefresh: true,
-                    onRefresh: () => {
-                        console.log('🔄 Parallax animation refreshed');
-                    }
-                },
-                onComplete: () => {
-                    this.removeActiveAnimation(element);
+                    markers: false
                 }
             });
-
-            console.log('✅ parallaxAnimation completed');
-            this.addActiveAnimation(element, animation);
-            return animation;
+            
+            parallaxTimeline.to(element, {
+                y: speed * 100,
+                ease: "none"
+            });
+            
+            this.parallaxElements.set(element, {
+                timeline: parallaxTimeline,
+                speed: speed
+            });
+            
+            return parallaxTimeline;
         }
-
-        // انیمیشن تغییر گرادیان با مدیریت بهتر
-        gradientShiftAnimation(element, duration = 3, colors = null) {
-            console.log('🔧 gradientShiftAnimation called', { element, duration });
-
-            if (!this.isValidElement(element)) {
-                console.error('❌ Invalid element for gradient animation');
-                return null;
-            }
-
-            // رنگ‌های پیش‌فرض
-            const defaultColors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7'];
-            const gradientColors = colors || defaultColors;
-
-            // بررسی پشتیبانی از background gradient
-            const originalBackground = getComputedStyle(element).background;
-            element.setAttribute('data-original-background', originalBackground);
-
-            const gradientTimeline = gsap.timeline({
-                repeat: -1,
-                yoyo: true,
-                onRepeat: () => {
-                    console.log('🔄 Gradient cycle repeated');
-                }
-            });
-
-            gradientColors.forEach((color, index) => {
-                const nextColor = gradientColors[(index + 1) % gradientColors.length];
-                gradientTimeline.to(element, {
-                    background: `linear-gradient(45deg, ${color}, ${nextColor})`,
-                    duration: duration,
-                    ease: "sine.inOut"
-                });
-            });
-
-            this.addActiveAnimation(element, gradientTimeline);
-            console.log('✅ gradientShiftAnimation completed');
-            return gradientTimeline;
-        }
-
-        // انیمیشن دکمه مغناطیسی بهبود یافته
-        magneticButtonAnimation(element, magneticStrength = 0.2) {
-            console.log('🔧 Starting magneticButton animation');
+        
+        // ===== TEXT REVEAL =====
+        textRevealAnimation(element, direction = 'fromBottom', duration = 0.8) {
+            if (!element) return null;
             
-            if (!this.isValidElement(element)) {
-                console.error('❌ Invalid element for magnetic animation');
-                return null;
-            }
-
-            // استفاده از نسخه بهبود یافته از GSAPEngine اگر موجود باشد
-            if (this.engine && typeof this.engine.addMagneticButtonImproved === 'function') {
-                const magneticInstance = this.engine.addMagneticButtonImproved(element, magneticStrength);
-                this.addActiveAnimation(element, magneticInstance);
-                return magneticInstance;
-            }
+            const text = element.textContent || element.innerText || '';
+            if (!text) return null;
             
-            // نسخه fallback
-            this.setElementStyles(element, {
-                opacity: '1',
-                visibility: 'visible',
-                willChange: 'transform'
-            });
+            // پاک کردن و ایجاد span برای هر کاراکتر
+            element.textContent = '';
+            const chars = text.split('');
             
-            const maxMovement = 10;
-            let isActive = true;
-
-            const magneticMove = (e) => {
-                if (!isActive) return;
+            chars.forEach(char => {
+                const span = document.createElement('span');
+                span.textContent = char;
+                span.style.display = 'inline-block';
+                span.style.opacity = '0';
                 
+                // تنظیم جهت اولیه
+                switch(direction) {
+                    case 'fromBottom':
+                        span.style.transform = 'translateY(20px)';
+                        break;
+                    case 'fromTop':
+                        span.style.transform = 'translateY(-20px)';
+                        break;
+                    case 'fromLeft':
+                        span.style.transform = 'translateX(-20px)';
+                        break;
+                    case 'fromRight':
+                        span.style.transform = 'translateX(20px)';
+                        break;
+                }
+                
+                element.appendChild(span);
+            });
+            
+            const spans = element.querySelectorAll('span');
+            
+            return gsap.to(spans, {
+                opacity: 1,
+                x: 0,
+                y: 0,
+                duration: 0.05,
+                stagger: {
+                    each: duration / chars.length,
+                    from: "start"
+                },
+                ease: "power2.out",
+                onComplete: () => {
+                    element.classList.add('salnama-animation-complete');
+                }
+            });
+        }
+        
+        // ===== MAGNETIC BUTTON =====
+        magneticButtonAnimation(element, strength = 0.3) {
+            if (!element) return null;
+            
+            element.style.cursor = 'pointer';
+            
+            const magneticMove = (e) => {
                 const rect = element.getBoundingClientRect();
                 const centerX = rect.left + rect.width / 2;
                 const centerY = rect.top + rect.height / 2;
                 
-                let distanceX = (e.clientX - centerX) * magneticStrength;
-                let distanceY = (e.clientY - centerY) * magneticStrength;
-                
-                // محدود کردن حرکت
-                distanceX = Math.max(Math.min(distanceX, maxMovement), -maxMovement);
-                distanceY = Math.max(Math.min(distanceY, maxMovement), -maxMovement);
+                const distanceX = (e.clientX - centerX) * strength;
+                const distanceY = (e.clientY - centerY) * strength;
                 
                 gsap.to(element, {
                     x: distanceX,
@@ -246,10 +385,8 @@ if (typeof AdvancedAnimations === 'undefined') {
                     ease: "power2.out"
                 });
             };
-
+            
             const magneticReset = () => {
-                if (!isActive) return;
-                
                 gsap.to(element, {
                     x: 0,
                     y: 0,
@@ -257,270 +394,113 @@ if (typeof AdvancedAnimations === 'undefined') {
                     ease: "elastic.out(1, 0.5)"
                 });
             };
-
+            
             element.addEventListener('mousemove', magneticMove);
             element.addEventListener('mouseleave', magneticReset);
-            element.classList.add('salnama-magnetic-button', 'salnama-transform-element');
-
-            const magneticInstance = {
+            
+            this.magneticButtons.set(element, {
+                moveHandler: magneticMove,
+                resetHandler: magneticReset
+            });
+            
+            return {
                 destroy: () => {
-                    isActive = false;
                     element.removeEventListener('mousemove', magneticMove);
                     element.removeEventListener('mouseleave', magneticReset);
-                    element.classList.remove('salnama-magnetic-button', 'salnama-transform-element');
-                    gsap.set(element, { 
-                        x: 0, 
-                        y: 0,
-                        willChange: 'auto' 
-                    });
-                    this.removeActiveAnimation(element);
-                    console.log('✅ Magnetic animation destroyed');
-                },
-                pause: () => {
-                    isActive = false;
-                    magneticReset();
-                },
-                resume: () => {
-                    isActive = true;
+                    gsap.set(element, { x: 0, y: 0 });
                 }
             };
-
-            this.addActiveAnimation(element, magneticInstance);
-            return magneticInstance;
         }
-
-        // انیمیشن آشکارسازی متن بهبود یافته
-        textRevealAnimation(element, direction = 'fromBottom', duration = 1) {
-            console.log('🔧 textRevealAnimation called', { element, direction, duration });
-
-            if (!this.isValidElement(element)) {
-                console.error('❌ Invalid element for text reveal animation');
-                return null;
-            }
-
-            const originalText = element.textContent || element.innerText;
-            if (!originalText || originalText.trim() === '') {
-                console.warn('⚠️ No text content for text reveal animation');
-                return this.applyFallbackAnimation(element);
-            }
-
-            console.log('📝 Original text for reveal:', originalText);
-
-            // ذخیره متن اصلی
-            element.setAttribute('data-original-text', originalText);
+        
+        // ===== SCROLL REVEAL =====
+        scrollRevealAnimation(element, direction = 'bottom', duration = 0.8) {
+            if (!element) return null;
             
-            // پاک کردن و ایجاد اسپن‌ها
-            element.textContent = '';
-            const chars = originalText.split('');
-            const spans = chars.map((char, index) => {
-                const span = document.createElement('span');
-                span.textContent = char;
-                span.style.display = 'inline-block';
-                span.style.opacity = '0';
-                span.style.willChange = 'transform, opacity';
-                span.setAttribute('data-char-index', index);
-                return span;
+            console.log(`🎬 Scroll reveal: ${direction}`);
+            
+            const from = {
+                bottom: { y: 100, opacity: 0 },
+                top: { y: -100, opacity: 0 },
+                left: { x: -100, opacity: 0 },
+                right: { x: 100, opacity: 0 }
+            }[direction] || { y: 50, opacity: 0 };
+            
+            gsap.set(element, from);
+            
+            const timeline = gsap.timeline({
+                scrollTrigger: {
+                    trigger: element,
+                    start: "top 85%",
+                    end: "bottom 20%",
+                    toggleActions: "play none none reverse",
+                    markers: false
+                }
             });
-
-            element.append(...spans);
-
-            // تعریف properties بر اساس جهت
-            let fromProps = {};
-            switch (direction) {
-                case 'fromBottom':
-                    fromProps = { y: 50, rotationX: 90 };
-                    break;
-                case 'fromTop':
-                    fromProps = { y: -50, rotationX: -90 };
-                    break;
-                case 'fromLeft':
-                    fromProps = { x: -50, rotationY: 90 };
-                    break;
-                case 'fromRight':
-                    fromProps = { x: 50, rotationY: -90 };
-                    break;
-                default:
-                    fromProps = { y: 50 };
-            }
-
-            const animation = gsap.to(spans, {
-                ...fromProps,
-                opacity: 1,
+            
+            timeline.to(element, {
                 x: 0,
                 y: 0,
-                rotationX: 0,
-                rotationY: 0,
+                opacity: 1,
                 duration: duration,
-                stagger: {
-                    each: 0.02,
-                    from: "start",
-                    ease: "power2.out"
-                },
-                ease: "back.out(1.7)",
-                onStart: () => {
-                    console.log('🎬 Text reveal animation started');
-                },
+                ease: "power2.out",
                 onComplete: () => {
-                    console.log('✅ Text reveal animation completed');
-                    // پاک کردن willChange
-                    gsap.set(spans, { willChange: 'auto' });
-                    this.removeActiveAnimation(element);
+                    element.classList.add('salnama-animation-complete');
                 }
             });
-
-            this.addActiveAnimation(element, animation);
-            return animation;
+            
+            return timeline;
         }
-
-        // انیمیشن مورف شکل (برای SVG) با paths پیش‌فرض
-        morphShapeAnimation(element, paths = [], duration = 2) {
-            console.log('🔧 morphShapeAnimation called', { element, paths, duration });
-
-            if (!this.isValidElement(element)) {
-                console.error('❌ Invalid element for morph animation');
-                return null;
-            }
-
-            let targetPath;
-            if (element.tagName === 'path') {
-                targetPath = element;
-            } else if (element.querySelector('path')) {
-                targetPath = element.querySelector('path');
-            } else {
-                console.warn('❌ Morph animation only works on SVG paths');
-                return this.applyFallbackAnimation(element);
-            }
-
-            // ذخیره path اصلی
-            const originalPath = targetPath.getAttribute('d');
-            targetPath.setAttribute('data-original-path', originalPath);
-
-            // اگر paths ارائه نشده، از shapes پیش‌فرض استفاده کن
-            const morphPaths = paths.length > 0 ? paths : this.getDefaultMorphPaths();
-
-            const morphTimeline = gsap.timeline({
-                repeat: -1,
-                yoyo: true,
-                onRepeat: () => {
-                    console.log('🔄 Morph cycle repeated');
+        
+        // ===== DESTROY METHODS =====
+        destroyTypeWriter(element) {
+            const data = this.typeWriterElements.get(element);
+            if (data && data.timeline) {
+                data.timeline.kill();
+                if (data.originalText) {
+                    element.textContent = data.originalText;
                 }
-            });
-
-            morphPaths.forEach((path, index) => {
-                morphTimeline.to(targetPath, {
-                    attr: { d: path },
-                    duration: duration,
-                    ease: "sine.inOut"
-                });
-            });
-
-            this.addActiveAnimation(element, morphTimeline);
-            console.log('✅ morphShapeAnimation completed');
-            return morphTimeline;
-        }
-
-        // متدهای کمکی
-        isValidElement(element) {
-            return element && element.nodeType === 1 && typeof element.getAttribute === 'function';
-        }
-
-        setElementStyles(element, styles) {
-            if (!this.isValidElement(element)) return;
-            
-            Object.keys(styles).forEach(property => {
-                element.style[property] = styles[property];
-            });
-        }
-
-        applyFallbackAnimation(element) {
-            if (!this.isValidElement(element)) return null;
-            
-            return gsap.fromTo(element,
-                { opacity: 0, y: 20 },
-                { 
-                    opacity: 1, 
-                    y: 0, 
-                    duration: 0.6,
-                    ease: "power2.out" 
-                }
-            );
-        }
-
-        addActiveAnimation(element, animation) {
-            if (!this.isValidElement(element)) return;
-            
-            this.activeAnimations.set(element, animation);
-        }
-
-        removeActiveAnimation(element) {
-            if (this.activeAnimations.has(element)) {
-                this.activeAnimations.delete(element);
             }
+            this.typeWriterElements.delete(element);
         }
-
-        getDefaultMorphPaths() {
-            // مسیرهای پیش‌فرض برای مورفینگ
-            return [
-                "M10,100 Q50,10 90,100 Q130,190 170,100 Q210,10 250,100", // موج
-                "M10,100 C40,150 60,50 90,100 C120,150 140,50 170,100 C200,150 220,50 250,100", // منحنی نرم
-                "M10,100 L90,50 L170,150 L250,100", // مثلثی
-                "M10,100 Q50,150 90,100 Q130,50 170,100 Q210,150 250,100" // موج معکوس
-            ];
+        
+        destroyParallax(element) {
+            const data = this.parallaxElements.get(element);
+            if (data && data.timeline) {
+                data.timeline.kill();
+            }
+            this.parallaxElements.delete(element);
         }
-
-        // متد برای توقف تمام انیمیشن‌ها
-        destroyAllAnimations() {
-            console.log('🧹 Destroying all active animations...');
-            
-            this.activeAnimations.forEach((animation, element) => {
-                if (animation && typeof animation.destroy === 'function') {
-                    animation.destroy();
-                } else if (animation && animation.kill) {
-                    animation.kill();
-                }
-                
-                // بازگردانی استایل‌های اصلی
-                this.restoreOriginalStyles(element);
+        
+        destroyMagneticButton(element) {
+            const data = this.magneticButtons.get(element);
+            if (data) {
+                element.removeEventListener('mousemove', data.moveHandler);
+                element.removeEventListener('mouseleave', data.resetHandler);
+                gsap.set(element, { x: 0, y: 0 });
+            }
+            this.magneticButtons.delete(element);
+        }
+        
+        // ===== CLEANUP =====
+        destroyAll() {
+            this.typeWriterElements.forEach((data, element) => {
+                this.destroyTypeWriter(element);
             });
             
-            this.activeAnimations.clear();
-            console.log('✅ All animations destroyed');
-        }
-
-        restoreOriginalStyles(element) {
-            if (!this.isValidElement(element)) return;
+            this.parallaxElements.forEach((data, element) => {
+                this.destroyParallax(element);
+            });
             
-            // بازگردانی متن اصلی
-            const originalText = element.getAttribute('data-original-text');
-            if (originalText) {
-                element.textContent = originalText;
-                element.removeAttribute('data-original-text');
-            }
+            this.magneticButtons.forEach((data, element) => {
+                this.destroyMagneticButton(element);
+            });
             
-            // بازگردانی background اصلی
-            const originalBackground = element.getAttribute('data-original-background');
-            if (originalBackground) {
-                element.style.background = originalBackground;
-                element.removeAttribute('data-original-background');
-            }
-            
-            // بازگردانی path اصلی برای SVG
-            const originalPath = element.getAttribute('data-original-path');
-            if (originalPath && element.tagName === 'path') {
-                element.setAttribute('d', originalPath);
-                element.removeAttribute('data-original-path');
-            }
-            
-            // پاک کردن استایل‌های اضافی
-            element.style.willChange = '';
+            console.log('🧹 All advanced animations destroyed');
         }
     }
 
-    // تعریف global
-    if (typeof window !== 'undefined') {
+    // ثبت global
+    if (typeof window !== 'undefined' && typeof window.AdvancedAnimations === 'undefined') {
         window.AdvancedAnimations = AdvancedAnimations;
-        console.log('✅ AdvancedAnimations class registered globally');
     }
-} else {
-    console.log('⚠️ AdvancedAnimations already defined, skipping...');
 }
