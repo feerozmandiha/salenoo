@@ -73,33 +73,33 @@ class PatternManager {
      */
     private function define_categories() {
         $this->categories = [
-            'salmama-headers' => [
-                'label' => __('هدرهای سالماما', 'salmama'),
-                'description' => __('هدرهای اختصاصی قالب سالماما', 'salmama')
+            'salnama-headers' => [
+                'label' => __('هدرهای سالماما', 'salnama'),
+                'description' => __('هدرهای اختصاصی قالب سالماما', 'salnama')
             ],
-            'salmama-hero' => [
-                'label' => __('بخش‌های اصلی', 'salmama'),
-                'description' => __('بخش‌های اصلی و معرفی سالماما', 'salmama')
+            'salnama-hero' => [
+                'label' => __('بخش‌های اصلی', 'salnama'),
+                'description' => __('بخش‌های اصلی و معرفی سالماما', 'salnama')
             ],
-            'salmama-features' => [
-                'label' => __('ویژگی‌ها و خدمات', 'salmama'),
-                'description' => __('بخش‌های ویژگی‌ها و خدمات سالماما', 'salmama')
+            'salnama-features' => [
+                'label' => __('ویژگی‌ها و خدمات', 'salnama'),
+                'description' => __('بخش‌های ویژگی‌ها و خدمات سالماما', 'salnama')
             ],
-            'salmama-cta' => [
-                'label' => __('فراخوان اقدام', 'salmama'),
-                'description' => __('بخش‌های دعوت به اقدام', 'salmama')
+            'salnama-cta' => [
+                'label' => __('فراخوان اقدام', 'salnama'),
+                'description' => __('بخش‌های دعوت به اقدام', 'salnama')
             ],
-            'salmama-testimonials' => [
-                'label' => __('نظرات مشتریان', 'salmama'),
-                'description' => __('بخش‌های نمایش نظرات مشتریان', 'salmama')
+            'salnama-testimonials' => [
+                'label' => __('نظرات مشتریان', 'salnama'),
+                'description' => __('بخش‌های نمایش نظرات مشتریان', 'salnama')
             ],
-            'salmama-footers' => [
-                'label' => __('فوترها', 'salmama'),
-                'description' => __('فوترهای اختصاصی سالماما', 'salmama')
+            'salnama-footers' => [
+                'label' => __('فوترها', 'salnama'),
+                'description' => __('فوترهای اختصاصی سالماما', 'salnama')
             ],
-            'salmama-forms' => [
-                'label' => __('فرم‌ها', 'salmama'),
-                'description' => __('فرم‌های تماس و جستجو', 'salmama')
+            'salnama-forms' => [
+                'label' => __('فرم‌ها', 'salnama'),
+                'description' => __('فرم‌های تماس و جستجو', 'salnama')
             ]
         ];
     }
@@ -231,13 +231,13 @@ class PatternManager {
             $directory = '';
         }
         
-        $pattern_slug = $file_data['slug'] ?: 'salmama-' . ($directory ? $directory . '-' : '') . sanitize_title($filename);
+        $pattern_slug = $file_data['slug'] ?: 'salnama-' . ($directory ? $directory . '-' : '') . sanitize_title($filename);
 
         return [
             'title' => $file_data['title'] ?: $this->generate_title_from_filename($filename),
             'slug' => $pattern_slug,
             'description' => $file_data['description'] ?: '',
-            'categories' => $file_data['categories'] ? array_map('trim', explode(',', $file_data['categories'])) : ['salmama-' . ($directory ?: 'general')],
+            'categories' => $file_data['categories'] ? array_map('trim', explode(',', $file_data['categories'])) : ['salnama-' . ($directory ?: 'general')],
             'keywords' => $file_data['keywords'] ? array_map('trim', explode(',', $file_data['keywords'])) : [],
             'viewportWidth' => $file_data['viewport_width'] ? intval($file_data['viewport_width']) : 1200,
             'inserter' => $file_data['inserter'] !== 'false',
@@ -252,7 +252,7 @@ class PatternManager {
      */
     private function generate_title_from_filename($filename) {
         $title = str_replace(['-', '_'], ' ', $filename);
-        $title = preg_replace('/^salmama\s*/i', '', $title);
+        $title = preg_replace('/^salnama\s*/i', '', $title);
         $title = preg_replace('/^pattern\s*/i', '', $title);
         return ucwords($title);
     }
@@ -342,7 +342,7 @@ class PatternManager {
      * تشخیص assets پترن
      */
     private function detect_assets($pattern_data) {
-        $pattern_name = str_replace('salmama-', '', $pattern_data['slug']);
+        $pattern_name = str_replace('salnama-', '', $pattern_data['slug']);
         $assets = ['css' => [], 'js' => []];
 
         // CSS assets
@@ -408,11 +408,11 @@ class PatternManager {
      * بارگذاری assets یک پترن
      */
     private function enqueue_pattern_assets($pattern_slug, $pattern_info) {
-        $pattern_name = str_replace('salmama-', '', $pattern_slug);
+        $pattern_name = str_replace('salnama-', '', $pattern_slug);
 
         // CSS
         foreach ($pattern_info['assets']['css'] as $css_file) {
-            $handle = "salmama-{$pattern_name}-css";
+            $handle = "salnama-{$pattern_name}-css";
             if (!wp_style_is($handle, 'enqueued')) {
                 wp_enqueue_style(
                     $handle,
@@ -425,7 +425,7 @@ class PatternManager {
 
         // JS
         foreach ($pattern_info['assets']['js'] as $js_file) {
-            $handle = "salmama-{$pattern_name}-js";
+            $handle = "salnama-{$pattern_name}-js";
             if (!wp_script_is($handle, 'enqueued')) {
                 wp_enqueue_script(
                     $handle,
@@ -507,7 +507,7 @@ class PatternManager {
         $editor_css_path = get_template_directory() . '/assets/css/patterns-editor.css';
         if (file_exists($editor_css_path)) {
             wp_enqueue_style(
-                'salmama-patterns-editor',
+                'salnama-patterns-editor',
                 get_template_directory_uri() . '/assets/css/patterns-editor.css',
                 ['wp-edit-blocks'],
                 $this->get_file_version('/assets/css/patterns-editor.css')
