@@ -14,6 +14,7 @@ class PatternManager {
     private $patterns = [];
     private $categories = [];
     private $assets_loaded = false;
+    private $theme_version = '1.0.0';
 
     public static function get_instance() {
         if (null === self::$instance) {
@@ -22,9 +23,21 @@ class PatternManager {
         return self::$instance;
     }
     
-    private function __construct() {
+    public function __construct() {
+        // تعریف نسخه تم
+        if (defined('SALNAMA_THEME_VERSION')) {
+            $this->theme_version = SALNAMA_THEME_VERSION;
+        }
+        
         $this->define_categories();
+    }
+    
+    /**
+     * متد run برای سازگاری با Init کلاس
+     */
+    public function run() {
         $this->init();
+        return $this;
     }
     
     public function init() {
@@ -40,6 +53,19 @@ class PatternManager {
         if (defined('WP_DEBUG') && WP_DEBUG) {
             add_action('wp_footer', [$this, 'debug_info']);
         }
+        
+        // برای اطمینان از ثبت پترن‌ها در ادیتور
+        add_action('admin_init', [$this, 'force_register_patterns']);
+    }
+    
+    /**
+     * ثبت اجباری پترن‌ها در حالت ادیتور
+     */
+    public function force_register_patterns() {
+        if (is_admin() && !did_action('init')) {
+            $this->register_categories();
+            $this->register_patterns();
+        }
     }
 
     /**
@@ -52,12 +78,12 @@ class PatternManager {
                 'description' => __('هدرهای اختصاصی قالب سالماما', 'salmama')
             ],
             'salmama-hero' => [
-                'label' => __('بخش‌های هیرو', 'salmama'),
+                'label' => __('بخش‌های اصلی', 'salmama'),
                 'description' => __('بخش‌های اصلی و معرفی سالماما', 'salmama')
             ],
             'salmama-features' => [
-                'label' => __('ویژگی‌ها', 'salmama'),
-                'description' => __('بخش‌های ویژگی‌ها و خدمات', 'salmama')
+                'label' => __('ویژگی‌ها و خدمات', 'salmama'),
+                'description' => __('بخش‌های ویژگی‌ها و خدمات سالماما', 'salmama')
             ],
             'salmama-cta' => [
                 'label' => __('فراخوان اقدام', 'salmama'),
@@ -65,11 +91,15 @@ class PatternManager {
             ],
             'salmama-testimonials' => [
                 'label' => __('نظرات مشتریان', 'salmama'),
-                'description' => __('بخش‌های نمایش نظرات و testimonials', 'salmama')
+                'description' => __('بخش‌های نمایش نظرات مشتریان', 'salmama')
             ],
             'salmama-footers' => [
-                'label' => __('فوترهای سالماما', 'salmama'),
+                'label' => __('فوترها', 'salmama'),
                 'description' => __('فوترهای اختصاصی سالماما', 'salmama')
+            ],
+            'salmama-forms' => [
+                'label' => __('فرم‌ها', 'salmama'),
+                'description' => __('فرم‌های تماس و جستجو', 'salmama')
             ]
         ];
     }
@@ -78,30 +108,70 @@ class PatternManager {
      * ثبت دسته‌بندی‌های پترن
      */
     public function register_categories() {
-        foreach ($this->categories as $slug => $category) {
-            register_block_pattern_category($slug, $category);
+        if (!function_exists('register_block_pattern_category')) {
+            error_log('Salnama Patterns: Function register_block_pattern_category not available');
+            return;
         }
-        error_log('Salnama Patterns: Registered ' . count($this->categories) . ' categories');
+        
+        foreach ($this->categories as $slug => $category) {
+            // if (!wp_block_pattern_categories_registered($slug)) {
+                register_block_pattern_category($slug, $category);
+                
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    error_log('Salnama Patterns: Registered category - ' . $slug);
+                // }
+            }
+        }
+        
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('Salnama Patterns: Registered ' . count($this->categories) . ' categories');
+        }
     }
 
     /**
      * ثبت پترن‌ها
      */
     public function register_patterns() {
+        if (!function_exists('register_block_pattern')) {
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('Salnama Patterns: Function register_block_pattern not available');
+            }
+            return;
+        }
+
+        // ابتدا پوشه patterns روت را چک کن
+        $root_patterns_path = get_template_directory() . '/patterns/';
+        
+        if (file_exists($root_patterns_path)) {
+            $root_files = glob($root_patterns_path . '*.php');
+            if ($root_files) {
+                foreach ($root_files as $file) {
+                    $pattern_data = $this->parse_pattern_file($file);
+                    if ($pattern_data && $this->validate_pattern($pattern_data)) {
+                        $this->register_single_pattern($pattern_data);
+                    }
+                }
+            }
+        }
+        
+        // سپس پوشه‌های زیرمجموعه
         $pattern_dirs = [
             'headers',
             'hero', 
             'features',
             'cta',
             'testimonials',
-            'footers'
+            'footers',
+            'forms'
         ];
         
         foreach ($pattern_dirs as $dir) {
             $this->load_patterns_from_directory($dir);
         }
         
-        error_log('Salnama Patterns: Total registered patterns: ' . count($this->patterns));
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('Salnama Patterns: Total registered patterns: ' . count($this->patterns));
+        }
     }
 
     /**
@@ -111,14 +181,18 @@ class PatternManager {
         $patterns_path = get_template_directory() . "/patterns/{$directory}/";
         
         if (!file_exists($patterns_path)) {
-            error_log("Salnama Patterns: Directory not found - {$patterns_path}");
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log("Salnama Patterns: Directory not found - {$patterns_path}");
+            }
             return;
         }
 
         $pattern_files = glob($patterns_path . '*.php');
         
         if (empty($pattern_files)) {
-            error_log("Salnama Patterns: No pattern files in {$directory}");
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log("Salnama Patterns: No pattern files in {$directory}");
+            }
             return;
         }
 
@@ -149,28 +223,38 @@ class PatternManager {
             'inserter' => 'Inserter'
         ]);
 
-        $pattern_slug = $file_data['slug'] ?: 'salmama-' . sanitize_title(basename($file_path, '.php'));
+        $filename = basename($file_path, '.php');
+        $directory = basename(dirname($file_path));
+        
+        // اگر دایرکتوری patterns باشد، آن را خالی در نظر بگیر
+        if ($directory === 'patterns') {
+            $directory = '';
+        }
+        
+        $pattern_slug = $file_data['slug'] ?: 'salmama-' . ($directory ? $directory . '-' : '') . sanitize_title($filename);
 
         return [
-            'title' => $file_data['title'] ?: $this->generate_title_from_filename($file_path),
+            'title' => $file_data['title'] ?: $this->generate_title_from_filename($filename),
             'slug' => $pattern_slug,
             'description' => $file_data['description'] ?: '',
-            'categories' => $file_data['categories'] ? array_map('trim', explode(',', $file_data['categories'])) : ['salmama-general'],
+            'categories' => $file_data['categories'] ? array_map('trim', explode(',', $file_data['categories'])) : ['salmama-' . ($directory ?: 'general')],
             'keywords' => $file_data['keywords'] ? array_map('trim', explode(',', $file_data['keywords'])) : [],
             'viewportWidth' => $file_data['viewport_width'] ? intval($file_data['viewport_width']) : 1200,
             'inserter' => $file_data['inserter'] !== 'false',
             'content' => $this->get_pattern_content($file_path),
             'file_path' => $file_path,
-            'directory' => basename(dirname($file_path))
+            'directory' => $directory
         ];
     }
 
     /**
      * تولید عنوان از نام فایل
      */
-    private function generate_title_from_filename($file_path) {
-        $filename = basename($file_path, '.php');
-        return ucfirst(str_replace(['-', '_'], ' ', $filename));
+    private function generate_title_from_filename($filename) {
+        $title = str_replace(['-', '_'], ' ', $filename);
+        $title = preg_replace('/^salmama\s*/i', '', $title);
+        $title = preg_replace('/^pattern\s*/i', '', $title);
+        return ucwords($title);
     }
 
     /**
@@ -181,8 +265,12 @@ class PatternManager {
         include $file_path;
         $content = ob_get_clean();
         
+        if (!$content) {
+            return '';
+        }
+        
         // پاکسازی محتوا
-        $content = preg_replace('/<\?php.*?\?>/s', '', $content);
+        $content = preg_replace('/<\?php.*?\?>\s*/s', '', $content);
         return trim($content);
     }
 
@@ -194,13 +282,17 @@ class PatternManager {
         
         foreach ($required as $field) {
             if (empty($pattern_data[$field])) {
-                error_log("Salnama Pattern Error: Missing required field '{$field}' in " . $pattern_data['file_path']);
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    error_log("Salnama Pattern Error: Missing required field '{$field}' in " . $pattern_data['file_path']);
+                }
                 return false;
             }
         }
 
         if (!is_array($pattern_data['categories'])) {
-            error_log("Salnama Pattern Error: Categories must be array in " . $pattern_data['file_path']);
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log("Salnama Pattern Error: Categories must be array in " . $pattern_data['file_path']);
+            }
             return false;
         }
 
@@ -212,7 +304,7 @@ class PatternManager {
      */
     private function register_single_pattern($pattern_data) {
         if (!function_exists('register_block_pattern')) {
-            return;
+            return false;
         }
 
         $result = register_block_pattern($pattern_data['slug'], [
@@ -229,11 +321,20 @@ class PatternManager {
             $this->patterns[$pattern_data['slug']] = [
                 'assets' => $this->detect_assets($pattern_data),
                 'title' => $pattern_data['title'],
-                'directory' => $pattern_data['directory']
+                'directory' => $pattern_data['directory'],
+                'categories' => $pattern_data['categories']
             ];
-            error_log('Salnama Patterns: Registered - ' . $pattern_data['slug']);
+            
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('Salnama Patterns: Registered - ' . $pattern_data['slug']);
+            }
+            
+            return true;
         } else {
-            error_log('Salnama Patterns: Failed to register - ' . $pattern_data['slug']);
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('Salnama Patterns: Failed to register - ' . $pattern_data['slug']);
+            }
+            return false;
         }
     }
 
@@ -247,24 +348,30 @@ class PatternManager {
         // CSS assets
         $css_files = [
             "/assets/css/patterns/{$pattern_data['directory']}/{$pattern_name}.css",
-            "/assets/css/patterns/{$pattern_name}.css"
+            "/assets/css/patterns/{$pattern_name}.css",
+            "/patterns/{$pattern_data['directory']}/{$pattern_name}.css",
+            "/patterns/{$pattern_name}.css"
         ];
 
         foreach ($css_files as $css_file) {
             if (file_exists(get_template_directory() . $css_file)) {
                 $assets['css'][] = $css_file;
+                break;
             }
         }
 
         // JS assets
         $js_files = [
             "/assets/js/patterns/{$pattern_data['directory']}/{$pattern_name}.js",
-            "/assets/js/patterns/{$pattern_name}.js"
+            "/assets/js/patterns/{$pattern_name}.js",
+            "/patterns/{$pattern_data['directory']}/{$pattern_name}.js",
+            "/patterns/{$pattern_name}.js"
         ];
 
         foreach ($js_files as $js_file) {
             if (file_exists(get_template_directory() . $js_file)) {
                 $assets['js'][] = $js_file;
+                break;
             }
         }
 
@@ -290,7 +397,10 @@ class PatternManager {
 
         if (!empty($enqueued_patterns)) {
             $this->assets_loaded = true;
-            error_log('Salnama Patterns: Enqueued assets for: ' . implode(', ', $enqueued_patterns));
+            
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('Salnama Patterns: Enqueued assets for: ' . implode(', ', $enqueued_patterns));
+            }
         }
     }
 
@@ -335,8 +445,21 @@ class PatternManager {
         global $post;
 
         // بررسی در محتوای پست
-        if ($post && isset($post->post_content) && false !== strpos($post->post_content, $pattern_slug)) {
-            return true;
+        if ($post && isset($post->post_content)) {
+            // چک کردن برای الگوی بلوک
+            if (false !== strpos($post->post_content, 'wp:pattern')) {
+                // استخراج slug از محتوا
+                if (preg_match('/"slug":"([^"]+)"/', $post->post_content, $matches)) {
+                    if ($matches[1] === $pattern_slug) {
+                        return true;
+                    }
+                }
+            }
+            
+            // چک کردن مستقیم slug
+            if (false !== strpos($post->post_content, $pattern_slug)) {
+                return true;
+            }
         }
 
         // بررسی در template parts
@@ -351,7 +474,7 @@ class PatternManager {
      * بررسی template parts
      */
     private function check_template_parts($pattern_slug) {
-        $template_parts = ['header.php', 'footer.php', 'sidebar.php'];
+        $template_parts = ['header.php', 'footer.php', 'sidebar.php', 'index.php', 'single.php', 'page.php'];
         
         foreach ($template_parts as $part) {
             $part_path = get_template_directory() . '/' . $part;
@@ -371,19 +494,25 @@ class PatternManager {
      */
     private function get_file_version($file_path) {
         $full_path = get_template_directory() . $file_path;
-        return file_exists($full_path) ? filemtime($full_path) : SALNAMA_THEME_VERSION;
+        if (file_exists($full_path)) {
+            return filemtime($full_path);
+        }
+        return $this->theme_version;
     }
 
     /**
      * assets ادیتور
      */
     public function enqueue_editor_assets() {
-        wp_enqueue_style(
-            'salmama-patterns-editor',
-            get_template_directory_uri() . '/assets/css/patterns-editor.css',
-            ['wp-edit-blocks'],
-            $this->get_file_version('/assets/css/patterns-editor.css')
-        );
+        $editor_css_path = get_template_directory() . '/assets/css/patterns-editor.css';
+        if (file_exists($editor_css_path)) {
+            wp_enqueue_style(
+                'salmama-patterns-editor',
+                get_template_directory_uri() . '/assets/css/patterns-editor.css',
+                ['wp-edit-blocks'],
+                $this->get_file_version('/assets/css/patterns-editor.css')
+            );
+        }
     }
 
     /**
@@ -392,13 +521,24 @@ class PatternManager {
     public function debug_info() {
         if (!current_user_can('manage_options')) return;
         
-        echo '<!-- Salnama Patterns Debug -->';
-        echo '<!-- Total Patterns: ' . count($this->patterns) . ' -->';
-        foreach ($this->patterns as $slug => $info) {
-            $in_use = $this->is_pattern_used($slug) ? 'YES' : 'NO';
-            echo "<!-- {$slug} - In Use: {$in_use} -->";
+        echo "\n<!-- Salnama Patterns Debug -->\n";
+        echo "<!-- Total Patterns: " . count($this->patterns) . " -->\n";
+        
+        if (empty($this->patterns)) {
+            echo "<!-- No patterns registered -->\n";
+        } else {
+            foreach ($this->patterns as $slug => $info) {
+                $in_use = $this->is_pattern_used($slug) ? 'YES' : 'NO';
+                echo sprintf(
+                    "<!-- Pattern: %s | Title: %s | In Use: %s -->\n",
+                    $slug,
+                    $info['title'],
+                    $in_use
+                );
+            }
         }
-        echo '<!-- End Debug -->';
+        
+        echo "<!-- End Debug -->\n";
     }
 
     /**
