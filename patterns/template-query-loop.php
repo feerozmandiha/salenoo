@@ -2,7 +2,7 @@
 /**
  * Title: List of posts, 1 column
  * Slug: salnama/template-query-loop
- * Categories: salmama-features
+ * Categories: salnama-features
  * Description: A list of posts, 1 column, with featured image and post date.
  *
  * @package WordPress

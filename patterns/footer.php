@@ -3,7 +3,7 @@
  * Title: Main Footer
  * Slug: salnama/footer
  * Description: لیستی از پا برگه های آماده..
- * Categories: salmama-footers
+ * Categories: salnama-footers
  * Block Types: core/query
  *
  * @package WordPress

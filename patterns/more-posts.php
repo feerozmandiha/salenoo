@@ -3,7 +3,7 @@
  * Title: More posts
  * Slug: salnama/more-posts
  * Description: Displays a list of posts with title and date.
- * Categories: salmama-features
+ * Categories: salnama-features
  * Block Types: core/query
  *
  * @package WordPress

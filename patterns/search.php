@@ -1,8 +1,8 @@
 <?php
 /**
  * Title: فرم جستجو
- * Slug: salmama/search
- * Categories: salmama-features
+ * Slug: salnama/search
+ * Categories: salnama-features
  * Inserter: yes
  */
 
