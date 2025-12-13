@@ -395,6 +395,7 @@
 			}
 		},
 		"typography": {
+			"textAlign": "justify",
 			"fontFamily": "var(--wp--preset--font-family--iransansxfanum)",
 			"fontSize": "1rem",
 			"lineHeight": "1.6"
