@@ -193,7 +193,7 @@
    -------------------------------------------------- */
 @media (max-width: 1023px) {
     .body {
-        top: 16vh;
+        top: 16vh !important;
     }
     .body-header-no-frontpage {
         display: none !important;
