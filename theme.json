@@ -205,7 +205,35 @@
 		},
 		"useRootPaddingAwareAlignments": true,
 		"custom": {
-			"cardShadow": "0 4px 12px rgba(0,0,0,0.15)"
+			"cardShadow": "0 4px 12px rgba(0,0,0,0.15)",
+			"socialShare": {
+					"modal": {
+						"backgroundColor": "var(--wp--preset--color--card-bg)",
+						"borderRadius": "12px",
+						"boxShadow": "var(--wp--preset--shadow--cardShadowLarge)",
+						"zIndex": "9999"
+					},
+					"modalOverlay": {
+						"backgroundColor": "rgba(0, 0, 0, 0.5)",
+						"backdropFilter": "blur(3px)"
+					},
+					"icon": {
+						"hoverTransform": "translateY(-5px)",
+						"transition": "all 0.3s ease"
+					},
+					"telegram": {
+						"color": "#0088cc"
+					},
+					"whatsapp": {
+						"color": "#25d366"
+					},
+					"eitaa": {
+						"color": "#3b5998"
+					},
+					"instagram": {
+						"color": "#e4405f"
+					}
+				}	
 		}
 	},
 	"styles": {
