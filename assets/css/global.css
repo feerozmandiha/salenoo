@@ -192,9 +192,11 @@
    ریسپانسیو (موبایل و تبلت)
    -------------------------------------------------- */
 @media (max-width: 1023px) {
-
+    .body {
+        top: 16vh;
+    }
     .body-header-no-frontpage {
-        display: none;
+        display: none !important;
     }
     .minimal-vertical-header {
         right: 1rem;
@@ -267,9 +269,9 @@
     }
     
     /* جلوگیری از هرگونه تغییر ارتفاع با GSAP در موبایل */
-    .minimal-vertical-header {
+    /* .minimal-vertical-header {
         height: 17vh !important;
-    }
+    } */
 }
 
 /* استایل‌های بهبود یافته برای نمایش بهتر */
