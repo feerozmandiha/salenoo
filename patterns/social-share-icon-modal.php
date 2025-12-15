@@ -38,7 +38,7 @@
     <div class="salnama-social-modal-overlay"></div>
     <div class="salnama-social-modal-content">
         <div class="salnama-social-modal-header">
-            <h3 class="has-text-primary-color has-large-font-size">اشتراک‌گذاری در شبکه‌های اجتماعی</h3>
+            <h3 class="has-text-primary-color has-medium-font-size">اشتراک‌گذاری در شبکه‌های اجتماعی</h3>
             <button class="salnama-social-modal-close" aria-label="بستن">
                 <span class="dashicons dashicons-no-alt"></span>
             </button>
