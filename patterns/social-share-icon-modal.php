@@ -312,8 +312,8 @@
     .salnama-share-icon-button .wp-block-button__link {
         position: relative;
         transition: var(--salnama-social-icon-transition);
-        width: 70px;
-        height: 70px;
+        width: 50px;
+        height: 50px;
         display: flex;
         align-items: center;
         justify-content: center;

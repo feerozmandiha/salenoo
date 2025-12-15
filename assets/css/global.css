@@ -193,7 +193,9 @@
    -------------------------------------------------- */
 @media (max-width: 1023px) {
 
-
+    .body-header-no-frontpage {
+        display: none;
+    }
     .minimal-vertical-header {
         right: 1rem;
         width: calc(100% - 2rem);
