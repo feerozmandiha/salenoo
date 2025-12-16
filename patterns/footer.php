@@ -12,39 +12,63 @@
  */
 
 ?>
+<!-- wp:group {"className":"salnama-floating-animated","layout":{"type":"constrained"}} -->
+<div class="wp-block-group salnama-floating-animated">
+    <!-- wp:group {"layout":{"type":"flex","orientation":"vertical"}} -->
+    <div class="wp-block-group">
+        <!-- wp:html -->
+        <span class="dashicons dashicons-download" data-action="download"></span>
+        <!-- /wp:html -->
+
+        <!-- wp:html -->
+        <span class="dashicons dashicons-share" data-action="share"></span>
+        <!-- /wp:html -->
+    </div>
+    <!-- /wp:group -->
+</div>
+<!-- /wp:group -->
+
 <!-- wp:group {"align":"full","className":"wc-blocks-pattern-footer-large wc-blocks-footer-pattern","style":{"border":{"top":{"color":"var:preset|color|brand-teal","width":"1px"},"right":[],"bottom":[],"left":[]}},"fontSize":"small"} -->
 <div class="wp-block-group alignfull wc-blocks-pattern-footer-large wc-blocks-footer-pattern has-small-font-size" style="border-top-color:var(--wp--preset--color--brand-teal);border-top-width:1px"><!-- wp:columns {"align":"wide","style":{"spacing":{"blockGap":"32px","padding":{"right":"0px","left":"0px"}}}} -->
 <div class="wp-block-columns alignwide" style="padding-right:0px;padding-left:0px"><!-- wp:column {"verticalAlignment":"center","width":"50%","layout":{"type":"constrained"}} -->
-<div class="wp-block-column is-vertically-aligned-center" style="flex-basis:50%"><!-- wp:group {"className":"container-footer-logo-site","style":{"spacing":{"blockGap":"0px","padding":{"top":"0","bottom":"0","left":"0","right":"0"},"margin":{"top":"0","bottom":"0"}}},"layout":{"type":"flex","orientation":"vertical","justifyContent":"center"}} -->
-<div class="wp-block-group container-footer-logo-site" style="margin-top:0;margin-bottom:0;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><!-- wp:site-logo /--></div>
-<!-- /wp:group -->
+<div class="wp-block-column is-vertically-aligned-center" style="flex-basis:50%"><!-- wp:columns {"isStackedOnMobile":false,"style":{"spacing":{"padding":{"right":"0","left":"0"},"blockGap":{"left":"0"}}}} -->
+<div class="wp-block-columns is-not-stacked-on-mobile" style="padding-right:0;padding-left:0"><!-- wp:column {"width":"20%"} -->
+<div class="wp-block-column" style="flex-basis:20%"><!-- wp:site-logo /--></div>
+<!-- /wp:column -->
 
-<!-- wp:group {"layout":{"type":"constrained"}} -->
-<div class="wp-block-group"><!-- wp:paragraph {"style":{"typography":{"textAlign":"center"}}} -->
-<p class="has-text-align-center"><strong>سالنمای نو</strong> عرضه‌کننده تخصصی <strong>سررسید، تقویم رومیزی، تقویم دیواری و هدایای تبلیغاتی</strong> در سراسر کشور است. تمامی سفارش‌ها <strong>بدون واسطه</strong> و مستقیماً توسط <strong>تولیدکننده‌ای قدرتمند و متخصص در تولید سررسید، تقویم و دفتر</strong> تأمین و ارسال می‌شود. با بیش از یک دهه همکاری مستمر و ارائه کالاهای باکیفیت، کیفیت محصولات تضمین شده است و در صورت وجود هرگونه ایراد، <strong>حتی یک عدد محصول معیوب</strong> نیز بدون قید و شرط تعویض خواهد شد. سالنمای نو انتخابی مطمئن برای خرید انواع سررسید و تقویم سازمانی با قیمت مناسب و تحویل سریع است.</p>
+<!-- wp:column {"width":"80%","style":{"spacing":{"padding":{"right":"0","left":"0"}}}} -->
+<div class="wp-block-column" style="padding-right:0;padding-left:0;flex-basis:80%"><!-- wp:paragraph -->
+<p><strong>سالنمای نو</strong> عرضه‌کننده تخصصی <strong>سررسید، تقویم رومیزی، تقویم دیواری و هدایای تبلیغاتی</strong> در سراسر کشور است. تمامی سفارش‌ها <strong>بدون واسطه</strong> و مستقیماً توسط <strong>تولیدکننده‌ای قدرتمند و متخصص در تولید سررسید، تقویم و دفتر</strong> تأمین و ارسال می‌شود. با بیش از یک دهه همکاری مستمر و ارائه کالاهای باکیفیت، کیفیت محصولات تضمین شده است و در صورت وجود هرگونه ایراد، <strong>حتی یک عدد محصول معیوب</strong> نیز بدون قید و شرط تعویض خواهد شد. سالنمای نو انتخابی مطمئن برای خرید انواع سررسید و تقویم سازمانی با قیمت مناسب و تحویل سریع است.</p>
 <!-- /wp:paragraph --></div>
-<!-- /wp:group --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns --></div>
 <!-- /wp:column -->
 
 <!-- wp:column {"width":"25%","style":{"spacing":{"padding":{"top":"0px"}}},"fontSize":"small"} -->
-<div class="wp-block-column has-small-font-size" style="padding-top:0px;flex-basis:25%"><!-- wp:woocommerce/product-categories {"hasCount":false,"isHierarchical":false} /-->
+<div class="wp-block-column has-small-font-size" style="padding-top:0px;flex-basis:25%"><!-- wp:woocommerce/product-categories {"isDropdown":true,"showChildrenOnly":true} /-->
 
-<!-- wp:navigation {"ref":4,"overlayMenu":"never","style":{"spacing":{"blockGap":"10px"}},"layout":{"overlayMenu":"never","type":"flex","orientation":"vertical"}} /--></div>
+<!-- wp:group {"layout":{"type":"constrained"}} -->
+<div class="wp-block-group"><!-- wp:navigation {"ref":4,"overlayMenu":"never","style":{"spacing":{"blockGap":"10px"}},"layout":{"overlayMenu":"never","type":"flex","orientation":"vertical"}} /--></div>
+<!-- /wp:group --></div>
 <!-- /wp:column -->
 
 <!-- wp:column {"verticalAlignment":"top","width":"25%","style":{"spacing":{"blockGap":"16px"}}} -->
-<div class="wp-block-column is-vertically-aligned-top" style="flex-basis:25%"><!-- wp:search {"label":"جستجو","showLabel":false,"buttonText":"جستجو","buttonPosition":"button-inside","buttonUseIcon":true,"style":{"spacing":{"margin":{"top":"0","bottom":"0","left":"0","right":"0"}}},"fontSize":"small"} /-->
+<div class="wp-block-column is-vertically-aligned-top" style="flex-basis:25%"><!-- wp:search {"label":"جستجو","showLabel":false,"buttonText":"جستجو","buttonPosition":"button-inside"} /-->
 
 <!-- wp:heading {"level":4} -->
 <h4 class="wp-block-heading"><strong>تماس با ما:</strong></h4>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p> استان قم - قم - شهرک چاپ و نشر (انتشارات)</p>
+<p>آدرس قم:<br>قم - شهرک چاپ و نشر</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>مازندران - فریدونکنار (دفتر سایت)</p>
+<p>آدرس شمال:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>مازندران - فریدونکنار</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -55,7 +79,7 @@
 <p>ایمیل: feerozmandiha@gmail.com</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:social-links {"size":"has-small-icon-size","className":"has-icon-color is-style-logos-only","style":{"spacing":{"blockGap":{"left":"16px"}}}} -->
+<!-- wp:social-links {"size":"has-small-icon-size","className":"has-icon-color is-style-logos-only","style":{"spacing":{"blockGap":{"left":"16px"}}},"layout":{"type":"flex","justifyContent":"center"}} -->
 <ul class="wp-block-social-links has-small-icon-size has-icon-color is-style-logos-only"><!-- wp:social-link {"url":"https://www.instagram.com/salnamanoo","service":"instagram","className":"has-contrast-color"} /-->
 
 <!-- wp:social-link {"url":"https://wa.me/+989124533878","service":"whatsapp"} /-->
