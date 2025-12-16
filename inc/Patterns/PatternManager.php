@@ -114,12 +114,10 @@ class PatternManager {
         }
         
         foreach ($this->categories as $slug => $category) {
-            // if (!wp_block_pattern_categories_registered($slug)) {
-                register_block_pattern_category($slug, $category);
-                
-                if (defined('WP_DEBUG') && WP_DEBUG) {
-                    error_log('Salnama Patterns: Registered category - ' . $slug);
-                // }
+            register_block_pattern_category($slug, $category);
+            
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('Salnama Patterns: Registered category - ' . $slug);
             }
         }
         
@@ -392,6 +390,11 @@ class PatternManager {
             if ($this->is_pattern_used($pattern_slug)) {
                 $this->enqueue_pattern_assets($pattern_slug, $pattern_info);
                 $enqueued_patterns[] = $pattern_slug;
+                
+                // برای پترن social-share-icon-modal، Dashicons را هم بارگذاری کن
+                if ($pattern_slug === 'salnama/social-share-icon-modal') {
+                    wp_enqueue_style('dashicons');
+                }
             }
         }
 

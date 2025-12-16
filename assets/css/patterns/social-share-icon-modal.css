@@ -1,0 +1,300 @@
+/* 
+ * Social Share Icon Modal CSS
+ * Path: /assets/css/patterns/social-share-icon-modal.css
+ */
+
+/* استفاده از متغیرهای theme.json */
+:root {
+    --salnama-social-modal-bg: var(--wp--custom--socialShare--modal--backgroundColor, var(--wp--preset--color--card-bg));
+    --salnama-social-modal-radius: var(--wp--custom--socialShare--modal--borderRadius, 12px);
+    --salnama-social-modal-shadow: var(--wp--custom--socialShare--modal--boxShadow, var(--wp--preset--shadow--cardShadowLarge));
+    --salnama-social-modal-zindex: var(--wp--custom--socialShare--modal--zIndex, 9999);
+    --salnama-social-overlay-bg: var(--wp--custom--socialShare--modalOverlay--backgroundColor, rgba(0, 0, 0, 0.5));
+    --salnama-social-icon-transform: var(--wp--custom--socialShare--icon--hoverTransform, translateY(-5px));
+    --salnama-social-icon-transition: var(--wp--custom--socialShare--icon--transition, all 0.3s ease);
+    --salnama-telegram-color: var(--wp--custom--socialShare--telegram--color, #0088cc);
+    --salnama-whatsapp-color: var(--wp--custom--socialShare--whatsapp--color, #25d366);
+    --salnama-eitaa-color: var(--wp--custom--socialShare--eitaa--color, #3b5998);
+    --salnama-instagram-color: var(--wp--custom--socialShare--instagram--color, #e4405f);
+}
+
+/* استایل‌های مودال اشتراک‌گذاری */
+.salnama-social-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: var(--salnama-social-modal-zindex);
+    font-family: var(--wp--preset--font-family--iransansxfanum);
+    display: none;
+}
+
+.salnama-social-modal.active {
+    display: block;
+}
+
+.salnama-social-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--salnama-social-overlay-bg);
+    backdrop-filter: var(--wp--custom--socialShare--modalOverlay--backdropFilter, blur(3px));
+}
+
+.salnama-social-modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--salnama-social-modal-bg);
+    border-radius: var(--salnama-social-modal-radius);
+    padding: 0;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: var(--salnama-social-modal-shadow);
+    animation: salnamaModalFadeIn 0.3s ease-out;
+}
+
+@keyframes salnamaModalFadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.salnama-social-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--wp--preset--spacing--20) var(--wp--preset--spacing--30);
+    border-bottom: 1px solid var(--wp--preset--color--border-light);
+}
+
+.salnama-social-modal-header h3 {
+    margin: 0;
+    font-weight: 600;
+    color: var(--wp--preset--color--text-primary);
+    font-size: var(--wp--preset--font-size--large);
+}
+
+.salnama-social-modal-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--wp--preset--color--text-secondary);
+    line-height: 1;
+    padding: var(--wp--preset--spacing--10);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: var(--salnama-social-icon-transition);
+}
+
+.salnama-social-modal-close:hover {
+    background-color: var(--wp--preset--color--surface-bg);
+    color: var(--wp--preset--color--text-primary);
+}
+
+.salnama-social-modal-close .dashicons {
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+}
+
+.salnama-social-modal-body {
+    padding: var(--wp--preset--spacing--30) var(--wp--preset--spacing--30);
+}
+
+.salnama-social-icons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--wp--preset--spacing--20);
+}
+
+@media (min-width: 768px) {
+    .salnama-social-icons {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.salnama-social-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--wp--preset--spacing--20) var(--wp--preset--spacing--15);
+    border-radius: var(--wp--preset--spacing--10);
+    text-decoration: none;
+    transition: var(--salnama-social-icon-transition);
+    background-color: var(--wp--preset--color--surface-bg);
+    border: 1px solid var(--wp--preset--color--border-light);
+    text-align: center;
+    cursor: pointer;
+}
+
+.salnama-social-icon:hover {
+    transform: var(--salnama-social-icon-transform);
+    box-shadow: var(--wp--preset--shadow--cardShadowMedium);
+}
+
+.salnama-social-icon .dashicons {
+    width: 40px;
+    height: 40px;
+    font-size: 40px;
+    margin-bottom: var(--wp--preset--spacing--10);
+}
+
+.salnama-social-icon span:not(.dashicons) {
+    font-size: var(--wp--preset--font-size--small);
+    font-weight: 500;
+    color: var(--wp--preset--color--text-primary);
+}
+
+/* رنگ‌های شبکه‌های اجتماعی */
+.salnama-telegram .dashicons {
+    color: var(--salnama-telegram-color);
+}
+
+.salnama-whatsapp .dashicons {
+    color: var(--salnama-whatsapp-color);
+}
+
+.salnama-eitaa .dashicons {
+    color: var(--salnama-eitaa-color);
+}
+
+.salnama-instagram .dashicons {
+    color: var(--salnama-instagram-color);
+}
+
+.salnama-telegram:hover {
+    background-color: var(--salnama-telegram-color);
+    border-color: var(--salnama-telegram-color);
+}
+
+.salnama-whatsapp:hover {
+    background-color: var(--salnama-whatsapp-color);
+    border-color: var(--salnama-whatsapp-color);
+}
+
+.salnama-eitaa:hover {
+    background-color: var(--salnama-eitaa-color);
+    border-color: var(--salnama-eitaa-color);
+}
+
+.salnama-instagram:hover {
+    background-color: var(--salnama-instagram-color);
+    border-color: var(--salnama-instagram-color);
+}
+
+.salnama-social-icon:hover .dashicons,
+.salnama-social-icon:hover span:not(.dashicons) {
+    color: var(--wp--preset--color--card-bg) !important;
+}
+
+/* استایل آیکون اشتراک‌گذاری */
+.salnama-share-icon-button {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.salnama-share-icon-button .wp-block-button__link {
+    position: relative;
+    transition: var(--salnama-social-icon-transition);
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--wp--preset--color--brand-blue) !important;
+    background-color: var(--wp--preset--color--transparent) !important;
+    border-radius: 50% !important;
+}
+
+.salnama-share-icon-button .wp-block-button__link .dashicons {
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+    color: var(--wp--preset--color--text-primary);
+}
+
+.salnama-share-icon-button .wp-block-button__link:hover {
+    background-color: var(--wp--preset--color--brand-blue) !important;
+    color: var(--wp--preset--color--card-bg) !important;
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: var(--wp--preset--shadow--buttonShadow);
+}
+
+.salnama-share-icon-button .wp-block-button__link:hover .dashicons {
+    color: var(--wp--preset--color--card-bg) !important;
+}
+
+/* Tooltip برای آیکون */
+.salnama-share-icon-tooltip {
+    position: absolute;
+    background: var(--wp--preset--color--text-primary);
+    color: var(--wp--preset--color--surface-bg);
+    padding: var(--wp--preset--spacing--10) var(--wp--preset--spacing--15);
+    border-radius: var(--wp--preset--spacing--5);
+    font-size: var(--wp--preset--font-size--small);
+    white-space: nowrap;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--salnama-social-icon-transition);
+    pointer-events: none;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: var(--wp--preset--spacing--10);
+    font-family: var(--wp--preset--font-family--iransansxfanum);
+}
+
+.salnama-share-icon-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: var(--wp--preset--color--text-primary) transparent transparent transparent;
+}
+
+.salnama-share-icon-button:hover .salnama-share-icon-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* انیمیشن پالس برای آیکون */
+@keyframes shareIconPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 174, 239, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(0, 174, 239, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 174, 239, 0);
+    }
+}
+
+.salnama-share-icon-button .wp-block-button__link {
+    animation: shareIconPulse 2s infinite;
+}
+
+/* جلوگیری از اسکرول وقتی مودال باز است */
+body.salnama-modal-open {
+    overflow: hidden;
+}
