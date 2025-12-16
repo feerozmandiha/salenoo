@@ -33,6 +33,10 @@ if ( ! defined( 'SALNAMA_ASSETS_PATH' ) ) {
     define( 'SALNAMA_ASSETS_PATH', SALNAMA_THEME_PATH . '/assets' );
 }
 
+@ini_set( 'upload_max_size' , '64M' );
+@ini_set( 'post_max_size', '64M');
+@ini_set( 'max_execution_time', '300' );
+
 // فراخوانی Autoloader
 require_once SALNAMA_INC_PATH . '/Autoloader.php';
 
