@@ -100,6 +100,11 @@ class PatternManager {
             'salnama-forms' => [
                 'label' => __('فرم‌ها', 'salnama'),
                 'description' => __('فرم‌های تماس و جستجو', 'salnama')
+            ],
+                    // اضافه کردن دسته‌بندی global
+            'salnama-global' => [
+                'label' => __('الگوهای جهانی', 'salnama'),
+                'description' => __('الگوهای قابل استفاده در تمام بخش‌های سایت', 'salnama')
             ]
         ];
     }
@@ -398,6 +403,12 @@ class PatternManager {
             }
         }
 
+        // ========== اضافه کردن این بخش جدید ==========
+        // همیشه فایل‌های global floating bar را بارگذاری کن
+        // این فایل‌ها برای کلاس salnama-floating-animated هستند
+        $this->enqueue_global_floating_bar_assets();
+        // ============================================
+
         if (!empty($enqueued_patterns)) {
             $this->assets_loaded = true;
             
@@ -405,6 +416,71 @@ class PatternManager {
                 error_log('Salnama Patterns: Enqueued assets for: ' . implode(', ', $enqueued_patterns));
             }
         }
+    }
+
+        // ========== اضافه کردن این متد جدید ==========
+    /**
+     * بارگذاری assets نوار شناور جهانی
+     * این متد همیشه اجرا می‌شود اگر عنصر با کلاس salnama-floating-animated وجود داشته باشد
+     */
+    private function enqueue_global_floating_bar_assets() {
+        // بررسی کن آیا عنصر با کلاس مورد نظر در صفحه وجود دارد
+        if ($this->should_load_global_floating_bar()) {
+            // بارگذاری CSS
+            $global_css_path = '/assets/css/patterns/global/floating-social-bar.css';
+            if (file_exists(get_template_directory() . $global_css_path)) {
+                wp_enqueue_style(
+                    'salnama-global-floating-bar-css',
+                    get_template_directory_uri() . $global_css_path,
+                    [],
+                    $this->get_file_version($global_css_path)
+                );
+            }
+            
+            // بارگذاری JS
+            $global_js_path = '/assets/js/patterns/global/floating-social-bar.js';
+            if (file_exists(get_template_directory() . $global_js_path)) {
+                wp_enqueue_script(
+                    'salnama-global-floating-bar-js',
+                    get_template_directory_uri() . $global_js_path,
+                    [], // بدون وابستگی
+                    $this->get_file_version($global_js_path),
+                    true // در footer بارگذاری شود
+                );
+            }
+            
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('Salnama Patterns: Global floating bar assets loaded');
+            }
+        }
+    }
+
+    // ========== اضافه کردن این متد کمکی ==========
+    /**
+     * بررسی می‌کند آیا باید assets نوار شناور جهانی بارگذاری شوند
+     * با بررسی محتوای صفحه برای کلاس salnama-floating-animated
+     */
+    private function should_load_global_floating_bar() {
+        global $post;
+        
+        // بررسی اولیه: اگر کلاس در DOM وجود دارد
+        // این یک چک ساده است
+        $has_class = false;
+        
+        // بررسی در محتوای پست فعلی
+        if ($post && isset($post->post_content)) {
+            if (false !== strpos($post->post_content, 'salnama-floating-animated') ||
+                false !== strpos($post->post_content, 'dashicons-download') ||
+                false !== strpos($post->post_content, 'dashicons-share')) {
+                $has_class = true;
+            }
+        }
+        
+        // همیشه برای front-end بارگذاری کن (اختیاری)
+        // اگر می‌خواهید همیشه بارگذاری شود، خط زیر را فعال کنید:
+        // $has_class = true;
+        
+        return $has_class;
     }
 
     /**
