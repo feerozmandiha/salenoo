@@ -421,11 +421,11 @@ class PatternManager {
         // ========== اضافه کردن این متد جدید ==========
     /**
      * بارگذاری assets نوار شناور جهانی
-     * این متد همیشه اجرا می‌شود اگر عنصر با کلاس salnama-floating-animated وجود داشته باشد
      */
     private function enqueue_global_floating_bar_assets() {
-        // بررسی کن آیا عنصر با کلاس مورد نظر در صفحه وجود دارد
-        if ($this->should_load_global_floating_bar()) {
+        // همیشه در front-end بارگذاری کن
+        // تشخیص حضور عنصر به JavaScript واگذار می‌شود
+        if (!is_admin() || (defined('DOING_AJAX') && DOING_AJAX)) {
             // بارگذاری CSS
             $global_css_path = '/assets/css/patterns/global/floating-social-bar.css';
             if (file_exists(get_template_directory() . $global_css_path)) {
@@ -443,44 +443,48 @@ class PatternManager {
                 wp_enqueue_script(
                     'salnama-global-floating-bar-js',
                     get_template_directory_uri() . $global_js_path,
-                    [], // بدون وابستگی
+                    ['wp-dom-ready'], // وابستگی به wp-dom-ready
                     $this->get_file_version($global_js_path),
                     true // در footer بارگذاری شود
                 );
             }
             
+            // بارگذاری dashicons (ضروری)
+            wp_enqueue_style('dashicons');
+            
             if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('Salnama Patterns: Global floating bar assets loaded');
+                error_log('Salnama Patterns: Global floating bar assets loaded (front-end)');
             }
         }
     }
-
-    // ========== اضافه کردن این متد کمکی ==========
     /**
      * بررسی می‌کند آیا باید assets نوار شناور جهانی بارگذاری شوند
      * با بررسی محتوای صفحه برای کلاس salnama-floating-animated
      */
     private function should_load_global_floating_bar() {
+        // برای front-end همیشه بارگذاری کن اگر عنصر در DOM وجود دارد
+        // این بررسی در JavaScript انجام می‌شود
+        if (!is_admin() && !wp_doing_ajax()) {
+            // همیشه برای front-end بارگذاری کن
+            // منطق تشخیص به JavaScript محول می‌شود
+            return true;
+        }
+        
+        // برای admin/editor نیز بررسی کن
         global $post;
         
-        // بررسی اولیه: اگر کلاس در DOM وجود دارد
-        // این یک چک ساده است
-        $has_class = false;
-        
-        // بررسی در محتوای پست فعلی
+        // بررسی در محتوای پست فعلی (برای ادیتور)
         if ($post && isset($post->post_content)) {
-            if (false !== strpos($post->post_content, 'salnama-floating-animated') ||
-                false !== strpos($post->post_content, 'dashicons-download') ||
-                false !== strpos($post->post_content, 'dashicons-share')) {
-                $has_class = true;
+            // جستجوی کلاس یا dashicons
+            $content = $post->post_content;
+            if (strpos($content, 'salnama-floating-animated') !== false ||
+                strpos($content, 'dashicons-download') !== false ||
+                strpos($content, 'dashicons-share') !== false) {
+                return true;
             }
         }
         
-        // همیشه برای front-end بارگذاری کن (اختیاری)
-        // اگر می‌خواهید همیشه بارگذاری شود، خط زیر را فعال کنید:
-        // $has_class = true;
-        
-        return $has_class;
+        return false;
     }
 
     /**
