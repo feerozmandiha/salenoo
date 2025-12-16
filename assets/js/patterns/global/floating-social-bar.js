@@ -1,12 +1,10 @@
 /**
- * مدیریت هوشمند لود و انیمیشن نوار شناور با Dashicons
- * نسخه بهینه‌شده با تشخیص خودکار
+ * مدیریت نوار شناور با قابلیت‌های جلب توجه
  */
 
 (function() {
     'use strict';
     
-    // تنظیمات
     const config = {
         selectors: {
             container: '.salnama-floating-animated',
@@ -16,144 +14,161 @@
         classes: {
             loaded: 'loaded',
             ready: 'ready',
-            initialized: 'salnama-floating-initialized'
+            attention: 'attention',
+            scrolled: 'scrolled',
+            visible: 'salnama-visible'
         },
-        delays: {
-            fast: 1000,
-            medium: 800,
-            slow: 400
+        timings: {
+            initialDelay: 800,
+            breathingDelay: 2000,
+            attentionDelay: 5000,
+            hideOnScrollDelay: 300
+        },
+        thresholds: {
+            scrollHide: 100,
+            attentionTrigger: 15000 // 15 ثانیه
         }
     };
     
-    // وضعیت
     let state = {
-        isInitialized: false,
-        barElement: null,
-        pageLoadTime: null
+        bar: null,
+        icons: [],
+        hasInteracted: false,
+        lastAttentionTime: 0,
+        scrollTimer: null
     };
     
     // تابع اصلی
     function init() {
-        // جلوگیری از اجرای مجدد
-        if (state.isInitialized) return;
-        
-        // علامت‌گذاری برای جلوگیری از اجرای مجدد
-        state.isInitialized = true;
-        
-        // شروع زمان‌سنج
-        state.pageLoadTime = performance.now();
-        
-        // صبر برای DOM
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initializeBar);
-        } else {
-            setTimeout(initializeBar, 100);
-        }
-        
-        // همچنین بعد از لود کامل
-        window.addEventListener('load', handleWindowLoad);
-    }
-    
-    // پیدا و فعال‌سازی نوار
-    function initializeBar() {
         // جستجوی عنصر
-        state.barElement = document.querySelector(config.selectors.container);
+        state.bar = document.querySelector(config.selectors.container);
         
-        if (!state.barElement) {
-            console.debug('Salnama Floating Bar: Element not found in DOM');
+        if (!state.bar) {
+            console.debug('Salnama Floating Bar: Element not found');
             return;
         }
         
-        // اگر قبلاً initial شده
-        if (state.barElement.classList.contains(config.classes.initialized)) {
-            return;
-        }
+        // تنظیم tooltip برای آیکون‌ها
+        setupIcons();
         
-        // علامت‌گذاری
-        state.barElement.classList.add(config.classes.initialized);
+        // شروع انیمیشن‌ها
+        startAnimations();
         
-        // محاسبه تاخیر
-        const delay = calculateDelay();
+        // تنظیم event listeners
+        setupEventListeners();
         
-        // فعال‌سازی با تاخیر
-        setTimeout(() => {
-            activateBar();
-            setupEventListeners();
-        }, delay);
+        // جلب توجه اولیه
+        setTimeout(triggerAttention, config.timings.attentionDelay);
         
-        // فال‌بک: حداکثر 4 ثانیه
-        setTimeout(() => {
-            if (!state.barElement.classList.contains(config.classes.loaded)) {
-                activateBar();
+        // جلب توجه دوره‌ای
+        setInterval(() => {
+            if (!state.hasInteracted) {
+                triggerAttention();
             }
-        }, 4000);
+        }, config.thresholds.attentionTrigger);
         
-        console.debug('Salnama Floating Bar: Initialized with delay', delay + 'ms');
+        console.log('Salnama Floating Bar: Initialized successfully');
     }
     
-    // محاسبه تاخیر هوشمند
-    function calculateDelay() {
-        if (!state.pageLoadTime) return config.delays.medium;
+    // تنظیم آیکون‌ها
+    function setupIcons() {
+        state.icons = state.bar.querySelectorAll('.dashicons');
         
-        const loadTime = performance.now() - state.pageLoadTime;
-        
-        if (loadTime < 2000) return config.delays.fast;
-        if (loadTime < 4000) return config.delays.medium;
-        return config.delays.slow;
+        state.icons.forEach((icon, index) => {
+            // تنظیم order برای انیمیشن‌های مرحله‌ای
+            icon.style.setProperty('--icon-order', index);
+            
+            // تنظیم tooltip
+            if (icon.classList.contains('dashicons-download')) {
+                icon.setAttribute('data-tooltip', 'دانلود آلبوم');
+            } else if (icon.classList.contains('dashicons-share')) {
+                icon.setAttribute('data-tooltip', 'اشتراک گذاری');
+            }
+            
+            // کلیک آیکون
+            icon.addEventListener('click', handleIconClick);
+            
+            // ثبت interaction
+            icon.addEventListener('mouseenter', () => {
+                state.hasInteracted = true;
+            });
+        });
     }
     
-    // فعال‌سازی نوار
-    function activateBar() {
-        if (!state.barElement) return;
-        
-        // اضافه کردن کلاس‌ها
-        state.barElement.classList.add(config.classes.loaded);
-        
-        // کلاس ready بعد از 3 ثانیه
+    // شروع انیمیشن‌ها
+    function startAnimations() {
+        // تاخیر اولیه
         setTimeout(() => {
-            if (state.barElement) {
-                state.barElement.classList.add(config.classes.ready);
-            }
-        }, 3000);
+            state.bar.classList.add(config.classes.loaded);
+            
+            // انیمیشن تنفس
+            setTimeout(() => {
+                state.bar.classList.add(config.classes.ready);
+                
+                // اضافه کردن کلاس visible برای نمایش
+                state.bar.classList.add(config.classes.visible);
+                
+                // اضافه کردن نور هاله‌ای برای 3 ثانیه
+                state.bar.style.animation = 'haloPulse 2s ease-in-out 3';
+                setTimeout(() => {
+                    state.bar.style.animation = '';
+                }, 6000);
+                
+            }, config.timings.breathingDelay);
+            
+        }, config.timings.initialDelay);
+    }
+    
+    // جلب توجه
+    function triggerAttention() {
+        if (!state.bar || state.hasInteracted) return;
         
-        // ردیابی
-        trackEvent('floating_bar_activated');
+        const now = Date.now();
+        if (now - state.lastAttentionTime < 10000) return; // هر 10 ثانیه
+        
+        state.bar.classList.add(config.classes.attention);
+        state.lastAttentionTime = now;
+        
+        // حذف کلاس بعد از انیمیشن
+        setTimeout(() => {
+            state.bar.classList.remove(config.classes.attention);
+        }, 2400); // 3 بار * 0.8 ثانیه
     }
     
     // تنظیم event listeners
     function setupEventListeners() {
-        if (!state.barElement) return;
+        if (!state.bar) return;
         
-        // Hover events
-        state.barElement.addEventListener('mouseenter', handleMouseEnter);
-        state.barElement.addEventListener('mouseleave', handleMouseLeave);
+        // Hover
+        state.bar.addEventListener('mouseenter', handleMouseEnter);
+        state.bar.addEventListener('mouseleave', handleMouseLeave);
         
-        // Icon clicks
-        const icons = state.barElement.querySelectorAll('.dashicons');
-        icons.forEach(icon => {
-            icon.addEventListener('click', handleIconClick);
-        });
+        // Scroll
+        window.addEventListener('scroll', handleScroll);
         
-        // Touch events برای موبایل
+        // Touch برای موبایل
         if ('ontouchstart' in window) {
             setupTouchEvents();
         }
         
-        // Responsive
-        window.addEventListener('resize', debounce(handleResize, 250));
-        window.addEventListener('scroll', throttle(handleScroll, 100));
+        // ثبت interaction با نوار
+        state.bar.addEventListener('mouseenter', () => {
+            state.hasInteracted = true;
+            state.bar.classList.remove(config.classes.attention);
+        });
     }
     
     // Handle mouse enter
     function handleMouseEnter() {
         this.style.transform = 'translateX(0) translateY(-50%)';
         this.style.animation = 'none';
+        this.classList.remove(config.classes.scrolled);
     }
     
     // Handle mouse leave
     function handleMouseLeave() {
         if (this.classList.contains(config.classes.ready)) {
-            this.style.transform = 'translateX(-92%) translateY(-50%)';
+            this.style.transform = 'translateX(-85%) translateY(-50%)';
             this.style.animation = '';
         }
     }
@@ -164,29 +179,34 @@
         const icon = e.currentTarget;
         
         // افکت کلیک
-        icon.style.transform = 'translateX(3px) scale(0.95)';
+        icon.style.transform = 'translateX(5px) scale(0.9)';
         setTimeout(() => {
-            icon.style.transform = 'translateX(6px) scale(1.1)';
+            icon.style.transform = 'translateX(8px) scale(1.15)';
         }, 150);
         
-        // تشخیص نوع آیکون
+        // ثبت interaction
+        state.hasInteracted = true;
+        
+        // اجرای اکشن
         if (icon.classList.contains('dashicons-download')) {
             handleDownload();
-        } else if (icon.classList.contains('dashicons-share')) {
+        } else {
             handleShare();
         }
+        
+        // پخش sound effect (اختیاری)
+        playClickSound();
     }
     
     // Handle download
     function handleDownload() {
-        // اینجا منطق دانلود خود را اضافه کنید
-        console.log('Download clicked');
+        showNotification('📥 در حال آماده‌سازی دانلود...');
         
-        // نمایش نوتیفیکیشن
-        showNotification('در حال آماده‌سازی دانلود...');
+        // می‌توانید اینجا لینک دانلود را اضافه کنید
+        // window.location.href = 'your-download-link';
         
-        // ریدایرکت (مثال)
-        // window.location.href = '#download-link';
+        // یا باز کردن modal
+        // openDownloadModal();
     }
     
     // Handle share
@@ -194,106 +214,125 @@
         if (navigator.share) {
             navigator.share({
                 title: document.title,
-                text: 'سالنمای نو - آلبوم جدید',
+                text: 'آلبوم جدید سالنمای نو را ببینید',
                 url: window.location.href
             });
         } else {
-            // فال‌بک
-            window.open(
-                `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`,
-                '_blank'
-            );
-        }
-    }
-    
-    // Handle resize
-    function handleResize() {
-        if (!state.barElement) return;
-        
-        if (window.innerWidth < 768) {
-            state.barElement.style.transform = 'translateX(-88%) translateY(-50%)';
-        } else {
-            state.barElement.style.transform = 'translateX(-92%) translateY(-50%)';
+            showNotification('🔗 لینک کپی شد!');
+            // یا باز کردن modal اشتراک
+            // openShareModal();
         }
     }
     
     // Handle scroll
     function handleScroll() {
-        if (!state.barElement) return;
+        if (!state.bar || state.bar.matches(':hover')) return;
         
-        const scrollTop = window.scrollY;
-        if (scrollTop > 200 && !state.barElement.matches(':hover')) {
-            state.barElement.style.opacity = '0.7';
+        clearTimeout(state.scrollTimer);
+        
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        
+        if (scrollTop > config.thresholds.scrollHide) {
+            state.bar.classList.add(config.classes.scrolled);
         } else {
-            state.barElement.style.opacity = '';
+            state.bar.classList.remove(config.classes.scrolled);
         }
+        
+        // مخفی شدن کامل در اسکرول زیاد
+        state.scrollTimer = setTimeout(() => {
+            if (scrollTop > 300 && !state.bar.matches(':hover')) {
+                state.bar.style.opacity = '0.5';
+            }
+        }, config.timings.hideOnScrollDelay);
     }
     
     // Setup touch events
     function setupTouchEvents() {
+        let touchStartX = 0;
         let isOpen = false;
         
-        state.barElement.addEventListener('touchstart', (e) => {
-            if (!isOpen) {
-                state.barElement.style.transform = 'translateX(0) translateY(-50%)';
+        state.bar.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+        }, { passive: true });
+        
+        state.bar.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].clientX;
+            const deltaX = touchEndX - touchStartX;
+            
+            // اگر کشیدن به راست
+            if (deltaX > 30 && !isOpen) {
+                state.bar.style.transform = 'translateX(0) translateY(-50%)';
                 isOpen = true;
                 
-                // بستن با تپ خارج
+                // بستن اتوماتیک بعد از 5 ثانیه
                 setTimeout(() => {
-                    const closeListener = (event) => {
-                        if (!state.barElement.contains(event.target)) {
-                            state.barElement.style.transform = 'translateX(-92%) translateY(-50%)';
-                            isOpen = false;
-                            document.removeEventListener('touchstart', closeListener);
-                        }
-                    };
-                    document.addEventListener('touchstart', closeListener);
-                }, 10);
+                    if (isOpen && !state.bar.matches(':hover')) {
+                        state.bar.style.transform = 'translateX(-85%) translateY(-50%)';
+                        isOpen = false;
+                    }
+                }, 5000);
+            }
+            // اگر کشیدن به چپ و باز است
+            else if (deltaX < -30 && isOpen) {
+                state.bar.style.transform = 'translateX(-85%) translateY(-50%)';
+                isOpen = false;
             }
         }, { passive: true });
     }
     
-    // Handle window load
-    function handleWindowLoad() {
-        // اگر هنوز فعال نشده، فعالش کن
-        if (state.barElement && !state.barElement.classList.contains(config.classes.loaded)) {
-            setTimeout(activateBar, 500);
-        }
-    }
-    
     // نمایش نوتیفیکیشن
     function showNotification(message) {
+        // حذف نوتیفیکیشن قبلی
+        const oldNotification = document.querySelector('.salnama-notification');
+        if (oldNotification) oldNotification.remove();
+        
         const notification = document.createElement('div');
         notification.className = 'salnama-notification';
         notification.textContent = message;
-        notification.style.cssText = `
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.8);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 14px;
-            z-index: 1000000;
-            animation: salnamaFadeIn 0.3s ease;
+        
+        // استایل‌های نوتیفیکیشن
+        const style = document.createElement('style');
+        style.textContent = `
+            .salnama-notification {
+                position: fixed;
+                bottom: 30px;
+                left: 50%;
+                transform: translateX(-50%) translateY(20px);
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: white;
+                padding: 12px 24px;
+                border-radius: 12px;
+                font-size: 14px;
+                font-family: system-ui, -apple-system, sans-serif;
+                z-index: 1000000;
+                opacity: 0;
+                animation: salnamaNotificationIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+                box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }
+            
+            @keyframes salnamaNotificationIn {
+                to {
+                    opacity: 1;
+                    transform: translateX(-50%) translateY(0);
+                }
+            }
+            
+            @keyframes salnamaNotificationOut {
+                from {
+                    opacity: 1;
+                    transform: translateX(-50%) translateY(0);
+                }
+                to {
+                    opacity: 0;
+                    transform: translateX(-50%) translateY(-20px);
+                }
+            }
         `;
         
-        // اضافه کردن استایل انیمیشن
         if (!document.querySelector('#salnama-notification-style')) {
-            const style = document.createElement('style');
             style.id = 'salnama-notification-style';
-            style.textContent = `
-                @keyframes salnamaFadeIn {
-                    from { opacity: 0; transform: translateX(-50%) translateY(20px); }
-                    to { opacity: 1; transform: translateX(-50%) translateY(0); }
-                }
-                @keyframes salnamaFadeOut {
-                    from { opacity: 1; }
-                    to { opacity: 0; }
-                }
-            `;
             document.head.appendChild(style);
         }
         
@@ -301,71 +340,64 @@
         
         // حذف بعد از 3 ثانیه
         setTimeout(() => {
-            notification.style.animation = 'salnamaFadeOut 0.3s ease';
+            notification.style.animation = 'salnamaNotificationOut 0.4s ease forwards';
             setTimeout(() => {
                 if (notification.parentNode) {
                     notification.parentNode.removeChild(notification);
                 }
-            }, 300);
+            }, 400);
         }, 3000);
     }
     
-    // تابع ردیابی
-    function trackEvent(eventName) {
-        if (typeof gtag !== 'undefined') {
-            gtag('event', eventName, {
-                'event_category': 'floating_bar'
-            });
+    // پخش صدای کلیک (اختیاری)
+    function playClickSound() {
+        // می‌توانید یک sound effect اضافه کنید
+        try {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = 800;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+            
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 0.1);
+        } catch (e) {
+            // اگر AudioContext پشتیبانی نشد
+            console.debug('AudioContext not supported');
         }
     }
     
-    // Utility: debounce
-    function debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    }
-    
-    // Utility: throttle
-    function throttle(func, limit) {
-        let inThrottle;
-        return function(...args) {
-            if (!inThrottle) {
-                func.apply(this, args);
-                inThrottle = true;
-                setTimeout(() => inThrottle = false, limit);
-            }
-        };
+    // راه‌اندازی
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        setTimeout(init, 100);
     }
     
     // API عمومی
     window.SalnamaFloatingBar = {
         init: init,
         show: function() {
-            if (state.barElement) {
-                activateBar();
+            if (state.bar) {
+                state.bar.classList.add(config.classes.loaded, config.classes.ready, config.classes.visible);
             }
         },
         hide: function() {
-            if (state.barElement) {
-                state.barElement.classList.remove(config.classes.loaded, config.classes.ready);
+            if (state.bar) {
+                state.bar.classList.remove(config.classes.loaded, config.classes.ready, config.classes.visible);
+                state.bar.style.transform = 'translateX(-100%) translateY(-50%)';
             }
-        }
+        },
+        getAttention: triggerAttention,
+        download: handleDownload,
+        share: handleShare
     };
-    
-    // شروع خودکار
-    // منتظر بمان تا wp.dom-ready صدا زده شود
-    if (typeof wp !== 'undefined' && wp.domReady) {
-        wp.domReady(init);
-    } else {
-        // فال‌بک
-        document.addEventListener('DOMContentLoaded', init);
-    }
     
 })();
