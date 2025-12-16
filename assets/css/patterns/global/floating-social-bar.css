@@ -1,14 +1,22 @@
-/* استایل اصلی */
+/* ============================================
+   نوار شناور اشتراک - انیمیشن با تاخیر لود صفحه
+   نسخه بهینه‌شده برای Dashicons
+   ============================================ */
+
 .salnama-floating-animated {
+    /* موقعیت اصلی - کاملاً خارج از صفحه */
     position: fixed !important;
     left: 0 !important;
     top: 50% !important;
     transform: translateX(-100%) translateY(-50%) !important;
     z-index: 999999 !important;
     
+    /* ابعاد */
     width: 60px !important;
+    min-height: auto !important;
     padding: 15px 0 !important;
     
+    /* ظاهر */
     background: linear-gradient(135deg, 
         rgba(255, 255, 255, 0.98) 0%,
         rgba(248, 248, 248, 0.98) 100%) !important;
@@ -19,34 +27,53 @@
     border-radius: 0 18px 18px 0 !important;
     box-shadow: 
         0 4px 20px rgba(0, 0, 0, 0.08),
-        inset 1px 0 0 rgba(255, 255, 255, 0.8) !important;
+        inset 1px 0 0 rgba(255, 255, 255, 0.8),
+        inset 0 0 15px rgba(255, 255, 255, 0.3) !important;
     
+    /* جلوگیری از تداخل */
+    pointer-events: auto !important;
+    
+    /* حالت اولیه - مخفی و آماده انیمیشن */
     opacity: 0 !important;
     visibility: hidden !important;
+    
+    /* انیمیشن‌ها */
     transition: 
         transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
-        opacity 0.5s ease !important;
+        opacity 0.5s ease,
+        box-shadow 0.3s ease !important;
 }
 
-/* لود شده */
+/* کلاس فعال بعد از لود صفحه */
 .salnama-floating-animated.loaded {
     visibility: visible !important;
     opacity: 1 !important;
-    transform: translateX(-92%) translateY(-50%) !important;
+    
+    /* انیمیشن ورود بسیار ملایم با تاخیر */
+    animation: gentleEntrance 1s cubic-bezier(0.22, 0.61, 0.36, 1) 0.5s forwards !important;
 }
 
-/* آماده */
-.salnama-floating-animated.loaded.ready {
-    animation: gentleBreathing 6s ease-in-out infinite !important;
+/* انیمیشن اصلی ورود */
+@keyframes gentleEntrance {
+    0% {
+        transform: translateX(-100%) translateY(-50%) scale(0.95);
+        opacity: 0;
+    }
+    40% {
+        transform: translateX(-100%) translateY(-50%) scale(0.95);
+        opacity: 0;
+    }
+    70% {
+        transform: translateX(-80%) translateY(-50%) scale(0.98);
+        opacity: 0.7;
+    }
+    100% {
+        transform: translateX(-92%) translateY(-50%) scale(1);
+        opacity: 1;
+    }
 }
 
-/* هاور */
-.salnama-floating-animated:hover {
-    transform: translateX(0) translateY(-50%) !important;
-    animation: none !important;
-}
-
-/* انیمیشن تنفس */
+/* انیمیشن تنفس ملایم پس از ورود */
 @keyframes gentleBreathing {
     0%, 100% {
         transform: translateX(-92%) translateY(-50%);
@@ -56,7 +83,22 @@
     }
 }
 
-/* داخل نوار */
+/* اعمال انیمیشن تنفس بعد از 3 ثانیه */
+.salnama-floating-animated.loaded.ready {
+    animation: gentleBreathing 6s ease-in-out infinite !important;
+}
+
+/* حالت باز شده کامل با hover */
+.salnama-floating-animated:hover {
+    transform: translateX(0) translateY(-50%) !important;
+    animation: none !important;
+    box-shadow: 
+        0 8px 30px rgba(0, 0, 0, 0.12),
+        0 0 0 1px rgba(255, 255, 255, 0.7),
+        inset 1px 0 0 rgba(255, 255, 255, 0.9) !important;
+}
+
+/* استایل‌های داخلی نوار */
 .salnama-floating-animated > .wp-block-group {
     display: flex !important;
     flex-direction: column !important;
@@ -66,7 +108,7 @@
     margin: 0 !important;
 }
 
-/* Dashicons */
+/* استایل Dashicons */
 .salnama-floating-animated .dashicons {
     font-size: 24px !important;
     width: 40px !important;
@@ -78,12 +120,12 @@
     background: rgba(255, 255, 255, 0.9) !important;
     color: #555 !important;
     cursor: pointer !important;
-    transition: all 0.3s ease !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
     border: 1px solid rgba(0, 0, 0, 0.05) !important;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
 }
 
-/* هاور روی آیکون‌ها */
+/* افکت hover روی Dashicons */
 .salnama-floating-animated .dashicons:hover {
     transform: translateX(6px) scale(1.1) !important;
     background: white !important;
@@ -91,33 +133,123 @@
     color: #222 !important;
 }
 
-/* رنگ خاص هر آیکون */
+/* افکت خاص برای هر آیکون */
 .salnama-floating-animated .dashicons-download:hover {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
     color: white !important;
+    border-color: transparent !important;
 }
 
 .salnama-floating-animated .dashicons-share:hover {
     background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%) !important;
     color: white !important;
+    border-color: transparent !important;
 }
 
-/* ریسپانسیو */
-@media (max-width: 768px) {
-    .salnama-floating-animated {
-        width: 52px !important;
-    }
-    .salnama-floating-animated.loaded {
-        transform: translateX(-88%) translateY(-50%) !important;
-    }
-    .salnama-floating-animated .dashicons {
-        font-size: 20px !important;
-        width: 36px !important;
-        height: 36px !important;
-    }
+/* افکت فعال شدن */
+.salnama-floating-animated .dashicons:active {
+    transform: translateX(4px) scale(1.05) !important;
+    transition: transform 0.15s ease !important;
+}
+
+/* حالت نمایش در ادیتور */
+.block-editor-page .salnama-floating-animated,
+.editor-styles-wrapper .salnama-floating-animated {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateX(-92%) translateY(-50%) !important;
+    animation: none !important;
+    pointer-events: none !important;
 }
 
 /* سازگاری با admin bar */
 body.admin-bar .salnama-floating-animated {
     top: calc(50% + 32px) !important;
+}
+
+@media (max-width: 782px) {
+    body.admin-bar .salnama-floating-animated {
+        top: calc(50% + 46px) !important;
+    }
+}
+
+/* ریسپانسیو برای موبایل */
+@media (max-width: 768px) {
+    .salnama-floating-animated {
+        width: 52px !important;
+        padding: 12px 0 !important;
+        border-radius: 0 14px 14px 0 !important;
+    }
+    
+    .salnama-floating-animated.loaded {
+        transform: translateX(-88%) translateY(-50%) !important;
+    }
+    
+    .salnama-floating-animated:hover {
+        transform: translateX(0) translateY(-50%) !important;
+    }
+    
+    .salnama-floating-animated .dashicons {
+        font-size: 20px !important;
+        width: 36px !important;
+        height: 36px !important;
+    }
+    
+    .salnama-floating-animated > .wp-block-group {
+        gap: 20px !important;
+    }
+}
+
+/* برای صفحات با ارتفاع زیاد */
+@media (min-height: 900px) {
+    .salnama-floating-animated {
+        padding: 20px 0 !important;
+    }
+    
+    .salnama-floating-animated > .wp-block-group {
+        gap: 30px !important;
+    }
+}
+
+/* جلوگیری از نمایش در چاپ */
+@media print {
+    .salnama-floating-animated {
+        display: none !important;
+    }
+}
+
+/* انیمیشن پالس برای جلب توجه */
+@keyframes gentlePulse {
+    0%, 100% {
+        box-shadow: 
+            0 4px 20px rgba(0, 0, 0, 0.08),
+            inset 1px 0 0 rgba(255, 255, 255, 0.8);
+    }
+    50% {
+        box-shadow: 
+            0 4px 20px rgba(0, 0, 0, 0.12),
+            0 0 0 1px rgba(102, 126, 234, 0.2),
+            inset 1px 0 0 rgba(255, 255, 255, 0.9);
+    }
+}
+
+/* کلاس برای پالس ملایم */
+.salnama-floating-animated.pulse {
+    animation: gentlePulse 2s ease-in-out infinite !important;
+}
+
+/* حالت لودینگ */
+.salnama-floating-animated.loading .dashicons {
+    animation: dashiconLoading 1.5s ease-in-out infinite !important;
+}
+
+@keyframes dashiconLoading {
+    0%, 100% {
+        opacity: 0.6;
+        transform: scale(0.95);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
 }
