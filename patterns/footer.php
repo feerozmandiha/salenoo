@@ -4,7 +4,7 @@
  * Slug: salnama/footer
  * Description: لیستی از پا برگه های آماده..
  * Categories: salnama-footers
- * Block Types: core/query
+ * Block Types: core/template-part/footer
  *
  * @package WordPress
  * @subpackage Salnama
@@ -13,7 +13,6 @@
 
 ?>
 <!-- wp:group {"align":"full","className":"wc-blocks-pattern-footer-large wc-blocks-footer-pattern","style":{"border":{"top":{"color":"var:preset|color|brand-teal","width":"1px"},"right":[],"bottom":[],"left":[]}},"fontSize":"small"} -->
-<!-- wp:pattern {"slug: salnama/floating-bar"} /-->
 <div class="wp-block-group alignfull wc-blocks-pattern-footer-large wc-blocks-footer-pattern has-small-font-size" style="border-top-color:var(--wp--preset--color--brand-teal);border-top-width:1px"><!-- wp:columns {"align":"wide","style":{"spacing":{"blockGap":"32px","padding":{"right":"0px","left":"0px"}}}} -->
 <div class="wp-block-columns alignwide" style="padding-right:0px;padding-left:0px"><!-- wp:column {"verticalAlignment":"center","width":"50%","layout":{"type":"constrained"}} -->
 <div class="wp-block-column is-vertically-aligned-center" style="flex-basis:50%"><!-- wp:columns {"isStackedOnMobile":false,"style":{"spacing":{"padding":{"right":"0","left":"0"},"blockGap":{"left":"0"}}}} -->

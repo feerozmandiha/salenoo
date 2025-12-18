@@ -3,7 +3,7 @@
  * Title: نوار شناور دانلود و اشتراک گذاری
  * Slug: salnama/floating-bar
  * Description: نوار شناور چسبان برای دانلود و اشتراک گذاری
- * Categories: salnama-global, salnama-footers
+ * Categories: salnama-global
  * Block Types: core/template-part/footer
  * Keywords: floating, share, download, sticky
  *
