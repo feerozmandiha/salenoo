@@ -2,7 +2,7 @@
 /**
  * Title: نوار شناور دانلود و اشتراک گذاری
  * Slug: salnama/floating-bar
- * Description: نوار شناور چسبان برای دانلود و اشتراک گذاری
+ * Description: نوار شناور چسبان مینیمال
  * Categories: salnama-global
  * Block Types: core/template-part/footer
  * Keywords: floating, share, download, sticky
@@ -11,17 +11,17 @@
  */
 ?>
 
-<div class="fab-module" id="fab-module">
-    <div class="fab-module__container">
+<div id="fab-module" class="wp-block-group fab-module">
+    <div class="wp-block-group fab-module__container">
         
-        <div class="fab-module__group">
+        <div class="wp-block-group fab-module__group">
             <button class="fab-module__trigger" aria-label="<?php esc_attr_e('دانلود فایل‌ها', 'salnama'); ?>">
                 <span class="dashicons dashicons-download"></span>
             </button>
             
             <ul class="fab-module__submenu">
                 <li>
-                    <a href="#" target="_blank" rel="nofollow">
+                    <a href="<?php echo home_url('/wp-content/uploads/2025/12/کاتالوگ-محصولات-1405_.pdf'); ?>" target="_blank" rel="nofollow">
                         <span class="dashicons dashicons-media-document"></span>
                         <?php esc_html_e('دانلود کاتالوگ', 'salnama'); ?>
                     </a>
@@ -35,9 +35,7 @@
             </ul>
         </div>
 
-        <div class="fab-module__separator"></div>
-
-        <div class="fab-module__group">
+        <div class="wp-block-group fab-module__group">
             <button class="fab-module__trigger" aria-label="<?php esc_attr_e('اشتراک گذاری', 'salnama'); ?>">
                 <span class="dashicons dashicons-share"></span>
             </button>

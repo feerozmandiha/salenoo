@@ -58,7 +58,12 @@
 					"color": "transparent",
 					"name": "شفاف",
 					"slug": "transparent"
-				}
+				},
+				{
+                    "slug": "primary",
+                    "color": "#e0a700",
+                    "name": "Primary"
+                }
 			]
 		},
 		"layout": {
