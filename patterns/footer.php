@@ -12,22 +12,7 @@
  */
 
 ?>
-<!-- wp:group {"className":"salnama-floating-animated","layout":{"type":"constrained"}} -->
-<div class="wp-block-group salnama-floating-animated">
-    <!-- wp:group {"layout":{"type":"flex","orientation":"vertical"}} -->
-    <div class="wp-block-group">
-        <!-- wp:html -->
-        <span class="dashicons dashicons-download" data-action="download"></span>
-        <!-- /wp:html -->
-
-        <!-- wp:html -->
-        <span class="dashicons dashicons-share" data-action="share"></span>
-        <!-- /wp:html -->
-    </div>
-    <!-- /wp:group -->
-</div>
-<!-- /wp:group -->
-
+<!-- wp:pattern {"slug: salnama/floating-bar"} /-->
 <!-- wp:group {"align":"full","className":"wc-blocks-pattern-footer-large wc-blocks-footer-pattern","style":{"border":{"top":{"color":"var:preset|color|brand-teal","width":"1px"},"right":[],"bottom":[],"left":[]}},"fontSize":"small"} -->
 <div class="wp-block-group alignfull wc-blocks-pattern-footer-large wc-blocks-footer-pattern has-small-font-size" style="border-top-color:var(--wp--preset--color--brand-teal);border-top-width:1px"><!-- wp:columns {"align":"wide","style":{"spacing":{"blockGap":"32px","padding":{"right":"0px","left":"0px"}}}} -->
 <div class="wp-block-columns alignwide" style="padding-right:0px;padding-left:0px"><!-- wp:column {"verticalAlignment":"center","width":"50%","layout":{"type":"constrained"}} -->

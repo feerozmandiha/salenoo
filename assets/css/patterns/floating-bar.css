@@ -1,0 +1,184 @@
+:root {
+    --fab-bg: rgba(255, 255, 255, 0.9);
+    --fab-blur: 15px;
+    --fab-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    --fab-border: 1px solid rgba(255, 255, 255, 0.4);
+    --fab-color: #444;
+    --fab-hover-color: #0073aa;
+    --fab-radius: 16px;
+}
+
+.fab-module {
+    position: fixed;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%) translateX(-120px);
+    z-index: 99999;
+    opacity: 0;
+    visibility: hidden;
+    font-family: inherit;
+    direction: rtl;
+}
+
+.fab-module.is-visible {
+    animation: fabSlideIn 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    visibility: visible;
+}
+
+.fab-module__container {
+    display: flex;
+    flex-direction: column;
+    background: var(--fab-bg);
+    backdrop-filter: blur(var(--fab-blur));
+    -webkit-backdrop-filter: blur(var(--fab-blur));
+    border: var(--fab-border);
+    box-shadow: var(--fab-shadow);
+    border-radius: var(--fab-radius);
+    padding: 10px 6px;
+    width: 60px;
+    align-items: center;
+}
+
+.fab-module__trigger {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--fab-color);
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 0;
+}
+
+.fab-module__trigger:hover {
+    background: rgba(0, 0, 0, 0.04);
+    color: var(--fab-hover-color);
+    transform: scale(1.05);
+}
+
+.fab-module__trigger .dashicons {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fab-module__separator {
+    height: 1px;
+    width: 80%;
+    background: rgba(0,0,0,0.1);
+    margin: 8px 0;
+}
+
+.fab-module__group {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.fab-module__submenu {
+    position: absolute;
+    left: 100%; 
+    top: 50%;
+    transform: translateY(-50%) translateX(10px);
+    background: #fff;
+    padding: 12px;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    list-style: none !important;
+    margin: 0 !important;
+    width: 190px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    border: 1px solid #f0f0f0;
+    text-align: right;
+}
+
+.fab-module__group:hover .fab-module__submenu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-50%) translateX(15px);
+    pointer-events: auto;
+}
+
+/* پل نامرئی حیاتی برای جلوگیری از بسته شدن */
+.fab-module__submenu::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 100%;
+    width: 30px;
+    background: transparent;
+}
+
+.fab-module__submenu::before {
+    content: '';
+    position: absolute;
+    left: -6px;
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    width: 12px;
+    height: 12px;
+    background: #fff;
+    border-left: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
+    z-index: 1;
+}
+
+.fab-module__submenu li {
+    margin-bottom: 8px !important;
+    padding: 0 !important;
+    list-style: none !important;
+}
+.fab-module__submenu li:last-child {
+    margin-bottom: 0 !important;
+}
+
+.fab-module__submenu a {
+    display: flex;
+    align-items: center;
+    text-decoration: none !important;
+    color: #555;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 10px;
+    border-radius: 8px;
+    transition: background 0.2s;
+    line-height: 1.4;
+}
+
+.fab-module__submenu a:hover {
+    background: #f4f6f8;
+    color: var(--fab-hover-color);
+}
+
+.fab-module__submenu .dashicons,
+.fab-module__submenu svg {
+    margin-left: 8px; 
+    color: #888;
+    min-width: 20px;
+}
+.fab-module__submenu a:hover svg {
+    color: var(--fab-hover-color);
+}
+
+a[data-network="whatsapp"]:hover svg { color: #25D366 !important; }
+a[data-network="telegram"]:hover svg { color: #0088cc !important; }
+a[data-network="instagram"]:hover svg { color: #E1306C !important; }
+a[data-network="eitaa"]:hover svg { color: #e77600 !important; }
+
+@keyframes fabSlideIn {
+    from { opacity: 0; transform: translateY(-50%) translateX(-120px); }
+    to { opacity: 1; transform: translateY(-50%) translateX(0); }
+}
