@@ -97,4 +97,26 @@ document.addEventListener('DOMContentLoaded', function() {
     if(wrapper && !wrapper.classList.contains('salnama-flipbook-wrapper')) {
         wrapper.classList.add('salnama-flipbook-wrapper');
     }
+
+    // --- 3. جلوگیری از ورق خوردن هنگام کلیک روی دکمه‌ها ---
+    // انتخاب تمام دکمه‌های مشاهده محصول
+    const productButtons = document.querySelectorAll('.btn-view-product');
+    
+    productButtons.forEach(btn => {
+        // وقتی موس روی دکمه رفت، قابلیت ورق زدن با موس موقتاً غیرفعال شود (اگر کتابخانه ساپورت کند)
+        // اما راه مطمئن‌تر: متوقف کردن انتشار رویداد کلیک
+        
+        btn.addEventListener('mousedown', (e) => {
+            e.stopPropagation(); // جلوگیری از رسیدن کلیک به صفحه زیرین
+        });
+        
+        btn.addEventListener('touchstart', (e) => {
+            e.stopPropagation();
+        }, { passive: true });
+
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            // اینجا لینک به صورت طبیعی کار می‌کند چون تگ <a> است
+        });
+    });
 });

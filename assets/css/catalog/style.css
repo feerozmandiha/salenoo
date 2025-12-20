@@ -1,180 +1,219 @@
-/* assets/css/catalog/style.css - نسخه تمام صفحه و لاکچری */
+/* assets/css/catalog/style.css - نسخه نهایی با چیدمان آینه‌ای */
 
 :root {
-    --catalog-bg: #eef2f3; /* رنگ پس‌زمینه کلی صفحه */
-    --catalog-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    --catalog-bg: #eef2f3;
+    --catalog-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
     --page-bg: #fff;
     --text-color: #333;
     --accent-color: var(--wp--preset--color--brand-blue, #00AEEF);
 }
 
-/* 1. کانتینر اصلی که کل صفحه مرورگر را می‌گیرد */
+/* 1. تنظیمات کانتینر برای ثبات بیشتر جلد */
 .salnama-flipbook-wrapper {
     width: 100%;
-    height: 100vh; /* ارتفاع کامل صفحه نمایش */
-    background: radial-gradient(circle at center, #fdfbfb 0%, #ebedee 100%); /* گرادینت ملایم */
+    height: 100vh;
+    background: radial-gradient(circle at center, #fdfbfb 0%, #ebedee 100%);
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
     overflow: hidden;
-    direction: ltr; /* جهت چپ‌چین برای درست کار کردن کتابخانه */
+    direction: ltr; 
+    /* پرسپکتیو را زیاد می‌کنیم تا اعوجاج سه بعدی کمتر شود و جلد ثابت‌تر به نظر برسد */
+    perspective: 4000px; 
 }
 
-/* 2. کانتینر خود کتاب (تنظیم عرض ۹۰ درصد) */
 .salnama-flipbook-container {
-    width: 92vw;  /* ۹۲ درصد عرض صفحه (۴۶ درصد هر صفحه) */
-    height: 90vh; /* ۹۰ درصد ارتفاع صفحه */
-    max-width: 1800px; /* محدودیت برای مانیتورهای خیلی بزرگ */
-    box-shadow: var(--catalog-shadow);
-    transition: transform 0.3s ease;
+    width: 92vw;
+    height: 90vh;
+    max-width: 1600px; /* عرض را کمی محدودتر کنیم تا کنترل بهتر شود */
+    /* حذف transition روی transform برای جلوگیری از پرش موقع بسته شدن */
+    /* transition: transform 0.3s ease;  <-- این خط حذف شد */
 }
 
-/* 3. استایل صفحات */
+/* 2. استایل صفحات */
 .page {
     background-color: var(--page-bg);
-    border: 1px solid #f0f0f0;
     overflow: hidden;
-    /* گرادینت خیلی محو برای حس کاغذ */
-    background-image: linear-gradient(to right, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0) 5%); 
+    /* این دستور باعث می‌شود لبه‌های جلد تمیزتر رندر شوند */
+    backface-visibility: hidden; 
+    -webkit-backface-visibility: hidden;
+    transform-style: preserve-3d;
 }
 
-/* 4. محتوای داخلی صفحه (چیدمان تصویر و متن) */
 .page-content {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
-    padding: 0; /* حذف پدینگ برای بزرگترین سایز تصویر */
     position: relative;
 }
 
-/* 5. بخش تصویر (بزرگ کردن تا حد ممکن) */
+/* 3. بخش تصویر */
 .product-image-wrapper {
-    flex: 1; /* تمام فضای خالی را پر کند */
+    flex: 1;
     width: 100%;
-    height: 80%; /* ۸۰ درصد ارتفاع صفحه مال تصویر */
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 20px;
-    background: #fff;
     box-sizing: border-box;
-    position: relative;
+    z-index: 1; /* پایین‌تر از دکمه‌ها */
 }
 
 .product-image-wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* تصویر کامل دیده شود و کراپ نشود */
-    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1)); /* سایه خود محصول */
-    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    filter: drop-shadow(0 15px 25px rgba(0,0,0,0.15));
+    transition: transform 0.4s ease;
 }
 
-/* افکت زوم نرم روی تصویر هنگام هاور */
 .page:hover .product-image-wrapper img {
-    transform: scale(1.08);
+    transform: scale(1.05);
 }
 
-/* 6. بخش اطلاعات محصول (پایین صفحه) */
+/* 4. بخش اطلاعات محصول (چیدمان هوشمند) */
 .product-info {
-    height: 15%; /* ۱۵ درصد ارتفاع برای متن */
-    padding: 15px 20px;
+    height: 18%; /* فضای کافی برای دکمه و متن */
+    padding: 15px 30px;
     background: rgba(255,255,255,0.95);
-    border-top: 1px solid #eee;
+    border-top: 1px solid #f0f0f0;
     display: flex;
     align-items: center;
     justify-content: space-between;
     direction: rtl;
     backdrop-filter: blur(5px);
+    position: relative;
+    z-index: 5; /* بالاتر از لایه ورق زدن */
 }
 
+/* --- منطق آینه‌ای (Mirror Logic) --- */
+/* در حالت RTL:
+   صفحات فرد (1, 3, 5...) سمت راست قرار می‌گیرند (لبه بیرونی سمت چپ است).
+   صفحات زوج (2, 4, 6...) سمت چپ قرار می‌گیرند (لبه بیرونی سمت راست است).
+*/
+
+/* صفحات سمت راست (فرد در شمارش HTML) - شیرازه سمت چپ است */
+.page:nth-child(odd) .product-info {
+    flex-direction: row; /* متن راست، دکمه چپ (نزدیک لبه بیرونی) - باید برعکس شود */
+    /* اصلاح: دکمه را می‌بریم سمت راست (نزدیک شیرازه) */
+    flex-direction: row-reverse; 
+}
+
+/* صفحات سمت چپ (زوج در شمارش HTML) - شیرازه سمت راست است */
+.page:nth-child(even) .product-info {
+    flex-direction: row; /* متن راست (نزدیک شیرازه)، دکمه چپ (نزدیک لبه بیرونی) */
+    /* اصلاح: اینجا خوب است چون متن سمت راست (شیرازه) است. اما دکمه سمت چپ (لبه) می‌افتد.
+       بهتر است کلاً دکمه‌ها را به وسط نزدیک کنیم.
+    */
+    justify-content: center;
+    gap: 20px;
+}
+
+/* بازنویسی برای اطمینان: دکمه‌ها همیشه سمت شیرازه باشند */
+/* ۱. صفحات سمت راست (فرد): شیرازه چپ است. دکمه باید چپ باشد. */
+.page:nth-child(odd) .product-info {
+    justify-content: flex-end; /* همه چی بره سمت چپ (شیرازه) */
+}
+.page:nth-child(odd) .product-info .product-title {
+    order: 2; /* عنوان بره سمت راست (لبه) */
+    margin-left: 15px;
+    text-align: right;
+}
+.page:nth-child(odd) .product-info .btn-view-product {
+    order: 1; /* دکمه بیاد سمت چپ (شیرازه) */
+}
+
+/* ۲. صفحات سمت چپ (زوج): شیرازه راست است. دکمه باید راست باشد. */
+.page:nth-child(even) .product-info {
+    justify-content: flex-end; /* در RTL یعنی سمت راست (شیرازه) */
+}
+.page:nth-child(even) .product-info .product-title {
+    order: 2; /* عنوان بره سمت چپ (لبه) */
+    margin-right: 15px;
+    text-align: left;
+}
+.page:nth-child(even) .product-info .btn-view-product {
+    order: 1; /* دکمه بیاد سمت راست (شیرازه) */
+}
+/* --- پایان منطق آینه‌ای --- */
+
 .product-title {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 800;
     margin: 0;
     color: var(--text-color);
+    line-height: 1.4;
 }
 
 .product-price {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--accent-color);
+    display: block;
+    font-size: 0.9rem;
+    color: #777;
+    margin-top: 5px;
 }
 
 .btn-view-product {
-    padding: 8px 24px;
+    padding: 10px 25px;
     background-color: var(--accent-color);
     color: #fff !important;
-    border-radius: 50px;
+    border-radius: 8px;
     font-size: 0.9rem;
     text-decoration: none;
-    box-shadow: 0 5px 15px rgba(0, 174, 239, 0.3);
-    transition: all 0.3s ease;
+    white-space: nowrap;
+    box-shadow: 0 4px 10px rgba(0, 174, 239, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    position: relative;
+    z-index: 100; /* بسیار مهم برای کلیک شدن */
 }
 
 .btn-view-product:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 174, 239, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 174, 239, 0.5);
 }
 
-/* 7. شماره صفحه */
+/* کاورها */
+.cover-title { color: #fff; font-size: 2.5rem; margin-bottom: 20px; }
+.cover-subtitle { color: #fff; font-size: 1.5rem; opacity: 0.9; }
+
+/* فوتر شماره صفحه */
 .page-footer {
     position: absolute;
-    bottom: 10px;
+    bottom: 5px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 12px;
-    color: #bbb;
-    z-index: 10;
+    font-size: 11px;
+    color: #ccc;
 }
 
-/* 8. دکمه‌های ناوبری بزرگ و شیشه ای */
+/* دکمه‌های ناوبری */
 .book-control-btn {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.8); /* شیشه‌ای */
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    color: #333;
+    background: #fff;
+    border: 1px solid #eee;
+    color: #555;
     cursor: pointer;
-    z-index: 20;
+    z-index: 50;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
     transition: all 0.3s ease;
 }
+.book-control-btn:hover { background: var(--accent-color); color: #fff; }
+.book-control-btn.prev { right: 20px; }
+.book-control-btn.next { left: 20px; }
 
-.book-control-btn:hover {
-    background: #fff;
-    transform: translateY(-50%) scale(1.1);
-    color: var(--accent-color);
-}
-
-.book-control-btn.prev { right: 30px; }
-.book-control-btn.next { left: 30px; }
-
-/* 9. استایل ریسپانسیو (موبایل) */
-@media (max-width: 1024px) {
-    .salnama-flipbook-container {
-        width: 95vw;
-        height: 70vh; /* در موبایل ارتفاع کمتر */
-    }
-    .product-info {
-        flex-direction: column;
-        height: auto;
-        padding: 10px;
-        text-align: center;
-        gap: 10px;
-    }
-    .book-control-btn {
-        width: 40px;
-        height: 40px;
-        background: rgba(255,255,255,0.9);
-    }
+/* موبایل */
+@media (max-width: 768px) {
+    .salnama-flipbook-container { width: 95vw; height: 70vh; }
+    .product-info { flex-direction: column !important; justify-content: center !important; text-align: center; }
+    .product-title, .btn-view-product { order: unset !important; margin: 5px 0 !important; text-align: center !important;}
 }
