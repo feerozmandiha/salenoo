@@ -1,19 +1,25 @@
 /**
- * Salnama Catalog Controller - With Sound
+ * Salnama Catalog Controller - Final Version
  * Path: assets/js/catalog/script.js
+ * Features: Sound, High-Res, Button Safety, RTL Support
  */
 
 document.addEventListener('DOMContentLoaded', function() {
     
+    // 1. انتخاب کانتینر اصلی
     const flipbookEl = document.getElementById('salnama-flipbook');
+    
+    // اگر المان در صفحه نبود، ادامه نده
     if (!flipbookEl) return;
 
+    // انتخاب دقیق صفحات داخل کانتینر
     const pages = flipbookEl.querySelectorAll('.page');
     if (pages.length === 0) return;
 
+    // نمایش کانتینر
     flipbookEl.style.display = 'block';
 
-    // --- 1. آماده‌سازی صدا ---
+    // --- 2. تنظیمات و راه‌اندازی صدا ---
     let flipSound = null;
     // @ts-ignore
     if (typeof SalnamaCatalogConfig !== 'undefined' && SalnamaCatalogConfig.sound_url) {
@@ -21,37 +27,37 @@ document.addEventListener('DOMContentLoaded', function() {
         flipSound = new Audio(SalnamaCatalogConfig.sound_url);
     }
 
-    // --- تابعی برای پخش هوشمند صدا ---
     const playFlipSound = () => {
         if (flipSound) {
-            // ریست کردن زمان به صفر تا اگر کاربر تند تند ورق زد، صدا قطع و دوباره پخش شود
             flipSound.currentTime = 0;
-            // پرومیس برای جلوگیری از خطای مرورگرهایی که اتوپلی را بلاک می‌کنند
             var playPromise = flipSound.play();
             if (playPromise !== undefined) {
                 playPromise.catch(error => {
-                    // معمولاً تا وقتی کاربر اولین کلیک را روی صفحه نکند، مرورگر اجازه پخش صدا نمی‌دهد.
-                    // این خطا طبیعی است و نیازی به لاگ کردن نیست.
+                    // جلوگیری از خطای Autoplay در مرورگرها قبل از تعامل کاربر
                 });
             }
         }
     };
 
-    const containerWidth = flipbookEl.clientWidth;
-
+    // --- 3. راه‌اندازی کتابخانه PageFlip ---
     // @ts-ignore
     const pageFlip = new St.PageFlip(flipbookEl, {
-        width: 1000,  
+        // ابعاد با کیفیت بالا (کانتینر واقعی توسط CSS کنترل می‌شود)
+        width: 1000,
         height: 1400,
-        size: "stretch", 
+        
+        // تنظیمات ریسپانسیو
+        size: "stretch",
         minWidth: 300,
-        maxWidth: 3000, 
+        maxWidth: 3000,
         minHeight: 400,
         maxHeight: 3000,
-        maxShadowOpacity: 0.3, 
+
+        // ظاهر و فیزیک
+        maxShadowOpacity: 0.2, // سایه ملایم‌تر برای زیبایی
         showCover: true,
         mobileScrollSupport: false,
-        flippingTime: 1200, 
+        flippingTime: 1100, // سرعت ورق زدن طبیعی
         usePortrait: true,
         startPage: 0,
         autoSize: true,
@@ -59,13 +65,16 @@ document.addEventListener('DOMContentLoaded', function() {
         showPageCorners: true
     });
 
+    // بارگذاری صفحات
     pageFlip.loadFromHTML(pages);
 
+    // --- 4. شماره‌گذاری فارسی صفحات ---
     const pageNumberElements = flipbookEl.querySelectorAll('.page-number');
     pageNumberElements.forEach((el, index) => {
         el.innerText = (index + 1).toLocaleString('fa-IR'); 
     });
 
+    // --- 5. دکمه‌های کنترلی (بعدی/قبلی) ---
     const prevBtn = document.getElementById('prev-page-btn');
     const nextBtn = document.getElementById('next-page-btn');
 
@@ -81,42 +90,42 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // کنترل با کیبورد (جهت‌ها برعکس برای RTL)
     document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowRight') pageFlip.flipPrev();
         if (e.key === 'ArrowLeft') pageFlip.flipNext();
     });
 
-    // --- 2. پخش صدا هنگام ورق خوردن ---
+    // --- 6. رویداد ورق زدن (پخش صدا) ---
     pageFlip.on('flip', (e) => {
-        // پخش صدا
         playFlipSound();
     });
 
-    // اضافه کردن wrapper class
+    // --- 7. اطمینان از کلاس Wrapper ---
     const wrapper = flipbookEl.parentElement;
     if(wrapper && !wrapper.classList.contains('salnama-flipbook-wrapper')) {
         wrapper.classList.add('salnama-flipbook-wrapper');
     }
 
-    // --- 3. جلوگیری از ورق خوردن هنگام کلیک روی دکمه‌ها ---
-    // انتخاب تمام دکمه‌های مشاهده محصول
+    // --- 8. جلوگیری از ورق خوردن هنگام کلیک روی دکمه‌های محصول ---
     const productButtons = document.querySelectorAll('.btn-view-product');
     
     productButtons.forEach(btn => {
-        // وقتی موس روی دکمه رفت، قابلیت ورق زدن با موس موقتاً غیرفعال شود (اگر کتابخانه ساپورت کند)
-        // اما راه مطمئن‌تر: متوقف کردن انتشار رویداد کلیک
-        
+        // جلوگیری از انتشار رویداد موس
         btn.addEventListener('mousedown', (e) => {
-            e.stopPropagation(); // جلوگیری از رسیدن کلیک به صفحه زیرین
+            e.stopPropagation();
         });
         
+        // جلوگیری از انتشار رویداد تاچ (موبایل)
         btn.addEventListener('touchstart', (e) => {
             e.stopPropagation();
         }, { passive: true });
 
+        // اطمینان از کارکردن کلیک لینک
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
-            // اینجا لینک به صورت طبیعی کار می‌کند چون تگ <a> است
         });
     });
+    
+    console.log('Salnama Catalog: Ready with Sound & High-Res UI');
 });
