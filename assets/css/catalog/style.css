@@ -198,3 +198,52 @@
         font-size: 1.5rem;
     }
 }
+
+/* ... کدهای قبلی ... */
+
+/* کانتینر نسبی برای قرارگیری دکمه‌ها */
+.salnama-flipbook-wrapper {
+    position: relative; /* مهم */
+}
+
+.book-control-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--wp--preset--color--card-bg);
+    border: 1px solid var(--wp--preset--color--brand-blue);
+    color: var(--wp--preset--color--brand-blue);
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.book-control-btn:hover {
+    background-color: var(--wp--preset--color--brand-blue);
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(0,174,239,0.4);
+}
+
+/* دکمه سمت راست (صفحه قبل در RTL) */
+.book-control-btn.prev {
+    right: 20px;
+}
+
+/* دکمه سمت چپ (صفحه بعد در RTL) */
+.book-control-btn.next {
+    left: 20px;
+}
+
+/* مخفی کردن دکمه‌ها در موبایل (چون در موبایل سواپ کردن راحت‌تر است) */
+@media (max-width: 768px) {
+    .book-control-btn {
+        display: none;
+    }
+}

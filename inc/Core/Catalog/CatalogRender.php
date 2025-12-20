@@ -75,7 +75,16 @@ class CatalogRender {
                 </div>
             </div>
 
+            <div class="salnama-book-controls">
+                <button type="button" id="prev-page-btn" class="book-control-btn prev" aria-label="صفحه قبل">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                </button>
+                <button type="button" id="next-page-btn" class="book-control-btn next" aria-label="صفحه بعد">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+                </button>
+            </div>
         </div>
+
         <?php
         return ob_get_clean();
     }

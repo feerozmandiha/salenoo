@@ -90,13 +90,22 @@ class AssetsLoader {
     }
 
     private function enqueue_scripts(): void {
+            // ۱. ابتدا فایل اصلی JS قالب را فراخوانی کنید
+            // فرض بر این است که فایل main.js در مسیر assets/js/ وجود دارد
+            wp_enqueue_script( 
+                'salnama-theme-main', 
+                SALNAMA_ASSETS_URI . '/js/main.js', 
+                [], // وابستگی‌ها (مثلاً ['jquery'] اگر نیاز دارید)
+                SALNAMA_THEME_VERSION, 
+                true // بارگذاری در فوتر
+            );
 
-        // انتقال داده‌ها به جاوااسکریپت
-        wp_localize_script( 'salnama-theme-main', 'salnama_theme', [
-            'ajax_url' => admin_url( 'admin-ajax.php' ),
-            'is_rtl'   => is_rtl(),
-            'assets_uri' => SALNAMA_ASSETS_URI,
-        ] );
+            // ۲. سپس داده‌ها را به آن منتقل کنید
+            wp_localize_script( 'salnama-theme-main', 'salnama_theme', [
+                'ajax_url' => admin_url( 'admin-ajax.php' ),
+                'is_rtl'   => is_rtl(),
+                'assets_uri' => SALNAMA_ASSETS_URI,
+            ] );
     }
 
     // حذف کامل متد conditionally_enqueue_gsap و متدهای وابسته

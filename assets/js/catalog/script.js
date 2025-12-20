@@ -43,6 +43,28 @@ document.addEventListener('DOMContentLoaded', function() {
         drawShadow: true
     });
 
+    // مدیریت دکمه‌های سفارشی
+    const prevBtn = document.getElementById('prev-page-btn');
+    const nextBtn = document.getElementById('next-page-btn');
+
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            pageFlip.flipPrev(); // ورق زدن به عقب
+        });
+    }
+
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            pageFlip.flipNext(); // ورق زدن به جلو
+        });
+    }
+
+    // آپدیت وضعیت دکمه‌ها (مثلاً در صفحه اول دکمه قبل غیرفعال شود)
+    pageFlip.on('flip', (e) => {
+        // e.data ایندکس صفحه فعلی است
+        // اینجا می‌توانید لاجیک disable کردن دکمه‌ها را بنویسید اگر نیاز بود
+    });
+
     // بارگذاری صفحات
     // این متد تمام فرزندان مستقیم المان کانتینر را به عنوان صفحه می‌شناسد
     const pages = document.querySelectorAll('.page');
