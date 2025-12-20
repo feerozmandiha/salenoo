@@ -34,24 +34,26 @@ class CatalogManager {
     }
 
     public function enqueue_assets() {
-            // مسیرها را بررسی کنید
             $css_uri = get_template_directory_uri() . '/assets/css/catalog/style.css';
-            
-            // نکته مهم: اگر فایل را دستی کپی کردید، مطمئن شوید اسمش دقیقا همین است
             $js_lib  = get_template_directory_uri() . '/assets/js/catalog/page-flip.browser.js';
             $js_app  = get_template_directory_uri() . '/assets/js/catalog/script.js';
+            
+            // آدرس فایل صدا
+            $sound_uri = get_template_directory_uri() . '/assets/sounds/page-flip.mp3';
 
-            // فقط در جایی که شورت‌کد هست لود شود
             global $post;
-            if ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'salnama_catalog' ) ) {
+            // بررسی وجود شورت‌کد یا صفحه کاتالوگ
+            if ( ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'salnama_catalog' ) ) || is_page('catalog') ) {
                 
-                wp_enqueue_style( 'salnama-catalog-style', $css_uri, [], '1.0.1' );
-
-                // لود کتابخانه
+                wp_enqueue_style( 'salnama-catalog-style', $css_uri, [], '1.0.2' );
                 wp_enqueue_script( 'page-flip-lib', $js_lib, [], '2.0.0', true );
+                wp_enqueue_script( 'salnama-catalog-app', $js_app, ['page-flip-lib'], '1.0.2', true );
 
-                // لود اسکریپت خودمان (وابسته به page-flip-lib)
-                wp_enqueue_script( 'salnama-catalog-app', $js_app, ['page-flip-lib'], '1.0.1', true );
+                // ارسال تنظیمات و آدرس صدا به JS
+                wp_localize_script( 'salnama-catalog-app', 'SalnamaCatalogConfig', [
+                    'root_url'  => get_template_directory_uri(),
+                    'sound_url' => $sound_uri, // ✅ آدرس صدا ارسال شد
+                ]);
             }
     }
 }
