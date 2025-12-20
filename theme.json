@@ -444,6 +444,15 @@
 			"name": "footer"
 		}
 	],
+	"customTemplates": [
+		{
+			"name": "catalog",
+			"title": "(کاتالوگ تمام صفحه (بدون هدر/فوتر",
+			"postTypes": [
+				"page"
+			]
+		}
+	],
 	"patterns": [],
 	"version": 3,
 	"$schema": "https://schemas.wp.org/trunk/theme.json"
