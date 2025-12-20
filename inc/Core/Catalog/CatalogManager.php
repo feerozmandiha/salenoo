@@ -26,7 +26,7 @@ class CatalogManager {
      */
     public function render_shortcode( $atts ) {
         $attributes = shortcode_atts( [
-            'limit' => 12,
+            'limit' => -1,
         ], $atts );
 
         $render = new CatalogRender();
