@@ -1,110 +1,119 @@
 /**
- * Salnama Catalog Controller
+ * Salnama Catalog Controller - Final Version
  * Path: assets/js/catalog/script.js
- * Dependencies: page-flip.browser.js
+ * Dependencies: page-flip.browser.js (St.PageFlip)
  */
 
 document.addEventListener('DOMContentLoaded', function() {
     
+    // 1. انتخاب کانتینر اصلی
     const flipbookEl = document.getElementById('salnama-flipbook');
     
-    // اگر المان در صفحه نبود، اجرا نکن
+    // اگر المان در صفحه نبود، ادامه نده (جلوگیری از خطا در سایر صفحات)
     if (!flipbookEl) return;
 
-    // نمایش لودینگ (اختیاری: می‌توان در CSS هندل کرد)
+    // 2. انتخاب دقیق صفحات (فقط فرزندان مستقیم کانتینر کاتالوگ)
+    // نکته حیاتی: استفاده از flipbookEl به جای document برای جلوگیری از تداخل
+    const pages = flipbookEl.querySelectorAll('.page');
+
+    if (pages.length === 0) {
+        console.warn('Salnama Catalog: هیچ صفحه‌ای (.page) داخل کانتینر یافت نشد.');
+        return;
+    }
+
+    // نمایش لودینگ (کانتینر را نمایش می‌دهیم)
     flipbookEl.style.display = 'block';
 
-    // تنظیمات پایه بر اساس سایز صفحه
-    // نسبت ابعاد A4 تقریباً 210x297 است (0.7)
-    // ما عرض هر صفحه را 400 و ارتفاع را 550 در نظر می‌گیریم
-    const width = flipbookEl.clientWidth;
-    
-    // استفاده از کلاس جهانی PageFlip (که توسط کتابخانه لود شده است)
-    // @ts-ignore
-    const pageFlip = new St.PageFlip(flipbookEl, {
-        width: 400, // عرض پایه هر صفحه
-        height: 550, // ارتفاع پایه هر صفحه
-        
-        size: "stretch", // حالت ریسپانسیو
-        minWidth: 300,
-        maxWidth: 1000,
-        minHeight: 400,
-        maxHeight: 1400,
+    // 3. تنظیمات و راه‌اندازی کتابخانه
+    try {
+        // @ts-ignore
+        const pageFlip = new St.PageFlip(flipbookEl, {
+            width: 400, // عرض پایه
+            height: 550, // ارتفاع پایه
+            
+            // تنظیمات ریسپانسیو
+            size: "stretch",
+            minWidth: 300,
+            maxWidth: 1000,
+            minHeight: 400,
+            maxHeight: 1400,
 
-        maxShadowOpacity: 0.5, // شدت سایه هنگام ورق زدن
-        showCover: true, // صفحه اول و آخر به عنوان جلد رفتار کنند
-        mobileScrollSupport: false, // جلوگیری از تداخل با اسکرول موبایل
-        
-        // تنظیمات فیزیکی ورق زدن
-        flippingTime: 1000,
-        usePortrait: true, // اجازه حالت تک صفحه در موبایل
-        startPage: 0,
-        autoSize: true,
-        drawShadow: true
-    });
-
-    // مدیریت دکمه‌های سفارشی
-    const prevBtn = document.getElementById('prev-page-btn');
-    const nextBtn = document.getElementById('next-page-btn');
-
-    if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
-            pageFlip.flipPrev(); // ورق زدن به عقب
+            // تنظیمات ظاهری
+            maxShadowOpacity: 0.5,
+            showCover: true, // صفحه اول و آخر کاور هستند
+            mobileScrollSupport: false, // جلوگیری از تداخل با اسکرول موبایل
+            
+            // تنظیمات فیزیکی
+            flippingTime: 1000,
+            usePortrait: true, // در موبایل تک صفحه شود
+            startPage: 0,
+            autoSize: true,    // تنظیم ارتفاع خودکار
+            drawShadow: true,
+            showPageCorners: true // نمایش گوشه برای ورق زدن
         });
-    }
 
-    if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
-            pageFlip.flipNext(); // ورق زدن به جلو
+        // 4. بارگذاری صفحات در کتابخانه
+        pageFlip.loadFromHTML(pages);
+
+        // 5. مدیریت شماره صفحات (فارسی سازی)
+        const pageNumberElements = flipbookEl.querySelectorAll('.page-number');
+        pageNumberElements.forEach((el, index) => {
+            // ایندکس از 0 شروع می‌شود، ما +1 می‌کنیم
+            el.innerText = (index + 1).toLocaleString('fa-IR'); 
         });
+
+        // 6. مدیریت دکمه‌های کنترل (بعدی / قبلی)
+        const prevBtn = document.getElementById('prev-page-btn');
+        const nextBtn = document.getElementById('next-page-btn');
+
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                pageFlip.flipPrev(); // ورق زدن به عقب
+            });
+        }
+
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                pageFlip.flipNext(); // ورق زدن به جلو
+            });
+        }
+
+        // 7. کنترل با کیبورد (جهت‌ها برعکس برای RTL)
+        document.addEventListener('keydown', (e) => {
+            // فقط زمانی که کاتالوگ در ویوپورت است عمل کند (اختیاری)
+            if (e.key === 'ArrowRight') {
+                pageFlip.flipPrev(); // راست = صفحه قبل
+            }
+            if (e.key === 'ArrowLeft') {
+                pageFlip.flipNext(); // چپ = صفحه بعد
+            }
+        });
+
+        // 8. ایونت‌ها (دیباگ یا لاجیک‌های اضافه)
+        pageFlip.on('flip', (e) => {
+            // console.log('Current page:', e.data);
+            
+            // مثال: غیرفعال کردن دکمه‌ها در صفحه اول یا آخر
+            /*
+            if (prevBtn) prevBtn.disabled = (e.data === 0);
+            if (nextBtn) nextBtn.disabled = (e.data === pageFlip.getPageCount() - 1);
+            */
+        });
+
+        // 9. افزودن کلاس Wrapper برای اطمینان از استایل‌دهی
+        const wrapper = flipbookEl.parentElement;
+        if(wrapper && !wrapper.classList.contains('salnama-flipbook-wrapper')) {
+            wrapper.classList.add('salnama-flipbook-wrapper');
+        }
+
+        console.log('Salnama Catalog: با موفقیت لود شد.');
+
+    } catch (err) {
+        console.error('Salnama Catalog Error:', err);
+        // در صورت خطا، نمایش ساده صفحات (Fallback)
+        flipbookEl.style.display = 'flex';
+        flipbookEl.style.flexWrap = 'wrap';
+        flipbookEl.style.gap = '20px';
+        flipbookEl.style.justifyContent = 'center';
     }
-
-    // آپدیت وضعیت دکمه‌ها (مثلاً در صفحه اول دکمه قبل غیرفعال شود)
-    pageFlip.on('flip', (e) => {
-        // e.data ایندکس صفحه فعلی است
-        // اینجا می‌توانید لاجیک disable کردن دکمه‌ها را بنویسید اگر نیاز بود
-    });
-
-    // بارگذاری صفحات
-    // این متد تمام فرزندان مستقیم المان کانتینر را به عنوان صفحه می‌شناسد
-    const pages = document.querySelectorAll('.page');
-    pageFlip.loadFromHTML(pages);
-
-    // افزودن شماره صفحه به صورت خودکار
-    const pageNumberElements = document.querySelectorAll('.page-number');
-    pageNumberElements.forEach((el, index) => {
-        // +1 چون ایندکس از 0 شروع می‌شود و صفحه اول کاور است
-        // اما معمولا در کاتالوگ کاور شماره ندارد. 
-        // فرمول زیر شماره‌گذاری را از اولین محصول شروع می‌کند
-        el.innerText = (index + 1).toLocaleString('fa-IR'); 
-    });
-
-    // مدیریت ایونت‌ها (اختیاری: برای افزودن صدا یا آنالیتیکس)
-    pageFlip.on('flip', (e) => {
-        // مثال: پخش صدا اگر در آبجکت تنظیمات موجود باشد
-        /*
-        if (typeof SalnamaCatalogConfig !== 'undefined' && SalnamaCatalogConfig.sounds) {
-            const audio = new Audio(SalnamaCatalogConfig.sounds.start);
-            audio.play();
-        }
-        */
-        console.log('صفحه فعلی:', e.data);
-    });
-
-    // حل مشکل احتمالی z-index در برخی قالب‌ها
-    // اضافه کردن کلاس wrapper برای استایل دهی بهتر
-    const wrapper = flipbookEl.parentElement;
-    if(wrapper) {
-        wrapper.classList.add('salnama-flipbook-wrapper');
-    }
-
-    // کنترل دکمه‌های کیبورد
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight') {
-            pageFlip.flipPrev(); // چون RTL هستیم، راست یعنی قبلی
-        }
-        if (e.key === 'ArrowLeft') {
-            pageFlip.flipNext(); // چپ یعنی بعدی
-        }
-    });
 });

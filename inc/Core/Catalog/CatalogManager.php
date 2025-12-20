@@ -34,23 +34,24 @@ class CatalogManager {
     }
 
     public function enqueue_assets() {
-        // بررسی دقیق مسیرها برای رفع خطای JS
-        $css_uri = get_template_directory_uri() . '/assets/css/catalog/style.css';
-        $js_lib  = get_template_directory_uri() . '/assets/js/catalog/page-flip.browser.js';
-        $js_app  = get_template_directory_uri() . '/assets/js/catalog/script.js';
-
-        // همیشه لود شود (یا شرطی کنید اگر فقط در برگه خاصی است)
-        if ( is_page( 'catalog' ) || has_shortcode( get_the_content(), 'salnama_catalog' ) ) {
+            // مسیرها را بررسی کنید
+            $css_uri = get_template_directory_uri() . '/assets/css/catalog/style.css';
             
-            wp_enqueue_style( 'salnama-catalog-style', $css_uri, [], '1.0.0' );
+            // نکته مهم: اگر فایل را دستی کپی کردید، مطمئن شوید اسمش دقیقا همین است
+            $js_lib  = get_template_directory_uri() . '/assets/js/catalog/page-flip.browser.js';
+            $js_app  = get_template_directory_uri() . '/assets/js/catalog/script.js';
 
-            // اطمینان از وجود فایل JS قبل از لود
-            wp_enqueue_script( 'page-flip-lib', $js_lib, [], '2.0.0', true );
-            wp_enqueue_script( 'salnama-catalog-app', $js_app, ['page-flip-lib'], '1.0.0', true );
+            // فقط در جایی که شورت‌کد هست لود شود
+            global $post;
+            if ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'salnama_catalog' ) ) {
+                
+                wp_enqueue_style( 'salnama-catalog-style', $css_uri, [], '1.0.1' );
 
-            wp_localize_script( 'salnama-catalog-app', 'SalnamaCatalogConfig', [
-                'root_url' => get_template_directory_uri(),
-            ]);
-        }
+                // لود کتابخانه
+                wp_enqueue_script( 'page-flip-lib', $js_lib, [], '2.0.0', true );
+
+                // لود اسکریپت خودمان (وابسته به page-flip-lib)
+                wp_enqueue_script( 'salnama-catalog-app', $js_app, ['page-flip-lib'], '1.0.1', true );
+            }
     }
 }

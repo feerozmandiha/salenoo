@@ -14,31 +14,31 @@
     --catalog-shadow: var(--wp--preset--shadow--card-shadow-large);
 }
 
-/* کانتینر اصلی */
 .salnama-flipbook-wrapper {
-    display: flex !important;
+    position: relative;
+    width: 100%;
+    min-height: 600px;
+    background-color: var(--wp--preset--color--surface-bg, #fcfcfc);
+    display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--catalog-bg);
-    padding: 60px 20px;
-    min-height: 80vh;
-    direction: ltr; /* کتابخانه‌های ورق‌زن معمولا در LTR بهتر کار می‌کنند، محتوا را RTL می‌کنیم */
-    overflow: hidden;
+    overflow: hidden; /* جلوگیری از اسکرول اضافه */
+    direction: ltr; /* مهم: کتابخانه محاسباتش LTR است */
 }
 
-/* کانتینر خود کتاب */
 .salnama-flipbook-container {
-    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-    display: none; /* تا زمان لود شدن JS مخفی می‌ماند */
+    /* ابعاد اولیه مهم هستند تا زمانی که JS لود شود */
+    width: 100%; 
+    max-width: 1000px;
+    height: 600px; 
+    position: relative;
 }
 
-/* استایل صفحات */
-.page {
-    background-color: var(--catalog-card-bg);
-    padding: 20px;
-    border: 1px solid #e0e0e0;
-    overflow: hidden;
-    position: relative;
+/* رفع باگ احتمالی تصاویر */
+.page img {
+    max-width: 100%;
+    height: auto;
+    pointer-events: none; /* جلوگیری از درگ شدن عکس */
 }
 
 /* استایل محتوای داخلی هر صفحه */
