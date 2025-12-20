@@ -1,4 +1,4 @@
-/* assets/css/catalog/style.css - نسخه نهایی با چیدمان آینه‌ای */
+/* assets/css/catalog/style.css - نسخه نهایی و اصلاح شده */
 
 :root {
     --catalog-bg: #eef2f3;
@@ -8,7 +8,7 @@
     --accent-color: var(--wp--preset--color--brand-blue, #00AEEF);
 }
 
-/* 1. تنظیمات کانتینر برای ثبات بیشتر جلد */
+/* 1. تنظیمات کانتینر اصلی */
 .salnama-flipbook-wrapper {
     width: 100%;
     height: 100vh;
@@ -18,27 +18,26 @@
     align-items: center;
     position: relative;
     overflow: hidden;
-    direction: ltr; 
-    /* پرسپکتیو را زیاد می‌کنیم تا اعوجاج سه بعدی کمتر شود و جلد ثابت‌تر به نظر برسد */
+    direction: ltr; /* جهت چپ‌چین برای محاسبات کتابخانه */
     perspective: 4000px; 
 }
 
 .salnama-flipbook-container {
     width: 92vw;
     height: 90vh;
-    max-width: 1600px; /* عرض را کمی محدودتر کنیم تا کنترل بهتر شود */
-    /* حذف transition روی transform برای جلوگیری از پرش موقع بسته شدن */
-    /* transition: transform 0.3s ease;  <-- این خط حذف شد */
+    max-width: 1600px;
+    /* حذف ترنزیشن برای جلوگیری از پرش */
 }
 
 /* 2. استایل صفحات */
 .page {
     background-color: var(--page-bg);
     overflow: hidden;
-    /* این دستور باعث می‌شود لبه‌های جلد تمیزتر رندر شوند */
     backface-visibility: hidden; 
     -webkit-backface-visibility: hidden;
     transform-style: preserve-3d;
+    /* گرادینت محو برای حس کاغذ */
+    background-image: linear-gradient(to right, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0) 5%);
 }
 
 .page-content {
@@ -58,7 +57,7 @@
     justify-content: center;
     padding: 20px;
     box-sizing: border-box;
-    z-index: 1; /* پایین‌تر از دکمه‌ها */
+    z-index: 1;
 }
 
 .product-image-wrapper img {
@@ -73,58 +72,59 @@
     transform: scale(1.05);
 }
 
-/* 4. بخش اطلاعات محصول (چیدمان هوشمند) */
+/* 4. بخش اطلاعات محصول - اصلاح چیدمان */
 .product-info {
     height: 18%;
-    padding: 10px 25px;
+    padding: 10px 30px; /* فضای کافی از طرفین */
     background: rgba(255,255,255,0.95);
     border-top: 1px solid #f0f0f0;
     display: flex;
     align-items: center;
-    justify-content: space-between; /* فاصله بین دکمه و متن */
+    justify-content: space-between;
     gap: 15px;
-    direction: rtl;
+    direction: rtl; /* محتوای داخلی راست‌چین */
     backdrop-filter: blur(5px);
     position: relative;
     z-index: 5;
 }
 
-/* --- منطق آینه‌ای (Mirror Logic) --- */
-/* در حالت RTL:
-   صفحات فرد (1, 3, 5...) سمت راست قرار می‌گیرند (لبه بیرونی سمت چپ است).
-   صفحات زوج (2, 4, 6...) سمت چپ قرار می‌گیرند (لبه بیرونی سمت راست است).
+.product-details-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* --- منطق آینه‌ای (Spine-Centric Logic) --- */
+/* هدف: دکمه‌ها همیشه سمت وسط (شیرازه) باشند تا با ورق زدن تداخل نکنند */
+
+/* حالت RTL:
+   flex-direction: row یعنی: آیتم اول راست، آیتم دوم چپ.
+   flex-direction: row-reverse یعنی: آیتم اول چپ، آیتم دوم راست.
+   
+   ساختار HTML:
+   1. Text Group
+   2. Button
 */
 
-
-
-/* بازنویسی برای اطمینان: دکمه‌ها همیشه سمت شیرازه باشند */
-/* ۱. صفحات سمت راست (فرد): شیرازه چپ است. دکمه باید چپ باشد. */
+/* صفحات فرد (سمت راست کتاب): شیرازه سمت چپ است */
+/* دکمه باید سمت چپ (شیرازه) باشد، متن سمت راست (لبه بیرونی) */
 .page:nth-child(odd) .product-info {
-    justify-content: flex-end; /* همه چی بره سمت چپ (شیرازه) */
-}
-.page:nth-child(odd) .product-info .product-title {
-    order: 2; /* عنوان بره سمت راست (لبه) */
-    margin-left: 15px;
-    text-align: right;
-}
-.page:nth-child(odd) .product-info .btn-view-product {
-    order: 1; /* دکمه بیاد سمت چپ (شیرازه) */
+    flex-direction: row; /* متن راست، دکمه چپ */
+    text-align: right; 
+    border-left: 4px solid var(--accent-color); /* خط تزیینی سمت شیرازه */
 }
 
-/* ۲. صفحات سمت چپ (زوج): شیرازه راست است. دکمه باید راست باشد. */
+/* صفحات زوج (سمت چپ کتاب): شیرازه سمت راست است */
+/* دکمه باید سمت راست (شیرازه) باشد، متن سمت چپ (لبه بیرونی) */
 .page:nth-child(even) .product-info {
-    justify-content: flex-end; /* در RTL یعنی سمت راست (شیرازه) */
-}
-.page:nth-child(even) .product-info .product-title {
-    order: 2; /* عنوان بره سمت چپ (لبه) */
-    margin-right: 15px;
+    flex-direction: row-reverse; /* متن چپ، دکمه راست */
     text-align: left;
+    border-right: 4px solid var(--accent-color); /* خط تزیینی سمت شیرازه */
 }
-.page:nth-child(even) .product-info .btn-view-product {
-    order: 1; /* دکمه بیاد سمت راست (شیرازه) */
-}
+
 /* --- پایان منطق آینه‌ای --- */
 
+/* تایپوگرافی */
 .product-title {
     font-size: 1.1rem;
     font-weight: 800;
@@ -140,11 +140,12 @@
     font-weight: 600;
 }
 
+/* دکمه مشاهده */
 .btn-view-product {
-    padding: 10px 20px;
+    padding: 8px 25px;
     background-color: var(--accent-color);
     color: #fff !important;
-    border-radius: 50px; /* دکمه کپسولی */
+    border-radius: 50px;
     font-size: 0.9rem;
     text-decoration: none;
     white-space: nowrap;
@@ -154,17 +155,17 @@
     align-items: center;
     justify-content: center;
     height: 40px;
+    min-width: 100px;
 }
 
 .btn-view-product:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(0, 174, 239, 0.5);
-    background-color: #0095ce; /* کمی تیره‌تر موقع هاور */
+    background-color: #0095ce;
 }
 
-
 /* کاورها */
-.cover-title { color: #fff; font-size: 2.5rem; margin-bottom: 20px; }
+.cover-title { color: #fff; font-size: 2.5rem; margin-bottom: 20px; font-weight: bold; }
 .cover-subtitle { color: #fff; font-size: 1.5rem; opacity: 0.9; }
 
 /* فوتر شماره صفحه */
@@ -196,18 +197,11 @@
     box-shadow: 0 5px 20px rgba(0,0,0,0.05);
     transition: all 0.3s ease;
 }
-.book-control-btn:hover { background: var(--accent-color); color: #fff; }
+.book-control-btn:hover { background: var(--accent-color); color: #fff; transform: translateY(-50%) scale(1.1); }
 .book-control-btn.prev { right: 20px; }
 .book-control-btn.next { left: 20px; }
 
-/* موبایل */
-@media (max-width: 768px) {
-    .salnama-flipbook-container { width: 95vw; height: 70vh; }
-    .product-info { flex-direction: column !important; justify-content: center !important; text-align: center; }
-    .product-title, .btn-view-product { order: unset !important; margin: 5px 0 !important; text-align: center !important;}
-}
-
-/* استایل دکمه بازگشت به خانه */
+/* دکمه بازگشت به خانه */
 .salnama-exit-btn {
     position: absolute;
     top: 25px;
@@ -220,7 +214,7 @@
     align-items: center;
     justify-content: center;
     color: #333;
-    z-index: 200; /* بالاتر از همه */
+    z-index: 200;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     transition: all 0.3s ease;
     cursor: pointer;
@@ -231,27 +225,23 @@
     transform: scale(1.1) rotate(90deg);
 }
 
-
-/* گروه بندی متن ها */
-.product-details-group {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+/* موبایل */
+@media (max-width: 768px) {
+    .salnama-flipbook-container { width: 95vw; height: 70vh; }
+    
+    /* در موبایل چون تک صفحه است، چیدمان ساده وسط چین بهتر است */
+    .product-info { 
+        flex-direction: column !important; 
+        justify-content: center !important; 
+        text-align: center !important;
+        border: none !important;
+    }
+    
+    .product-details-group { margin-bottom: 10px; }
+    
+    /* حذف خطوط تزئینی در موبایل */
+    .page:nth-child(odd) .product-info,
+    .page:nth-child(even) .product-info {
+        border: none;
+    }
 }
-
-/* --- منطق آینه‌ای (اصلاح شده) --- */
-
-/* صفحات فرد (راست): دکمه سمت چپ (شیرازه)، متن سمت راست */
-.page:nth-child(odd) .product-info {
-    flex-direction: row-reverse; /* دکمه میره چپ، متن میره راست */
-    text-align: right;
-}
-
-/* صفحات زوج (چپ): دکمه سمت راست (شیرازه)، متن سمت چپ */
-.page:nth-child(even) .product-info {
-    flex-direction: row-reverse; /* دکمه میره راست، متن میره چپ */
-    text-align: left;
-}
-
-
-
