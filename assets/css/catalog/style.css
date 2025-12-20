@@ -75,17 +75,18 @@
 
 /* 4. بخش اطلاعات محصول (چیدمان هوشمند) */
 .product-info {
-    height: 18%; /* فضای کافی برای دکمه و متن */
-    padding: 15px 30px;
+    height: 18%;
+    padding: 10px 25px;
     background: rgba(255,255,255,0.95);
     border-top: 1px solid #f0f0f0;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-between; /* فاصله بین دکمه و متن */
+    gap: 15px;
     direction: rtl;
     backdrop-filter: blur(5px);
     position: relative;
-    z-index: 5; /* بالاتر از لایه ورق زدن */
+    z-index: 5;
 }
 
 /* --- منطق آینه‌ای (Mirror Logic) --- */
@@ -94,22 +95,7 @@
    صفحات زوج (2, 4, 6...) سمت چپ قرار می‌گیرند (لبه بیرونی سمت راست است).
 */
 
-/* صفحات سمت راست (فرد در شمارش HTML) - شیرازه سمت چپ است */
-.page:nth-child(odd) .product-info {
-    flex-direction: row; /* متن راست، دکمه چپ (نزدیک لبه بیرونی) - باید برعکس شود */
-    /* اصلاح: دکمه را می‌بریم سمت راست (نزدیک شیرازه) */
-    flex-direction: row-reverse; 
-}
 
-/* صفحات سمت چپ (زوج در شمارش HTML) - شیرازه سمت راست است */
-.page:nth-child(even) .product-info {
-    flex-direction: row; /* متن راست (نزدیک شیرازه)، دکمه چپ (نزدیک لبه بیرونی) */
-    /* اصلاح: اینجا خوب است چون متن سمت راست (شیرازه) است. اما دکمه سمت چپ (لبه) می‌افتد.
-       بهتر است کلاً دکمه‌ها را به وسط نزدیک کنیم.
-    */
-    justify-content: center;
-    gap: 20px;
-}
 
 /* بازنویسی برای اطمینان: دکمه‌ها همیشه سمت شیرازه باشند */
 /* ۱. صفحات سمت راست (فرد): شیرازه چپ است. دکمه باید چپ باشد. */
@@ -144,35 +130,38 @@
     font-weight: 800;
     margin: 0;
     color: var(--text-color);
-    line-height: 1.4;
+    line-height: 1.3;
 }
 
 .product-price {
-    display: block;
-    font-size: 0.9rem;
-    color: #777;
-    margin-top: 5px;
+    font-size: 0.95rem;
+    color: var(--accent-color);
+    margin-top: 4px;
+    font-weight: 600;
 }
 
 .btn-view-product {
-    padding: 10px 25px;
+    padding: 10px 20px;
     background-color: var(--accent-color);
     color: #fff !important;
-    border-radius: 8px;
+    border-radius: 50px; /* دکمه کپسولی */
     font-size: 0.9rem;
     text-decoration: none;
     white-space: nowrap;
     box-shadow: 0 4px 10px rgba(0, 174, 239, 0.3);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    cursor: pointer;
-    position: relative;
-    z-index: 100; /* بسیار مهم برای کلیک شدن */
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
 }
 
 .btn-view-product:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(0, 174, 239, 0.5);
+    background-color: #0095ce; /* کمی تیره‌تر موقع هاور */
 }
+
 
 /* کاورها */
 .cover-title { color: #fff; font-size: 2.5rem; margin-bottom: 20px; }
@@ -217,3 +206,52 @@
     .product-info { flex-direction: column !important; justify-content: center !important; text-align: center; }
     .product-title, .btn-view-product { order: unset !important; margin: 5px 0 !important; text-align: center !important;}
 }
+
+/* استایل دکمه بازگشت به خانه */
+.salnama-exit-btn {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    width: 45px;
+    height: 45px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+    z-index: 200; /* بالاتر از همه */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+.salnama-exit-btn:hover {
+    background: var(--accent-color);
+    color: #fff;
+    transform: scale(1.1) rotate(90deg);
+}
+
+
+/* گروه بندی متن ها */
+.product-details-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* --- منطق آینه‌ای (اصلاح شده) --- */
+
+/* صفحات فرد (راست): دکمه سمت چپ (شیرازه)، متن سمت راست */
+.page:nth-child(odd) .product-info {
+    flex-direction: row-reverse; /* دکمه میره چپ، متن میره راست */
+    text-align: right;
+}
+
+/* صفحات زوج (چپ): دکمه سمت راست (شیرازه)، متن سمت چپ */
+.page:nth-child(even) .product-info {
+    flex-direction: row-reverse; /* دکمه میره راست، متن میره چپ */
+    text-align: left;
+}
+
+
+
