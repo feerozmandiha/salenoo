@@ -24,7 +24,8 @@ class Init {
         'Salnama_Theme\Inc\Core\AnimationController', // ✅ اضافه شد
         'Salnama_Theme\Inc\Blocks\AdvancedAnimationAttributes',
         'Salnama_Theme\Inc\Blocks\AdvancedAnimationInspector',
-        'Salnama_Theme\Inc\Patterns\PatternManager',       
+        'Salnama_Theme\Inc\Patterns\PatternManager',
+        'Salnama_Theme\Inc\Core\Catalog\CatalogManager',
  
         // 'Salnama_Theme\Inc\Core\WooCommerceSetup',
         // 'Salnama_Theme\Inc\Core\GsapEngine',
