@@ -40,7 +40,7 @@ class CatalogRender {
             </div>
 
             <?php foreach ( $products as $product ) : 
-                $image_url = wp_get_attachment_image_url( $product->get_image_id(), 'large' );
+                $image_url = wp_get_attachment_image_url( $product->get_image_id(), 'full' );
                 if ( ! $image_url ) {
                     $image_url = wc_placeholder_img_src();
                 }

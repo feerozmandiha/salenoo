@@ -1,249 +1,180 @@
-/**
- * Salnama Catalog Styles
- * Path: assets/css/catalog/style.css
- */
+/* assets/css/catalog/style.css - نسخه تمام صفحه و لاکچری */
 
 :root {
-    /* نگاشت متغیرهای theme.json برای دسترسی راحت‌تر */
-    --catalog-bg: var(--wp--preset--color--surface-bg, #FCFCFC);
-    --catalog-text: var(--wp--preset--color--text-primary, #000000);
-    --catalog-primary: var(--wp--preset--color--brand-blue, #00AEEF);
-    --catalog-accent: var(--wp--preset--color--brand-teal, #80D7F7);
-    --catalog-card-bg: var(--wp--preset--color--card-bg, #ffffff);
-    --catalog-font: var(--wp--preset--font-family--iransansxfanum, sans-serif);
-    --catalog-shadow: var(--wp--preset--shadow--card-shadow-large);
+    --catalog-bg: #eef2f3; /* رنگ پس‌زمینه کلی صفحه */
+    --catalog-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    --page-bg: #fff;
+    --text-color: #333;
+    --accent-color: var(--wp--preset--color--brand-blue, #00AEEF);
 }
 
+/* 1. کانتینر اصلی که کل صفحه مرورگر را می‌گیرد */
 .salnama-flipbook-wrapper {
-    position: relative;
     width: 100%;
-    min-height: 600px;
-    background-color: var(--wp--preset--color--surface-bg, #fcfcfc);
+    height: 100vh; /* ارتفاع کامل صفحه نمایش */
+    background: radial-gradient(circle at center, #fdfbfb 0%, #ebedee 100%); /* گرادینت ملایم */
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden; /* جلوگیری از اسکرول اضافه */
-    direction: ltr; /* مهم: کتابخانه محاسباتش LTR است */
-}
-
-.salnama-flipbook-container {
-    /* ابعاد اولیه مهم هستند تا زمانی که JS لود شود */
-    width: 100%; 
-    max-width: 1000px;
-    height: 600px; 
     position: relative;
+    overflow: hidden;
+    direction: ltr; /* جهت چپ‌چین برای درست کار کردن کتابخانه */
 }
 
-/* رفع باگ احتمالی تصاویر */
-.page img {
-    max-width: 100%;
-    height: auto;
-    pointer-events: none; /* جلوگیری از درگ شدن عکس */
+/* 2. کانتینر خود کتاب (تنظیم عرض ۹۰ درصد) */
+.salnama-flipbook-container {
+    width: 92vw;  /* ۹۲ درصد عرض صفحه (۴۶ درصد هر صفحه) */
+    height: 90vh; /* ۹۰ درصد ارتفاع صفحه */
+    max-width: 1800px; /* محدودیت برای مانیتورهای خیلی بزرگ */
+    box-shadow: var(--catalog-shadow);
+    transition: transform 0.3s ease;
 }
 
-/* استایل محتوای داخلی هر صفحه */
+/* 3. استایل صفحات */
+.page {
+    background-color: var(--page-bg);
+    border: 1px solid #f0f0f0;
+    overflow: hidden;
+    /* گرادینت خیلی محو برای حس کاغذ */
+    background-image: linear-gradient(to right, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0) 5%); 
+}
+
+/* 4. محتوای داخلی صفحه (چیدمان تصویر و متن) */
 .page-content {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    direction: rtl; /* بازگرداندن دایرکشن برای متن فارسی */
-    font-family: var(--catalog-font);
+    padding: 0; /* حذف پدینگ برای بزرگترین سایز تصویر */
     position: relative;
-    z-index: 1;
 }
 
-/* سایه وسط کتاب برای واقع‌گرایی */
-.page::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 30px;
-    z-index: 0;
-    pointer-events: none;
-    opacity: 0.1;
-}
-
-/* سایه سمت چپ (برای صفحات راست) */
-.-left .page::after {
-    right: 0;
-    background: linear-gradient(to left, rgba(0,0,0,0.2), transparent);
-}
-
-/* سایه سمت راست (برای صفحات چپ) */
-.-right .page::after {
-    left: 0;
-    background: linear-gradient(to right, rgba(0,0,0,0.2), transparent);
-}
-
-/* --- استایل جلد (Cover) --- */
-.page-cover {
-    background-color: var(--catalog-primary);
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    border: none;
-}
-
-.page-cover .page-content {
-    justify-content: center;
-    border: 2px solid rgba(255,255,255,0.2);
-    margin: 10px;
-    width: calc(100% - 20px);
-    height: calc(100% - 20px);
-    border-radius: 4px;
-}
-
-.cover-title {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: #fff !important;
-}
-
-.cover-subtitle {
-    font-size: 1.2rem;
-    opacity: 0.9;
-}
-
-/* --- استایل محصول --- */
+/* 5. بخش تصویر (بزرگ کردن تا حد ممکن) */
 .product-image-wrapper {
-    flex: 1;
+    flex: 1; /* تمام فضای خالی را پر کند */
+    width: 100%;
+    height: 80%; /* ۸۰ درصد ارتفاع صفحه مال تصویر */
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 20px;
-    background: #f9f9f9;
-    border-radius: 8px;
-    margin-bottom: 15px;
+    background: #fff;
+    box-sizing: border-box;
+    position: relative;
 }
 
 .product-image-wrapper img {
-    max-width: 100%;
-    max-height: 250px;
-    object-fit: contain;
-    filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1));
-    transition: transform 0.3s ease;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* تصویر کامل دیده شود و کراپ نشود */
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1)); /* سایه خود محصول */
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.product-image-wrapper:hover img {
-    transform: scale(1.05);
+/* افکت زوم نرم روی تصویر هنگام هاور */
+.page:hover .product-image-wrapper img {
+    transform: scale(1.08);
 }
 
+/* 6. بخش اطلاعات محصول (پایین صفحه) */
 .product-info {
-    text-align: center;
-    padding: 0 10px;
+    height: 15%; /* ۱۵ درصد ارتفاع برای متن */
+    padding: 15px 20px;
+    background: rgba(255,255,255,0.95);
+    border-top: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    direction: rtl;
+    backdrop-filter: blur(5px);
 }
 
 .product-title {
-    font-size: 1.1rem;
-    font-weight: 700;
-    margin-bottom: 10px;
-    color: var(--catalog-text);
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    font-size: 1.2rem;
+    font-weight: 800;
+    margin: 0;
+    color: var(--text-color);
 }
 
 .product-price {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: var(--catalog-primary);
-    margin-bottom: 15px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--accent-color);
 }
 
 .btn-view-product {
-    display: inline-block;
-    padding: 8px 20px;
-    background-color: var(--catalog-accent);
-    color: var(--catalog-card-bg); /* متن سفید روی دکمه */
-    text-decoration: none;
-    border-radius: 20px;
+    padding: 8px 24px;
+    background-color: var(--accent-color);
+    color: #fff !important;
+    border-radius: 50px;
     font-size: 0.9rem;
-    font-weight: 500;
+    text-decoration: none;
+    box-shadow: 0 5px 15px rgba(0, 174, 239, 0.3);
     transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .btn-view-product:hover {
-    background-color: var(--catalog-primary);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 174, 239, 0.5);
 }
 
-/* --- فوتر صفحه (شماره صفحه) --- */
+/* 7. شماره صفحه */
 .page-footer {
-    text-align: center;
-    font-size: 0.8rem;
-    color: #888;
-    margin-top: 10px;
-    border-top: 1px solid #eee;
-    padding-top: 5px;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    color: #bbb;
+    z-index: 10;
 }
 
-/* --- ریسپانسیو (موبایل) --- */
-@media (max-width: 768px) {
-    .salnama-flipbook-wrapper {
-        padding: 20px 0;
-        height: auto;
-        min-height: 60vh;
-    }
-    
-    .page-cover .cover-title {
-        font-size: 1.5rem;
-    }
-}
-
-/* ... کدهای قبلی ... */
-
-/* کانتینر نسبی برای قرارگیری دکمه‌ها */
-.salnama-flipbook-wrapper {
-    position: relative; /* مهم */
-}
-
+/* 8. دکمه‌های ناوبری بزرگ و شیشه ای */
 .book-control-btn {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    background-color: var(--wp--preset--color--card-bg);
-    border: 1px solid var(--wp--preset--color--brand-blue);
-    color: var(--wp--preset--color--brand-blue);
+    background: rgba(255, 255, 255, 0.8); /* شیشه‌ای */
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: #333;
     cursor: pointer;
-    z-index: 10;
+    z-index: 20;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     transition: all 0.3s ease;
 }
 
 .book-control-btn:hover {
-    background-color: var(--wp--preset--color--brand-blue);
-    color: #fff;
-    box-shadow: 0 6px 16px rgba(0,174,239,0.4);
+    background: #fff;
+    transform: translateY(-50%) scale(1.1);
+    color: var(--accent-color);
 }
 
-/* دکمه سمت راست (صفحه قبل در RTL) */
-.book-control-btn.prev {
-    right: 20px;
-}
+.book-control-btn.prev { right: 30px; }
+.book-control-btn.next { left: 30px; }
 
-/* دکمه سمت چپ (صفحه بعد در RTL) */
-.book-control-btn.next {
-    left: 20px;
-}
-
-/* مخفی کردن دکمه‌ها در موبایل (چون در موبایل سواپ کردن راحت‌تر است) */
-@media (max-width: 768px) {
+/* 9. استایل ریسپانسیو (موبایل) */
+@media (max-width: 1024px) {
+    .salnama-flipbook-container {
+        width: 95vw;
+        height: 70vh; /* در موبایل ارتفاع کمتر */
+    }
+    .product-info {
+        flex-direction: column;
+        height: auto;
+        padding: 10px;
+        text-align: center;
+        gap: 10px;
+    }
     .book-control-btn {
-        display: none;
+        width: 40px;
+        height: 40px;
+        background: rgba(255,255,255,0.9);
     }
 }

@@ -28,23 +28,23 @@ document.addEventListener('DOMContentLoaded', function() {
     try {
         // @ts-ignore
         const pageFlip = new St.PageFlip(flipbookEl, {
-            width: 400, // عرض پایه
-            height: 550, // ارتفاع پایه
+            width: 1000, // عرض پایه
+            height: 1400, // ارتفاع پایه
             
             // تنظیمات ریسپانسیو
             size: "stretch",
             minWidth: 300,
-            maxWidth: 1000,
+            maxWidth: 3000,
             minHeight: 400,
-            maxHeight: 1400,
+            maxHeight: 3000,
 
             // تنظیمات ظاهری
-            maxShadowOpacity: 0.5,
+            maxShadowOpacity: 0.3,
             showCover: true, // صفحه اول و آخر کاور هستند
             mobileScrollSupport: false, // جلوگیری از تداخل با اسکرول موبایل
             
             // تنظیمات فیزیکی
-            flippingTime: 1000,
+            flippingTime: 1200,
             usePortrait: true, // در موبایل تک صفحه شود
             startPage: 0,
             autoSize: true,    // تنظیم ارتفاع خودکار
