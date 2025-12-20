@@ -35,7 +35,7 @@ class CatalogRender {
             <div class="page page-cover page-cover-top" data-density="hard">
                 <div class="page-content">
                     <h2 class="cover-title">کاتالوگ محصولات سالنمای نو</h2>
-                    <p class="cover-subtitle">کلکسیون ۱۴۰۴</p>
+                    <p class="cover-subtitle">کلکسیون 1405</p>
                 </div>
             </div>
 
