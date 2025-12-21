@@ -142,26 +142,32 @@
 
 /* دکمه مشاهده */
 .btn-view-product {
-    padding: 8px 25px;
+    /* 1. سیستم چیدمان */
+    display: inline-flex;       /* استفاده از فلکس برای تراز دقیق */
+    align-items: center;        /* تراز عمودی دقیق در وسط */
+    justify-content: center;    /* تراز افقی دقیق در وسط */
+    
+    /* 2. ابعاد و فاصله */
+    height: 42px;               /* ارتفاع ثابت و مشخص */
+    padding: 0 25px;            /* پدینگ فقط از چپ و راست (بالا و پایین 0 باشد) */
+    min-width: 110px;           /* حداقل عرض برای دکمه‌های کوتاه */
+    
+    /* 3. ظاهر و رنگ */
     background-color: var(--accent-color);
     color: #fff !important;
     border-radius: 50px;
-    font-size: 0.9rem;
+    box-shadow: 0 4px 10px rgba(0, 174, 239, 0.3);
+    
+    /* 4. تایپوگرافی */
+    font-size: 0.95rem;
+    font-weight: 500;
     text-decoration: none;
     white-space: nowrap;
-    box-shadow: 0 4px 10px rgba(0, 174, 239, 0.3);
-    transition: all 0.2s ease;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 40px;
-    min-width: 100px;
-}
-
-.btn-view-product:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0, 174, 239, 0.5);
-    background-color: #0095ce;
+    line-height: 1;             /* بسیار مهم: حذف تأثیر ارتفاع خط قالب */
+    
+    /* 5. انیمیشن و وضعیت‌ها */
+    transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-sizing: border-box;     /* اطمینان از محاسبه درست ابعاد */
 }
 
 /* کاورها */
@@ -235,6 +241,12 @@
         justify-content: center !important; 
         text-align: center !important;
         border: none !important;
+    }
+
+    .btn-view-product {
+        height: 38px;
+        font-size: 0.85rem;
+        padding: 0 20px;
     }
     
     .product-details-group { margin-bottom: 10px; }
