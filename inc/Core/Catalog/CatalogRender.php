@@ -12,25 +12,26 @@ class CatalogRender {
             return '<div class="salnama-alert" style="text-align:center; padding:20px;">لطفاً افزونه ووکامرس را نصب کنید.</div>';
         }
 
-        // دریافت پارامتر limit از شورت‌کد
+        // دریافت تنظیمات
         $limit = isset( $attributes['limit'] ) ? intval( $attributes['limit'] ) : -1;
-        
-        $args = [
-            'status' => 'publish',
-            'limit'  => $limit,
-        ];
-        
+        $args = [ 'status' => 'publish', 'limit' => $limit ];
         $products = wc_get_products( $args );
 
         if ( empty( $products ) ) {
             return '<div class="salnama-alert" style="text-align:center; padding:20px;">هیچ محصولی یافت نشد.</div>';
         }
 
-        // محاسبه تعداد صفحات برای تراز کردن جلد پشت
-        // 1 (جلد جلو) + N (محصولات) + 1 (جلد عقب) = N + 2
-        $total_pages_so_far = count($products) + 2;
+        // --- تنظیمات تصاویر جلد (اینجا را ویرایش کنید) ---
+        // فرض بر این است که تصاویر را در پوشه assets/images/catalog/ قالب آپلود می‌کنید
+        $front_cover_url = get_template_directory_uri() . '/assets/images/catalog/front-cover.jpg';
+        $back_cover_url  = get_template_directory_uri() . '/assets/images/catalog/back-cover.jpg';
         
-        // اگر تعداد فرد باشد، یک صفحه خالی قبل از جلد آخر نیاز است
+        // اگر هنوز تصویری آپلود نکرده‌اید، می‌توانید موقتا از تصاویر پیش‌فرض استفاده کنید (اختیاری)
+        // $front_cover_url = 'https://placehold.co/1000x1400/00AEEF/ffffff?text=Front+Cover';
+        // $back_cover_url  = 'https://placehold.co/1000x1400/003366/ffffff?text=Back+Cover';
+
+        // محاسبات صفحه بندی
+        $total_pages_so_far = count($products) + 2;
         $needs_filler = ($total_pages_so_far % 2 !== 0);
 
         ob_start();
@@ -46,18 +47,14 @@ class CatalogRender {
         <div class="salnama-flipbook-container" id="salnama-flipbook">
             
             <div class="page page-cover page-cover-top" data-density="hard">
-                <div class="page-content">
-                    <h2 class="cover-title">کاتالوگ محصولات</h2>
-                    <p class="cover-subtitle">سالنمای نو</p>
+                <div class="page-content page-cover-full">
+                    <img src="<?php echo esc_url( $front_cover_url ); ?>" alt="کاتالوگ محصولات سالنمای نو" class="cover-full-img">
                 </div>
             </div>
 
             <?php foreach ( $products as $product ) : 
-                // دریافت تصویر سایز بزرگ
                 $image_url = wp_get_attachment_image_url( $product->get_image_id(), 'large' );
-                if ( ! $image_url ) {
-                    $image_url = wc_placeholder_img_src();
-                }
+                if ( ! $image_url ) $image_url = wc_placeholder_img_src();
             ?>
                 <div class="page page-product">
                     <div class="page-content">
@@ -93,11 +90,8 @@ class CatalogRender {
             <?php endif; ?>
 
             <div class="page page-cover page-cover-bottom" data-density="hard">
-                <div class="page-content">
-                    <div class="brand-info">
-                        <h3>سالنمای نو</h3>
-                        <p>www.salenoo.ir</p>
-                    </div>
+                <div class="page-content page-cover-full">
+                     <img src="<?php echo esc_url( $back_cover_url ); ?>" alt="سالنمای نو" class="cover-full-img">
                 </div>
             </div>
 
