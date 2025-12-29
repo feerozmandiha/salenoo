@@ -18,16 +18,17 @@
             <button class="fab-module__trigger" aria-label="<?php esc_attr_e('دانلود فایل‌ها', 'salnama'); ?>">
                 <span class="dashicons dashicons-download"></span>
             </button>
-            
+
             <ul class="fab-module__submenu">
                 <li>
-                    <a href="<?php echo home_url('/wp-content/uploads/2025/12/کاتالوگ-محصولات-1405_.pdf'); ?>" target="_blank" rel="nofollow">
+                    <a href="<?php echo home_url('/wp-content/uploads/2025/12/کاتالوگ-تقویم-و-سررسید-405.pdf'); ?>" target="_blank" rel="nofollow">
                         <span class="dashicons dashicons-media-document"></span>
                         <?php esc_html_e('دانلود کاتالوگ', 'salnama'); ?>
                     </a>
                 </li>
                 <li>
-                    <a href="#" target="_blank" rel="nofollow">
+
+                <a href="<?php echo home_url('/wp-content/uploads/2025/12/لیست-قیمت-دیما404.pdf'); ?>" target="_blank" rel="nofollow">
                         <span class="dashicons dashicons-list-view"></span>
                         <?php esc_html_e('لیست قیمت', 'salnama'); ?>
                     </a>
